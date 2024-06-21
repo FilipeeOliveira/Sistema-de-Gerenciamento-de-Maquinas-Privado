@@ -7,7 +7,6 @@
     "dist": "gulp dist",
     "dev": "gulp"
   },
-  "author": "Nauval Azhar <nauvalazhar2@gmail.com> (https://getstisla.com)",
   "license": "MIT",
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.7.2",
