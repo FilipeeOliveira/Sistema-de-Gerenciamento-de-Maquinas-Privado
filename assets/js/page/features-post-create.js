@@ -11,3 +11,4 @@ $.uploadPreview({
   success_callback: null          // Default: null
 });
 $(".inputtags").tagsinput('items');
+

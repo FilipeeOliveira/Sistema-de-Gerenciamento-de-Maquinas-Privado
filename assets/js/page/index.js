@@ -4,21 +4,21 @@ var ctx = document.getElementById("myChart").getContext('2d');
 var myChart = new Chart(ctx, {
   type: 'line',
   data: {
-    labels: ["January", "February", "March", "April", "May", "June", "July", "August"],
+    labels: ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto"],
     datasets: [{
-      label: 'Sales',
+      label: 'Vendas',
       data: [3200, 1800, 4305, 3022, 6310, 5120, 5880, 6154],
       borderWidth: 2,
-      backgroundColor: 'rgba(63,82,227,.8)',
+      backgroundColor: 'rgba(75,142,241,0.8)',
       borderWidth: 0,
       borderColor: 'transparent',
       pointBorderWidth: 0,
       pointRadius: 3.5,
       pointBackgroundColor: 'transparent',
-      pointHoverBackgroundColor: 'rgba(63,82,227,.8)',
+      pointHoverBackgroundColor: 'rgba(75,142,241,0.8)',
     },
     {
-      label: 'Budget',
+      label: 'Orçamentos',
       data: [2207, 3403, 2200, 5025, 2302, 4208, 3880, 4880],
       borderWidth: 2,
       backgroundColor: 'rgba(254,86,83,.7)',
@@ -45,7 +45,7 @@ var myChart = new Chart(ctx, {
           beginAtZero: true,
           stepSize: 1500,
           callback: function(value, index, values) {
-            return '$' + value;
+            return 'R$' + value;
           }
         }
       }],

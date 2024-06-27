@@ -1,7 +1,7 @@
 {
-  "name": "stisla",
+  "name": "geral",
   "version": "2.2.0",
-  "description": "Stisla - Free Bootstrap Admin Template",
+  "description": "Geral - Free Bootstrap Admin Template",
   "main": "index.js",
   "scripts": {
     "dist": "gulp dist",

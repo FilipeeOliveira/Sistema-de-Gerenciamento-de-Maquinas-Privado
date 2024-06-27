@@ -40,7 +40,7 @@ function _compileToHTML(path, onEnd, log=true, ret=false) {
   .pipe(plumber())
   .pipe(nunjucks.compile({
     version: '2.3.0',
-    site_name: 'Stisla'
+    site_name: 'Geral - Conservação e Limpeza'
   },
   /**
    * Nunjucks options
