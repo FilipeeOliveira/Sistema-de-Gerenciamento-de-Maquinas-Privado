@@ -1,0 +1,23 @@
+{
+  "development": {
+    "username": "gerall86_samyr",
+    "password": "Geral12!@",
+    "database": "gerall86_ControleDeMaquinas",
+    "host": "216.172.172.60",
+    "dialect": "mysql"
+  },
+  "test": {
+    "username": "gerall86_samyr",
+    "password": "Geral12!@",
+    "database": "gerall86_ControleDeMaquinas",
+    "host": "216.172.172.60",
+    "dialect": "mysql"
+  },
+  "production": {
+    "username": "gerall86_samyr",
+    "password": "Geral12!@",
+    "database": "gerall86_ControleDeMaquinas",
+    "host": "216.172.172.60",
+    "dialect": "mysql"
+  }
+}
