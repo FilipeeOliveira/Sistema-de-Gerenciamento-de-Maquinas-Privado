@@ -6,7 +6,6 @@
   "scripts": {
     "dist": "gulp dist",
     "dev": "gulp",
-    "listar-usuarios": "node scripts/listarUsuarios.js",
     "criar-usuarios": "node scripts/criarUsuario.js"
   },
   "license": "MIT",
@@ -39,6 +38,7 @@
     "jquery-ui-dist": "^1.12.1",
     "jquery.nicescroll": "^3.7.6",
     "moment": "^2.24.0",
+    "morgan": "^1.10.0",
     "mysql2": "^3.10.1",
     "nicescroll": "^3.7.4",
     "owl.carousel": "^2.3.4",
