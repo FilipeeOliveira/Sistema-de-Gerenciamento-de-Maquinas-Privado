@@ -40,7 +40,7 @@ function _compileToHTML(path, onEnd, log = true, ret = false) {
     .pipe(plumber())
     .pipe(nunjucks.compile({
       version: '2.3.0',
-      site_name: 'Stisla'
+      site_name: 'Geral - Conservação e Limpeza'
     },
       /**
        * Nunjucks options
@@ -148,12 +148,13 @@ function watching() {
 
   /**
    * BrowserSync initialization
-   * @type {Object}
-   */
+ /**
+ * @type {Object}
+ */
   browserSync.init({
     proxy: 'http://localhost:3000',
     port: 4000,
-    startPath: 'pages/index.html'
+    startPath: '/'
   });
 
 

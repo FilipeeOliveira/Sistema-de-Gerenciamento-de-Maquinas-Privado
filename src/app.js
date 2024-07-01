@@ -12,13 +12,13 @@ const app = express();
 app.use(logger('dev'));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-app.use(cors()); // Configuração básica de CORS
-app.set('views', path.join(__dirname, 'pages')); // Define o diretório de views corretamente
+app.set('views', path.join(__dirname, 'pages'));
 app.set('view engine', 'ejs');
 
 // Rota para servir o index.ejs
 app.get('/', (req, res) => {
-    res.render('index');
+    console.log('Rota / chamada');
+    res.render('index', { title: 'Dashboard' });
 });
 
 // Rotas

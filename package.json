@@ -1,7 +1,7 @@
 {
-  "name": "stisla",
+  "name": "geral",
   "version": "2.2.0",
-  "description": "Stisla - Free Bootstrap Admin Template",
+  "description": "Geral - Free Bootstrap Admin Template",
   "main": "index.js",
   "scripts": {
     "dist": "gulp dist",
@@ -27,6 +27,7 @@
     "datatables.net-responsive-bs4": "^2.2.3",
     "datatables.net-select-bs4": "^1.2.7",
     "dropzone": "^5.5.1",
+    "ejs": "^3.1.10",
     "express": "^4.19.2",
     "flag-icon-css": "^3.2.1",
     "fullcalendar": "^3.10.0",
