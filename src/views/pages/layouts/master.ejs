@@ -16,10 +16,10 @@
 
   <!-- CSS Libraries -->
   <% block('plugins_css') %>
-
     <!-- Template CSS -->
     <link rel="stylesheet" href="../assets/css/style.css">
     <link rel="stylesheet" href="../assets/css/components.css">
+    <% endblock %>
 </head>
 
 <body>
@@ -35,13 +35,12 @@
                   <li><a href="#" data-toggle="sidebar" class="nav-link nav-link-lg"><i class="fas fa-bars"></i></a>
                   </li>
                   <li><a href="#" data-toggle="search" class="nav-link nav-link-lg d-sm-none"><i
-                        class="fas fa-search"></i></a>
-                  </li>
+                        class="fas fa-search"></i></a></li>
                 </ul>
               </form>
               <ul class="navbar-nav navbar-right">
-                <li class="dropdown"><a href="#" data-toggle="dropdown"
-                    class="nav-link dropdown-toggle nav-link-lg nav-link-user">
+                <li class="dropdown">
+                  <a href="#" data-toggle="dropdown" class="nav-link dropdown-toggle nav-link-lg nav-link-user">
                     <img alt="image" src="../assets/img/avatar/avatar-1.png" class="rounded-circle mr-1">
                     <div class="d-sm-none d-lg-inline-block">Olá, Joãozinho</div>
                   </a>
@@ -80,6 +79,7 @@
             <div class="main-content">
               <% block('content') %>
             </div>
+
             <footer class="main-footer">
               <div class="footer-left">
                 Copyright &copy; 2018 <span class="bullet"></span> Design By <a href="https://nauv.al/">Muhamad Nauval
@@ -107,13 +107,13 @@
 
   <!-- JS Libraries -->
   <% block('plugins_js') %>
-
     <!-- Template JS File -->
     <script src="../assets/js/scripts.js"></script>
     <script src="../assets/js/custom.js"></script>
 
     <!-- Page Specific JS File -->
     <% block('page_js') %>
+      <% endblock %>
 </body>
 
 </html>
