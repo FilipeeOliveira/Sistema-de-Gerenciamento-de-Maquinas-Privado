@@ -1,0 +1,60 @@
+<ul class="sidebar-menu">
+  <li class="menu-header">Dashboard</li>
+  <li class="<%= page === 'index.ejs' ? 'active' : '' %>">
+    <a class="nav-link" href="index.ejs">
+      <i class="fas fa-pencil-ruler"></i> <span>Dashboard</span>
+    </a>
+  </li>
+  <li class="menu-header">Pages</li>
+  <li class="nav-item dropdown <%= page.startsWith('auth-') ? 'active' : '' %>">
+    <a href="#" class="nav-link has-dropdown">
+      <i class="far fa-user"></i> <span>Auth</span>
+    </a>
+    <ul class="dropdown-menu">
+      <li><a href="auth-forgot-password.ejs">Esqueceu senha</a></li>
+      <li><a href="auth-login.ejs">Login</a></li>
+      <!-- <li><a href="auth-register.ejs">Register</a></li> -->
+      <li><a href="auth-reset-password.ejs">Resetar senha</a></li>
+    </ul>
+  </li>
+  <li class="nav-item dropdown <%= page.startsWith('errors-') ? 'active' : '' %>">
+    <a href="#" class="nav-link has-dropdown">
+      <i class="fas fa-exclamation"></i> <span>Errors</span>
+    </a>
+    <ul class="dropdown-menu">
+      <li class="<%= page === 'errors-503.ejs' ? 'active' : '' %>"><a class="nav-link" href="errors-503.ejs">503</a>
+      </li>
+      <li class="<%= page === 'errors-403.ejs' ? 'active' : '' %>"><a class="nav-link" href="errors-403.ejs">403</a>
+      </li>
+      <li class="<%= page === 'errors-404.ejs' ? 'active' : '' %>"><a class="nav-link" href="errors-404.ejs">404</a>
+      </li>
+      <li class="<%= page === 'errors-500.ejs' ? 'active' : '' %>"><a class="nav-link" href="errors-500.ejs">500</a>
+      </li>
+    </ul>
+  </li>
+  <li class="nav-item dropdown <%= page.startsWith('features-') ? 'active' : '' %>">
+    <a href="#" class="nav-link has-dropdown">
+      <i class="fas fa-bicycle"></i> <span>Features</span>
+    </a>
+    <ul class="dropdown-menu">
+      <!-- <li class="<%= page === 'features-activities.ejs' ? 'active' : '' %>"><a class="nav-link" href="features-activities.ejs">Activities</a></li> -->
+      <li class="<%= page === 'features-post-create.ejs' ? 'active' : '' %>"><a class="nav-link"
+          href="features-post-create.ejs">Post Create</a></li>
+      <li class="<%= page === 'features-posts.ejs' ? 'active' : '' %>"><a class="nav-link"
+          href="features-posts.ejs">Posts</a></li>
+      <li class="<%= page === 'features-profile.ejs' ? 'active' : '' %>"><a class="nav-link"
+          href="features-profile.ejs">Profile</a></li>
+      <li class="<%= page === 'features-create-register.ejs' ? 'active' : '' %>"><a class="nav-link"
+          href="features-create-register.ejs">Register</a></li>
+      <li class="<%= page === 'features-settings.ejs' ? 'active' : '' %>"><a class="nav-link"
+          href="features-settings.ejs">Settings</a></li>
+      <li class="<%= page === 'features-setting-detail.ejs' ? 'active' : '' %>"><a class="nav-link"
+          href="features-setting-detail.ejs">Setting Detail</a></li>
+    </ul>
+  </li>
+</ul>
+<div class="mt-4 mb-4 p-3 hide-sidebar-mini">
+  <a href="https://getstisla.com/docs" class="btn btn-primary btn-lg btn-block btn-icon-split">
+    <i class="fas fa-rocket"></i> Documentation
+  </a>
+</div>
