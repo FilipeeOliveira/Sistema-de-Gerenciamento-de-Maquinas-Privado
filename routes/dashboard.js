@@ -2,7 +2,6 @@ const express = require('express');
 const router = express.Router();
 
 router.get('/', async (req, res) => {
-    // Simulando o conteúdo da seção que você quer incluir
     const bodyContent = `
             <section class="section">
                 <div class="row">
@@ -236,7 +235,8 @@ router.get('/', async (req, res) => {
                             </div>
                         </div>
                     </div>
-                </div>            </section>
+                </div>            
+            </section>
         `;
 
     res.render('pages/index', {
