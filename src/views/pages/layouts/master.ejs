@@ -15,82 +15,79 @@
     integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
 
   <!-- CSS Libraries -->
-  <% block('plugins_css') %>
-    <link rel="stylesheet" href="../assets/css/style.css">
-    <link rel="stylesheet" href="../assets/css/components.css">
-    <link rel="stylesheet" href="../node_modules/bootstrap-social/bootstrap-social.css">
-    <link rel="stylesheet" href="../node_modules/summernote/dist/summernote-bs4.css">
-  <% endblock %>
+  <% if (typeof block==='function' && block('plugins_css')) { %>
+    <% block('plugins_css') %>
+      <% } %>
+        <!-- Template CSS -->
+        <link rel="stylesheet" href="../assets/css/style.css">
+        <link rel="stylesheet" href="../assets/css/components.css">
 </head>
 
 <body>
   <div id="app">
-    <% if (!body) { %>
-      <% block('content_2') %>
-      <% endblock %>
-    <% } else { %>
-      <div class="main-wrapper">
-        <div class="navbar-bg"></div>
-        <nav class="navbar navbar-expand-lg main-navbar">
-          <form class="form-inline mr-auto">
-            <ul class="navbar-nav mr-3">
-              <li><a href="#" data-toggle="sidebar" class="nav-link nav-link-lg"><i class="fas fa-bars"></i></a></li>
-              <li><a href="#" data-toggle="search" class="nav-link nav-link-lg d-sm-none"><i class="fas fa-search"></i></a></li>
-            </ul>
-          </form>
-          <ul class="navbar-nav navbar-right">
-            <li class="dropdown">
-              <a href="#" data-toggle="dropdown" class="nav-link dropdown-toggle nav-link-lg nav-link-user">
-                <img alt="image" src="../assets/img/avatar/avatar-1.png" class="rounded-circle mr-1">
-                <div class="d-sm-none d-lg-inline-block">Olá, Joãozinho</div>
-              </a>
-              <div class="dropdown-menu dropdown-menu-right">
-                <div class="dropdown-title">Logado a 5 minutos</div>
-                <a href="features-profile.html" class="dropdown-item has-icon">
-                  <i class="far fa-user"></i> Perfil
-                </a>
-                <a href="features-activities.html" class="dropdown-item has-icon">
-                  <i class="fas fa-bolt"></i> Atividades
-                </a>
-                <a href="features-settings.html" class="dropdown-item has-icon">
-                  <i class="fas fa-cog"></i> Configurações
-                </a>
-                <div class="dropdown-divider"></div>
-                <a href="#" class="dropdown-item has-icon text-danger">
-                  <i class="fas fa-sign-out-alt"></i> Sair
-                </a>
-              </div>
+    <div class="main-wrapper">
+      <div class="navbar-bg"></div>
+      <nav class="navbar navbar-expand-lg main-navbar">
+        <form class="form-inline mr-auto">
+          <ul class="navbar-nav mr-3">
+            <li><a href="#" data-toggle="sidebar" class="nav-link nav-link-lg"><i class="fas fa-bars"></i></a></li>
+            <li><a href="#" data-toggle="search" class="nav-link nav-link-lg d-sm-none"><i
+                  class="fas fa-search"></i></a>
             </li>
           </ul>
-        </nav>
-        <div class="main-sidebar sidebar-style-2">
-          <aside id="sidebar-wrapper">
-            <div class="sidebar-brand">
-              <a href="index.html">Geral - Serviços</a>
+        </form>
+        <ul class="navbar-nav navbar-right">
+          <li class="dropdown">
+            <a href="#" data-toggle="dropdown" class="nav-link dropdown-toggle nav-link-lg nav-link-user">
+              <img alt="image" src="../assets/img/avatar/avatar-1.png" class="rounded-circle mr-1">
+              <div class="d-sm-none d-lg-inline-block">Olá, Joãozinho</div>
+            </a>
+            <div class="dropdown-menu dropdown-menu-right">
+              <div class="dropdown-title">Logado a 5 minutos</div>
+              <a href="features-profile.html" class="dropdown-item has-icon">
+                <i class="far fa-user"></i> Perfil
+              </a>
+              <a href="features-activities.html" class="dropdown-item has-icon">
+                <i class="fas fa-bolt"></i> Atividades
+              </a>
+              <a href="features-settings.html" class="dropdown-item has-icon">
+                <i class="fas fa-cog"></i> Configurações
+              </a>
+              <div class="dropdown-divider"></div>
+              <a href="#" class="dropdown-item has-icon text-danger">
+                <i class="fas fa-sign-out-alt"></i> Sair
+              </a>
             </div>
-            <div class="sidebar-brand sidebar-brand-sm">
-              <a href="index.html">Geral</a>
-            </div>
-            <% include('layouts/menu.ejs') %>
-          </aside>
-        </div>
-
-        <!-- Main Content -->
-        <div class="main-content">
-          <%= body %>
-        </div>
-
-        <footer class="main-footer">
-          <div class="footer-left">
-            Copyright &copy; 2018 <span class="bullet"></span> Design By <a href="https://nauv.al/">Muhamad Nauval
-              Azhar</a>
+          </li>
+        </ul>
+      </nav>
+      <div class="main-sidebar sidebar-style-2">
+        <aside id="sidebar-wrapper">
+          <div class="sidebar-brand">
+            <a href="index.html">Geral - Serviços </a>
           </div>
-          <div class="footer-right">
-            <%= version %>
+          <div class="sidebar-brand sidebar-brand-sm">
+            <a href="index.html">Geral</a>
           </div>
-        </footer>
+          <% include('./menu.ejs') %>
+        </aside>
       </div>
-    <% } %>
+
+      <!-- Main Content -->
+      <div class="main-content">
+        <%= body %>
+      </div>
+
+      <footer class="main-footer">
+        <div class="footer-left">
+          Copyright &copy; <%= year %> <span class="bullet"></span> Design By <a href="https://nauv.al/">Muhamad
+              Nauval Azhar</a>
+        </div>
+        <div class="footer-right">
+          <%= version %>
+        </div>
+      </footer>
+    </div>
   </div>
 
   <!-- General JS Scripts -->
@@ -106,16 +103,17 @@
   <script src="../assets/js/stisla.js"></script>
 
   <!-- JS Libraries -->
-  <% block('plugins_js') %>
-  <% endblock %>
+  <% if (typeof block==='function' && block('plugins_js')) { %>
+    <% block('plugins_js') %>
+      <% } %>
+        <!-- Template JS File -->
+        <script src="../assets/js/scripts.js"></script>
+        <script src="../assets/js/custom.js"></script>
 
-  <!-- Template JS File -->
-  <script src="../assets/js/scripts.js"></script>
-  <script src="../assets/js/custom.js"></script>
-
-  <!-- Page Specific JS File -->
-  <% block('page_js') %>
-  <% endblock %>
+        <!-- Page Specific JS File -->
+        <% if (typeof block==='function' && block('page_js')) { %>
+          <% block('page_js') %>
+            <% } %>
 </body>
 
 </html>
