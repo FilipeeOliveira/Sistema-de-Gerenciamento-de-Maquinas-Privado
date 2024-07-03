@@ -16,9 +16,11 @@ app.set('views', path.join(__dirname, 'src/views'));
 app.set('view engine', 'ejs');
 
 const index = require('./routes/dashboard')
+const register = require('./routes/register')
 
 // Rotas
-app.use('/', index)
+//app.use('/', index)
+app.use('/', register)
 // app.use('/auth', authRoutes);
 sequelize.sync()
     .then(() => {

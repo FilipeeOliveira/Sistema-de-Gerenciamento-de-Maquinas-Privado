@@ -1,0 +1,98 @@
+<% title='Register' %>
+<% page='register.ejs' %>
+
+
+<% include('layouts/master.ejs') %> 
+  <section class="section">
+    <div class="section-header">
+      <h1>Cadastro de Perfil</h1>
+      <div class="section-header-breadcrumb">
+        <div class="breadcrumb-item active"><a href="#">Dashboard</a></div>
+        <div class="breadcrumb-item">Cadastro de Perfil</div>
+      </div>
+    </div>
+    <div class="section-body">
+      <h2 class="section-title">Bem-vindo!</h2>
+      <p class="section-lead">
+        Preencha o formulário abaixo para se cadastrar.
+      </p>
+    </div>
+    <div class="col-12 col-md-12 col-lg-7 mx-auto">
+      <div class="card">
+        <form method="post" class="needs-validation" novalidate="" enctype="multipart/form-data">
+          <div class="card-header">
+            <h4>Formulário de Cadastro</h4>
+          </div>
+          <div class="card-body">
+            <div class="form-group row mb-4">
+              <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3"></label>
+              <div class="col-sm-12 col-md-7 text-center">
+                <div id="image-preview-container" class="image-preview-container mb-3">
+                  <img id="profile-preview" src="../assets/img/avatar/avatar-1.png" class="rounded-circle profile-widget-picture" alt="Profile Picture" width="150" height="150">
+                </div>
+                <label for="image-upload" id="image-label" class="btn btn-primary">Adicionar Imagem</label>
+                <input type="file" name="profile-picture" id="image-upload" class="d-none" accept="image/*" required="">
+              </div>
+            </div>
+            <div class="row">
+              <div class="form-group col-md-6 col-12">
+                <label for="first-name">Primeiro Nome</label>
+                <input type="text" class="form-control" name="first-name" id="first-name" value="" required="">
+                <div class="invalid-feedback">
+                  Por favor preencha o primeiro nome
+                </div>
+              </div>
+              <div class="form-group col-md-6 col-12">
+                <label for="last-name">Último Nome</label>
+                <input type="text" class="form-control" name="last-name" id="last-name" value="" required="">
+                <div class="invalid-feedback">
+                  Por favor preencha o seu último nome
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="form-group col-md-6 col-12">
+                <label for="email">Email</label>
+                <input type="email" class="form-control" name="email" id="email" value="" required="">
+                <div class="invalid-feedback">
+                  Por favor preencha o seu email
+                </div>
+              </div>
+              <div class="form-group col-md-6 col-12">
+                <label for="phone">Telefone</label>
+                <input type="tel" class="form-control" name="phone" id="phone" value="" required="">
+                <div class="invalid-feedback">
+                  Por favor preencha seu telefone
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="form-group col-md-6 col-12">
+                <label for="password">Senha</label>
+                <input type="password" class="form-control" name="password" id="password" value="" required="">
+                <div class="invalid-feedback">
+                  Por favor preencha a sua senha
+                </div>
+              </div>
+              <div class="form-group col-md-6 col-12">
+                <label for="confirm-password">Confirmar Senha</label>
+                <input type="password" class="form-control" name="confirm-password" id="confirm-password" value="" required="">
+                <div class="invalid-feedback">
+                  Por favor confirme a sua senha
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card-footer text-right">
+            <button class="btn btn-primary">Cadastrar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </section>   
+
+  <% block ('plugins_js') %>
+    <script src="../node_modules/summernote/dist/summernote-bs4.js"></script>
+    <script src="../../assets/js/page/features-create-register.js"></script>
+  <% endblock %>
+
