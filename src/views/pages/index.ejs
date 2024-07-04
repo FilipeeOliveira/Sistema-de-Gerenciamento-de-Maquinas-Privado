@@ -117,7 +117,7 @@
         <div class="card-body" id="top-5-scroll">
           <ul class="list-unstyled list-unstyled-border">
             <li class="media">
-              <img class="mr-3 rounded" width="55" src="../assets/img/products/product-3-50.png" alt="product">
+              <img class="mr-3 rounded" width="55" src="/assets/img/products/product-3-50.png" alt="product">
               <div class="media-body">
                 <div class="float-right">
                   <div class="font-weight-600 text-muted text-small">86 Sales</div>
@@ -136,7 +136,7 @@
               </div>
             </li>
             <li class="media">
-              <img class="mr-3 rounded" width="55" src="../assets/img/products/product-4-50.png" alt="product">
+              <img class="mr-3 rounded" width="55" src="/assets/img/products/product-4-50.png" alt="product">
               <div class="media-body">
                 <div class="float-right">
                   <div class="font-weight-600 text-muted text-small">67 Sales</div>
@@ -155,7 +155,7 @@
               </div>
             </li>
             <li class="media">
-              <img class="mr-3 rounded" width="55" src="../assets/img/products/product-1-50.png" alt="product">
+              <img class="mr-3 rounded" width="55" src="/assets/img/products/product-1-50.png" alt="product">
               <div class="media-body">
                 <div class="float-right">
                   <div class="font-weight-600 text-muted text-small">63 Sales</div>
@@ -174,7 +174,7 @@
               </div>
             </li>
             <li class="media">
-              <img class="mr-3 rounded" width="55" src="../assets/img/products/product-3-50.png" alt="product">
+              <img class="mr-3 rounded" width="55" src="/assets/img/products/product-3-50.png" alt="product">
               <div class="media-body">
                 <div class="float-right">
                   <div class="font-weight-600 text-muted text-small">28 Sales</div>
@@ -193,7 +193,7 @@
               </div>
             </li>
             <li class="media">
-              <img class="mr-3 rounded" width="55" src="../assets/img/products/product-5-50.png" alt="product">
+              <img class="mr-3 rounded" width="55" src="/assets/img/products/product-5-50.png" alt="product">
               <div class="media-body">
                 <div class="float-right">
                   <div class="font-weight-600 text-muted text-small">19 Sales</div>
@@ -230,10 +230,23 @@
   `;
   %>
 
-  <%- include('layouts/master.ejs', { title: title, site_name: site_name, bodyContent: bodyContent, year: year, version:
-    version }) %>
+  <% const additionalStyles=` <link rel="stylesheet" href="/node_modules/jqvmap/dist/jqvmap.min.css">
+    <link rel="stylesheet" href="/node_modules/summernote/dist/summernote-bs4.css">
+    <link rel="stylesheet" href="/node_modules/owl.carousel/dist/assets/owl.carousel.min.css">
+    <link rel="stylesheet" href="/node_modules/owl.carousel/dist/assets/owl.theme.default.min.css">
+    `;
+    %>
 
-    <link rel="stylesheet" href="../../node_modules/jqvmap/dist/jqvmap.min.css">
-    <link rel="stylesheet" href="../../node_modules/summernote/dist/summernote-bs4.css">
-    <link rel="stylesheet" href="../../node_modules/owl.carousel/dist/assets/owl.carousel.min.css">
-    <link rel="stylesheet" href="../../node_modules/owl.carousel/dist/assets/owl.theme.default.min.css">
+    <% const additionalScripts=` <script src="/node_modules/simpleweather/jquery.simpleWeather.min.js">
+      </script>
+      <script src="/node_modules/chart.js/dist/Chart.min.js"></script>
+      <script src="/node_modules/jqvmap/dist/jquery.vmap.min.js"></script>
+      <script src="/node_modules/jqvmap/dist/maps/jquery.vmap.world.js"></script>
+      <script src="/node_modules/summernote/dist/summernote-bs4.js"></script>
+      <script src="/node_modules/chocolat/dist/js/jquery.chocolat.min.js"></script>
+      <script src="/js/page/index-0.js"></script>
+      `;
+      %>
+
+      <%- include('layouts/master.ejs', { bodyContent: bodyContent, additionalStyles: additionalStyles,
+        additionalScripts: additionalScripts }) %>
