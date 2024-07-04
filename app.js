@@ -21,8 +21,7 @@ const index = require('./routes/dashboard')
 const register = require('./routes/register')
 
 // Rotas
-//app.use('/', index)
-app.use('/', register)
+app.use('/', index)
 // app.use('/auth', authRoutes);
 sequelize.sync()
     .then(() => {
