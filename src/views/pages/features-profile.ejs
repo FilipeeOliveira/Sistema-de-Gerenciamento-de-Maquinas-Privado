@@ -1,13 +1,8 @@
-{% set title = 'Profile' %}
-{% set page = 'features-profile.html' %}
-{% extends 'layouts/master.html' %}
+  <link rel="stylesheet" href="../../../node_modules/bootstrap-social/bootstrap-social.css">
+  <link rel="stylesheet" href="../../../node_modules/summernote/dist/summernote-bs4.css">
 
-{% block plugins_css %}
-  <link rel="stylesheet" href="../node_modules/bootstrap-social/bootstrap-social.css">
-  <link rel="stylesheet" href="../node_modules/summernote/dist/summernote-bs4.css">
-{% endblock %}
 
-{% block content %}
+<% const bodyContent=` 
 <section class="section">
   <div class="section-header">
     <h1>Perfil</h1>
@@ -81,8 +76,12 @@
     </div>
   </div>
 </section>
-{% endblock %}
+`;  
+%>
 
-{% block plugins_js %}
+<%- include('layouts/master.ejs', { title: title, site_name: site_name, bodyContent: bodyContent, year: year, version:
+  version }) %>
+
+
   <script src="../node_modules/summernote/dist/summernote-bs4.js"></script>
-{% endblock %}
+

@@ -19,6 +19,7 @@ app.set('view engine', 'ejs');
 
 const index = require('./routes/dashboard')
 const register = require('./routes/register')
+const profile = require('./routes/profile')
 
 // Rotas
 app.use('/', index)
