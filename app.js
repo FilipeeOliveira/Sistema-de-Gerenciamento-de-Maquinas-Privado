@@ -19,10 +19,12 @@ app.set('view engine', 'ejs');
 
 const index = require('./routes/dashboard')
 const register = require('./routes/register')
+const profile = require('./routes/profile')
 
 // Rotas
 //app.use('/', index)
-app.use('/', register)
+//app.use('/', register)
+app.use('/', profile)
 // app.use('/auth', authRoutes);
 sequelize.sync()
     .then(() => {
