@@ -1,8 +1,7 @@
-<% title='Register' %>
-<% page='register.ejs' %>
+<link rel="stylesheet" href="../../../node_modules/bootstrap-social/bootstrap-social.css">
+<link rel="stylesheet" href="../../../node_modules/summernote/dist/summernote-bs4.css">
 
-
-<% include('layouts/master.ejs') %> 
+<% const bodyContent=` 
   <section class="section">
     <div class="section-header">
       <h1>Cadastro de Perfil</h1>
@@ -89,10 +88,16 @@
         </form>
       </div>
     </div>
-  </section>   
+  </section> 
+  `;  
+  %>
 
-  <% block ('plugins_js') %>
-    <script src="../node_modules/summernote/dist/summernote-bs4.js"></script>
-    <script src="../../assets/js/page/features-create-register.js"></script>
-  <% endblock %>
+  <%- include('layouts/master.ejs', { title: title, site_name: site_name, bodyContent: bodyContent, year: year, version:
+    version }) %>
+
+    <script src="../../../node_modules/summernote/dist/summernote-bs4.js"></script>
+    <script src="../../../assets/js/page/features-create-register.js"></script>
+ 
+
+
 

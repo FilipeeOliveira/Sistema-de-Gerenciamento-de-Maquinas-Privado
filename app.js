@@ -12,6 +12,8 @@ const app = express();
 app.use(logger('dev'));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+app.use('/assets', express.static(path.join(__dirname, 'assets')))
+app.use('/node_modules', express.static(path.join(__dirname, 'node_modules')))
 app.set('views', path.join(__dirname, 'src/views'));
 app.set('view engine', 'ejs');
 
@@ -19,7 +21,8 @@ const index = require('./routes/dashboard')
 const register = require('./routes/register')
 
 // Rotas
-app.use('/', index)
+//app.use('/', index)
+app.use('/', register)
 // app.use('/auth', authRoutes);
 sequelize.sync()
     .then(() => {

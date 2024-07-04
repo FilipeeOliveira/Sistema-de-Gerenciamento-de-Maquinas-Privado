@@ -19,8 +19,8 @@
     <% block('plugins_css') %>
       <% } else { %>
         <!-- Default CSS Libraries if block is not defined -->
-        <link rel="stylesheet" href="../assets/css/style.css">
-        <link rel="stylesheet" href="../assets/css/components.css">
+        <link rel="stylesheet" href="../../../../assets/css/style.css">
+        <link rel="stylesheet" href="../../../../assets/css/components.css">
         <% } %>
 </head>
 
@@ -42,7 +42,7 @@
           <ul class="navbar-nav navbar-right">
             <li class="dropdown">
               <a href="#" data-toggle="dropdown" class="nav-link dropdown-toggle nav-link-lg nav-link-user">
-                <img alt="image" src="../assets/img/avatar/avatar-1.png" class="rounded-circle mr-1">
+                <img alt="image" src="../../../../assets/img/avatar/avatar-1.png" class="rounded-circle mr-1">
                 <div class="d-sm-none d-lg-inline-block">Olá, Joãozinho</div>
               </a>
               <div class="dropdown-menu dropdown-menu-right">
@@ -78,7 +78,7 @@
 
         <!-- Main Content -->
         <div class="main-content">
-          <%= bodyContent %>
+          <%- bodyContent %>
         </div>
 
         <footer class="main-footer">
@@ -87,7 +87,7 @@
                 Nauval Azhar</a>
           </div>
           <div class="footer-right">
-            <%= version %>
+            <% version %>
           </div>
         </footer>
       </div>
@@ -103,15 +103,15 @@
       crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.nicescroll/3.7.6/jquery.nicescroll.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
-    <script src="../assets/js/stisla.js"></script>
+    <script src="../../../../assets/js/stisla.js"></script>
 
     <!-- JS Libraries -->
     <% if (typeof block==='function' && block('plugins_js')) { %>
       <% block('plugins_js') %>
         <% } %>
           <!-- Template JS File -->
-          <script src="../assets/js/scripts.js"></script>
-          <script src="../assets/js/custom.js"></script>
+          <script src="../../../../assets/js/scripts.js"></script>
+          <script src="../../../../assets/js/custom.js"></script>
 
           <!-- Page Specific JS File -->
           <% if (typeof block==='function' && block('page_js')) { %>
