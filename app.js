@@ -24,21 +24,20 @@ const navigation = require('./routes/navigation')
 const post = require('./routes/post')
 const postCreate = require('./routes/post-create')
 const authRegister = require('./routes/auth-register')
-const authLogin = require('./routes/auth-login')
+const authLogin = require('./routes/auth')
 const forgotPassword = require('./routes/auth-forgot-password')
 const resetPassword = require('./routes/auth-reset-password')
 
 
 // Rotas
-//app.use('/', index)
+app.use('/', index)
 //app.use('/', register)
 //app.use('/', profile)
 //app.use('/', navigation)
 //app.use('/', post)
 //app.use('/', postCreate)
 //app.use('/', authRegister)
-app.use('/', authRoutes);
-//app.use('/', authLogin);
+app.use('/auth', authLogin);
 //app.use('/', forgotPassword);
 //app.use('/', resetPassword);
 
