@@ -1,13 +1,7 @@
-{% set title = 'Register' %}
-{% set page = 'auth-register.ejs' %}
-{% set body = false %}
-{% extends 'layouts/master.ejs' %}
+<link rel="stylesheet" href="../../../node_modules/selectric/public/selectric.css">
 
-{% block plugins_css %}
-<link rel="stylesheet" href="../node_modules/selectric/public/selectric.css">
-{% endblock %}
 
-{% block content_2 %}
+<% const bodyContent=` 
 <section class="section">
   <div class="container mt-5">
     <div class="row">
@@ -112,13 +106,13 @@
     </div>
   </div>
 </section>
-{% endblock %}
+`;  
+%>
 
-{% block plugins_js %}
-<script src="../node_modules/jquery-pwstrength/jquery.pwstrength.min.js"></script>
-<script src="../node_modules/selectric/public/jquery.selectric.min.js"></script>
-{% endblock %}
+<%- include('layouts/master.ejs', { title: title, site_name: site_name, bodyContent: bodyContent, year: year, version:
+  version }) %>
 
-{% block page_js %}
-<script src="../assets/js/page/auth-register.js"></script>
-{% endblock %}
+
+<script src="../../../node_modules/jquery-pwstrength/jquery.pwstrength.min.js"></script>
+<script src="../../../node_modules/selectric/public/jquery.selectric.min.js"></script>
+<script src="../../../assets/js/page/auth-register.js"></script>

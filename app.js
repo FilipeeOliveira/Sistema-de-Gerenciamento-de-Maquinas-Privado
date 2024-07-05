@@ -20,12 +20,29 @@ app.set('view engine', 'ejs');
 const index = require('./routes/dashboard')
 const register = require('./routes/register')
 const profile = require('./routes/profile')
+const navigation = require('./routes/navigation')
+const post = require('./routes/post')
+const postCreate = require('./routes/post-create')
+const authRegister = require('./routes/auth-register')
+const authLogin = require('./routes/auth-login')
+const forgotPassword = require('./routes/auth-forgot-password')
+const resetPassword = require('./routes/auth-reset-password')
+
 
 // Rotas
 //app.use('/', index)
 //app.use('/', register)
-app.use('/', profile)
-// app.use('/auth', authRoutes);
+//app.use('/', profile)
+//app.use('/', navigation)
+//app.use('/', post)
+//app.use('/', postCreate)
+//app.use('/', authRegister)
+app.use('/', authRoutes);
+//app.use('/', authLogin);
+//app.use('/', forgotPassword);
+//app.use('/', resetPassword);
+
+
 sequelize.sync()
     .then(() => {
         console.log('Database sincronizado');

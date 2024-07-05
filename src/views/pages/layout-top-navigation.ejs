@@ -1,8 +1,4 @@
-{% set title = 'Layout &rsaquo; Top Navigation' %}
-{% set page = 'layout-top-navigation.html' %}
-{% extends 'layouts/master-3.html' %}
-
-{% block content %}
+<% const bodyContent=` 
         <section class="section">
           <div class="section-header">
             <h1>Top Navigation</h1>
@@ -34,4 +30,8 @@
             </div>
           </div>
         </section>
-{% endblock %}
+        `;  
+        %>
+      
+        <%- include('layouts/master.ejs', { title: title, site_name: site_name, bodyContent: bodyContent, year: year, version:
+          version }) %>

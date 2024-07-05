@@ -1,15 +1,10 @@
-{% set title = 'Post Create' %}
-{% set page = 'features-post-create.html' %}
-{% extends 'layouts/master.html' %}
+  <link rel="stylesheet" href="../../../node_modules/summernote/dist/summernote-bs4.css">
+  <link rel="stylesheet" href="../../../node_modules/selectric/public/selectric.css">
+  <link rel="stylesheet" href="../../../node_modules/bootstrap-tagsinput/dist/bootstrap-tagsinput.css">
+  <link rel="stylesheet" href="../../../node_modules/dropzone/dist/min/dropzone.min.css">
 
-{% block plugins_css %}
-  <link rel="stylesheet" href="../../node_modules/summernote/dist/summernote-bs4.css">
-  <link rel="stylesheet" href="../../node_modules/selectric/public/selectric.css">
-  <link rel="stylesheet" href="../../node_modules/bootstrap-tagsinput/dist/bootstrap-tagsinput.css">
-  <link rel="stylesheet" href="../../node_modules/dropzone/dist/min/dropzone.min.css"
-{% endblock %}
 
-{% block content %}
+<% const bodyContent=` 
         <section class="section">
           <div class="section-header">
             <div class="section-header-back">
@@ -99,15 +94,17 @@
             </div>
           </div>
         </section>
-{% endblock %}
+        `;  
+        %>
+      
+        <%- include('layouts/master.ejs', { title: title, site_name: site_name, bodyContent: bodyContent, year: year, version:
+          version }) %>
 
-{% block plugins_js %}
-  <script src="../../node_modules/summernote/dist/summernote-bs4.js"></script>
-  <script src="../../node_modules/selectric/public/jquery.selectric.min.js"></script>
-  <script src="../../node_modules/jquery_upload_preview/assets/js/jquery.uploadPreview.min.js"></script>
-  <script src="../../node_modules/bootstrap-tagsinput/dist/bootstrap-tagsinput.min.js"></script>
-{% endblock %}
+  <script src="../../../node_modules/summernote/dist/summernote-bs4.js"></script>
+  <script src="../../../node_modules/selectric/public/jquery.selectric.min.js"></script>
+  <script src="../../../node_modules/jquery_upload_preview/assets/js/jquery.uploadPreview.min.js"></script>
+  <script src="../../../node_modules/bootstrap-tagsinput/dist/bootstrap-tagsinput.min.js"></script>
 
-{% block page_js %}
-  <script src="../../assets/js/page/features-post-create.js"></script>
-{% endblock %}
+
+  <script src="../../../assets/js/page/features-post-create.js"></script>
+
