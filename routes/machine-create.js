@@ -1,36 +1,35 @@
 const express = require('express');
 const router = express.Router();
-const multer = require('multer');
-const Machine = require('../models/machine')(sequelize);
+const Machine = require('../models/machine');
 
-// Configuração do multer para upload de imagens
-const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-        cb(null, 'uploads/');
-    },
-    filename: (req, file, cb) => {
-        cb(null, `${Date.now()}-${file.originalname}`);
-    },
+// Rota para exibir o formulário de cadastro
+router.get('/create', (req, res) => {
+    res.render('pages/features-post-create', {
+        title: 'Cadastro de Máquinas',
+        site_name: 'Geral - Conservação e Limpeza',
+        year: new Date().getFullYear(),
+        version: '1.0',
+    });
 });
-const upload = multer({ storage });
 
-router.post('/machines/create', upload.array('images', 10), async (req, res) => {
+// Rota para lidar com o envio do formulário
+router.post('/create', async (req, res) => {
+    const { name, client, images, tags, status, description } = req.body;
+
     try {
-        const { name, client, tags, status, description } = req.body;
-        const images = req.files.map(file => file.path);
-
-        await Machine.create({
+        const machine = await Machine.create({
             name,
             client,
-            tags,
+            images: images ? images.split(',') : [],
+            tags: tags ? tags.split(',') : [],
             status,
             description,
-            images,
         });
 
-        res.redirect('/path/to/redirect');
+        res.status(201).json({ machine });
     } catch (error) {
-        res.status(500).send(error.message);
+        console.error('Erro ao criar máquina:', error);
+        res.status(500).json({ error: 'Erro interno do servidor' });
     }
 });
 
