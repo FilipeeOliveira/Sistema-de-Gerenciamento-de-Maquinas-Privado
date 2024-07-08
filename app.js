@@ -43,7 +43,7 @@ const resetPassword = require('./routes/auth-reset-password')
 // Rotas
 app.use('/', index);
 //app.use('/', register);
-//app.use('/', profile);
+app.use('/profile', profile);
 //app.use('/', navigation);
 //app.use('/', post);
 //app.use('/', machineCreate);

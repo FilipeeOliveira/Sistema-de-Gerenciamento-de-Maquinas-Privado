@@ -1,9 +1,8 @@
-  <link rel="stylesheet" href="../../../node_modules/bootstrap-social/bootstrap-social.css">
-  <link rel="stylesheet" href="../../../node_modules/summernote/dist/summernote-bs4.css">
+<link rel="stylesheet" href="../../../node_modules/bootstrap-social/bootstrap-social.css">
+<link rel="stylesheet" href="../../../node_modules/summernote/dist/summernote-bs4.css">
 
 
-<% const bodyContent=` 
-<section class="section">
+<% const bodyContent=` <section class="section">
   <div class="section-header">
     <h1>Perfil</h1>
     <div class="section-header-breadcrumb">
@@ -75,13 +74,11 @@
       </div>
     </div>
   </div>
-</section>
-`;  
-%>
+  </section>
+  `;
+  %>
 
-<%- include('layouts/master.ejs', { title: title, site_name: site_name, bodyContent: bodyContent, year: year, version:
-  version }) %>
+  <%- include('layouts/master.ejs', {bodyContent: bodyContent}) %>
 
 
-  <script src="../node_modules/summernote/dist/summernote-bs4.js"></script>
-
+    <script src="../node_modules/summernote/dist/summernote-bs4.js"></script>
