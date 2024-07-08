@@ -35,6 +35,9 @@ router.post('/auth-login', async (req, res) => {
             return res.status(401).json({ error: 'Senha Inválida' });
         }
 
+        req.session.userId = user.id;
+        req.session.userEmail = user.email;
+
         console.log('Login bem-sucedido para o usuário:', user.email);
         res.status(200).json({ message: 'Login bem-sucedido' });
     } catch (error) {
@@ -53,45 +56,3 @@ router.get('/auth-forgot-password', (req, res) => {
 });
 
 module.exports = router;
-
-
-// router.get('/auth-forgot-password', (req, res) => {
-//     res.render('pages/auth-forgot-password', {
-//         title: 'Forgot Password',
-//         site_name: 'Geral - Conservação e Limpeza',
-//         version: '1.0',
-//         year: new Date().getFullYear()
-//     });
-// });
-// // router.post('/auth-forgot-password', async (req, res) => {
-// //     const { email } = req.body;
-
-// //     try {
-// //         const user = await User.findOne({ where: { email } });
-
-// //         if (!user) {
-// //             console.log('Usuário não encontrado');
-// //             return res.render('pages/auth-forgot-password', {
-// //                 error: 'Usuário não encontrado',
-// //                 title: 'Forgot Password',
-// //                 site_name: 'Geral - Conservação e Limpeza',
-// //                 version: '1.0',
-// //                 year: new Date().getFullYear()
-// //             });
-// //         }
-
-// //         console.log('Email de redefinição de senha enviado para:', user.email);
-// //         res.render('pages/auth-forgot-password', {
-// //             success: 'Email de redefinição de senha enviado',
-// //             title: 'Forgot Password',
-// //             site_name: 'Geral - Conservação e Limpeza',
-// //             version: '1.0',
-// //             year: new Date().getFullYear()
-// //         });
-// //     } catch (error) {
-// //         console.error('Erro durante a solicitação de redefinição de senha:', error);
-// //         res.status(500).send('Erro interno do Servidor');
-// //     }
-// // });
-
-
