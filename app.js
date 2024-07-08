@@ -5,6 +5,8 @@ const sequelize = require('./config/database');
 const authRoutes = require('./routes/auth');
 const logger = require('morgan');
 const path = require('path');
+const session = require('express-session');
+const SequelizeStore = require('connect-session-sequelize')(session.Store);
 
 const app = express();
 
@@ -17,6 +19,16 @@ app.use('/node_modules', express.static(path.join(__dirname, 'node_modules')));
 app.set('views', path.join(__dirname, 'src/views'));
 app.set('view engine', 'ejs');
 
+app.use(session({
+    secret: 'seu_segredo_super_secreto',
+    store: new SequelizeStore({
+        db: sequelize,
+    }),
+    resave: false,
+    saveUninitialized: false,
+    cookie: { secure: false, maxAge: 1000 * 60 * 60 } // 1 hora
+}));
+
 const index = require('./routes/dashboard')
 const register = require('./routes/register')
 const profile = require('./routes/profile')
@@ -28,19 +40,17 @@ const authLogin = require('./routes/auth')
 const forgotPassword = require('./routes/auth-forgot-password')
 const resetPassword = require('./routes/auth-reset-password')
 
-
 // Rotas
-app.use('/', index)
-//app.use('/', register)
-//app.use('/', profile)
-//app.use('/', navigation)
-//app.use('/', post)
-//app.use('/', machineCreate)
-//app.use('/', authRegister)
+app.use('/', index);
+//app.use('/', register);
+//app.use('/', profile);
+//app.use('/', navigation);
+//app.use('/', post);
+//app.use('/', machineCreate);
+//app.use('/', authRegister);
 app.use('/auth', authLogin);
 //app.use('/', forgotPassword);
 //app.use('/', resetPassword);
-
 
 sequelize.sync()
     .then(() => {
