@@ -12,9 +12,9 @@ const sequelize = new Sequelize(config.database, config.username, config.passwor
 
 const db = {};
 
-const UserModel = require('./User');
+const User = require('./User');
 
-db['User'] = UserModel(sequelize, Sequelize.DataTypes);
+db.User = User;
 
 Object.values(db).forEach(model => {
   if (model.associate) {

@@ -24,7 +24,7 @@ const navigation = require('./routes/navigation')
 const post = require('./routes/post')
 const machineCreate = require('./routes/machine-create')
 const authRegister = require('./routes/auth-register')
-const authLogin = require('./routes/auth-login')
+const authLogin = require('./routes/auth')
 const forgotPassword = require('./routes/auth-forgot-password')
 const resetPassword = require('./routes/auth-reset-password')
 
@@ -37,8 +37,7 @@ app.use('/', index)
 //app.use('/', post)
 //app.use('/', machineCreate)
 //app.use('/', authRegister)
-//app.use('/', authRoutes);
-//app.use('/', authLogin);
+app.use('/auth', authLogin);
 //app.use('/', forgotPassword);
 //app.use('/', resetPassword);
 

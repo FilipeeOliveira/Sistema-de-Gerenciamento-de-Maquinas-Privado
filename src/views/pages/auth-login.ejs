@@ -1,102 +1,93 @@
+<link rel="stylesheet" href="/node_modules/bootstrap-social/bootstrap-social.css">
 
-          <link rel="stylesheet" href="../node_modules/bootstrap-social/bootstrap-social.css">
+<% const bodyContent=` <section class="section">
+  <div class="container mt-5">
+    <div class="row">
+      <div class="col-12 col-sm-8 offset-sm-2 col-md-6 offset-md-3 col-lg-6 offset-lg-3 col-xl-4 offset-xl-4">
+        <div class="login-brand">
+          <img src="/assets/img/stisla-fill.svg" alt="logo" width="100" class="shadow-light rounded-circle">
+        </div>
 
-          <% const bodyContent=` 
-              <section class="section">
-                <div class="container mt-5">
-                  <div class="row">
-                    <div
-                      class="col-12 col-sm-8 offset-sm-2 col-md-6 offset-md-3 col-lg-6 offset-lg-3 col-xl-4 offset-xl-4">
-                      <div class="login-brand">
-                        <img src="../assets/img/stisla-fill.svg" alt="logo" width="100"
-                          class="shadow-light rounded-circle">
-                      </div>
+        <div class="card card-primary">
+          <div class="card-header">
+            <h4>Login</h4>
+          </div>
 
-                      <div class="card card-primary">
-                        <div class="card-header">
-                          <h4>Login</h4>
-                        </div>
+          <div class="card-body">
+            <form id="loginForm" method="POST" action="/auth/auth-login" class="needs-validation" novalidate>
+              <div class="form-group">
+                <label for="email">Email</label>
+                <input id="email" type="email" class="form-control" name="email" tabindex="1" required autofocus>
+                <div class="invalid-feedback">
+                  Please fill in your email
+                </div>
+              </div>
 
-                        <div class="card-body">
-                          <form id="loginForm" method="POST" action="/auth/auth-login" class="needs-validation"
-                            novalidate>
-                            <div class="form-group">
-                              <label for="email">Email</label>
-                              <input id="email" type="email" class="form-control" name="email" tabindex="1" required
-                                autofocus>
-                              <div class="invalid-feedback">
-                                Please fill in your email
-                              </div>
-                            </div>
-
-                            <div class="form-group">
-                              <div class="d-block">
-                                <label for="password" class="control-label">Password</label>
-                                <div class="float-right">
-                                  <a href="auth-forgot-password.html" class="text-small">
-                                    Forgot Password?
-                                  </a>
-                                </div>
-                              </div>
-                              <input id="password" type="password" class="form-control" name="password" tabindex="2"
-                                required>
-                              <div class="invalid-feedback">
-                                Please fill in your password
-                              </div>
-                            </div>
-
-                            <div class="form-group">
-                              <div class="custom-control custom-checkbox">
-                                <input type="checkbox" name="remember" class="custom-control-input" tabindex="3"
-                                  id="remember-me">
-                                <label class="custom-control-label" for="remember-me">Remember Me</label>
-                              </div>
-                            </div>
-
-                            <div class="form-group">
-                              <button type="submit" class="btn btn-primary btn-lg btn-block" tabindex="4">
-                                Login
-                              </button>
-                            </div>
-                          </form>
-                        </div>
-                      </div>
-                      <div class="simple-footer">
-                        Copyright &copy; Stisla 2018
-                      </div>
-                    </div>
+              <div class="form-group">
+                <div class="d-block">
+                  <label for="password" class="control-label">Password</label>
+                  <div class="float-right">
+                    <a href="/auth/auth-forgot-password" class="text-small">
+                      Forgot Password?
+                    </a>
                   </div>
                 </div>
-              </section>
-              `;  
-%>
+                <input id="password" type="password" class="form-control" name="password" tabindex="2" required>
+                <div class="invalid-feedback">
+                  Please fill in your password
+                </div>
+              </div>
 
-<%- include('layouts/master.ejs', { title: title, site_name: site_name, bodyContent: bodyContent, year: year, version:
-  version }) %>
+              <div class="form-group">
+                <div class="custom-control custom-checkbox">
+                  <input type="checkbox" name="remember" class="custom-control-input" tabindex="3" id="remember-me">
+                  <label class="custom-control-label" for="remember-me">Remember Me</label>
+                </div>
+              </div>
 
-              <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-              <script>
-                $(document).ready(function () {
-                  $('#loginForm').submit(function (event) {
-                    event.preventDefault();
-                    var formData = $(this).serialize();
+              <div class="form-group">
+                <button type="submit" class="btn btn-primary btn-lg btn-block" tabindex="4">
+                  Login
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+        <div class="simple-footer">
+          Copyright &copy; Stisla 2018
+        </div>
+      </div>
+    </div>
+  </div>
+  </section>
+  `;
+  %>
 
-                    console.log('Iniciando envio da requisição para /auth/auth-login');
-                    // Restante do seu código ...
+  <%- include('layouts/master.ejs', {bodyContent: bodyContent, year: year, version: version }) %>
 
-                    $.ajax({
-                      type: 'POST',
-                      url: '/auth/auth-login',
-                      data: formData,
-                      success: function (response) {
-                        console.log('Resposta do servidor recebida:', response);
-                        // Restante do seu código ...
-                      },
-                      error: function (error) {
-                        console.error('Erro durante o envio da requisição:', error);
-                        // Restante do seu código ...
-                      }
-                    });
-                  });
-                });
-              </script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+      $(document).ready(function () {
+        $('#loginForm').submit(function (event) {
+          event.preventDefault();
+          var formData = $(this).serialize();
+
+          console.log('Iniciando envio da requisição para /auth/auth-login');
+
+          $.ajax({
+            type: 'POST',
+            url: '/auth/auth-login',
+            data: formData,
+            dataType: 'json',
+            success: function (response) {
+              console.log('Resposta do servidor recebida:', response);
+              window.location.href = '/';
+            },
+            error: function (error) {
+              console.error('Erro durante o envio da requisição:', error.responseJSON);
+              alert('Erro durante o login. Por favor, tente novamente.');
+            }
+          });
+        });
+      });
+    </script>
