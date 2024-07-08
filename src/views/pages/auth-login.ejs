@@ -78,10 +78,10 @@
             type: 'POST',
             url: '/auth/auth-login',
             data: formData,
-            dataType: 'json', // Espera um JSON como resposta
+            dataType: 'json',
             success: function (response) {
               console.log('Resposta do servidor recebida:', response);
-              window.location.href = '/'; // Redireciona para o índice em caso de sucesso
+              window.location.href = '/';
             },
             error: function (error) {
               console.error('Erro durante o envio da requisição:', error.responseJSON);

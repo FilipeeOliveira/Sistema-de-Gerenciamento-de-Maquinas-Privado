@@ -2,16 +2,15 @@ const bcrypt = require('bcrypt');
 const db = require('../models/index');
 
 async function criarUsuario() {
-    const senhaPlana = 'senha123'; // Senha em texto plano
+    const senhaPlana = 'senha123';
     const saltRounds = 10;
 
     try {
-        // Criptografar a senha antes de salvar no banco de dados
         const hashedPassword = await bcrypt.hash(senhaPlana, saltRounds);
 
         const novoUsuario = await db.User.create({
-            email: 'novoemail@example.com',
-            password: hashedPassword, // Salvar a senha criptografada no banco
+            email: 'test1@gmail.com',
+            password: hashedPassword,
         });
 
         console.log('Novo usuário criado:');
