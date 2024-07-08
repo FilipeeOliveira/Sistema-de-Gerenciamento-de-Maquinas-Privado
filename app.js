@@ -49,8 +49,7 @@ app.use('/profile', profile);
 //app.use('/', machineCreate);
 //app.use('/', authRegister);
 app.use('/auth', authLogin);
-//app.use('/', forgotPassword);
-//app.use('/', resetPassword);
+
 
 sequelize.sync()
     .then(() => {

@@ -33,3 +33,25 @@ document.getElementById('image-upload').addEventListener('change', function(even
     }
   });
 });
+
+document.getElementById('machineForm').addEventListener('submit', function(event) {
+  event.preventDefault(); // Evita o envio padrão do formulário
+
+  // Realiza o envio dos dados utilizando fetch
+  fetch('/machine/create', {
+    method: 'POST',
+    body: new FormData(this)
+  })
+  .then(response => {
+    if (response.ok) {
+      alert('Dados enviados com sucesso!');
+      // Aqui você pode redirecionar o usuário para outra página, se desejar
+    } else {
+      throw new Error('Erro ao enviar os dados.');
+    }
+  })
+  .catch(error => {
+    console.error('Erro:', error);
+    alert('Ocorreu um erro ao enviar os dados. Por favor, tente novamente.');
+  });
+});
