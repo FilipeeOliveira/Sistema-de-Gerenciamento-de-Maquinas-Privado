@@ -48,8 +48,7 @@ app.use('/profile', profile);
 app.use('/machine', machineCreate)
 //app.use('/', register);
 //app.use('/', navigation);
-app.use('/machines', machines);
-//app.use('/', machineCreate);
+app.use('/machines', machines); //machines views
 //app.use('/', authRegister);
 
 
