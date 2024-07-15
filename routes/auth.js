@@ -12,7 +12,6 @@ router.get('/auth-login', (req, res) => {
         year: new Date().getFullYear()
     });
 });
-
 router.post('/auth-login', async (req, res) => {
     console.log('POST /auth/auth-login');
     const { email, password } = req.body;
@@ -35,16 +34,23 @@ router.post('/auth-login', async (req, res) => {
             return res.status(401).json({ error: 'Senha Inválida' });
         }
 
-        req.session.userId = user.id;
-        req.session.userEmail = user.email;
+        req.session.user = {
+            id: user.id,
+            email: user.email,
+            password: user.password
+        };
 
         console.log('Login bem-sucedido para o usuário:', user.email);
+
+        console.log('Email do usuário na sessão:', req.session.user.email);
+
         res.status(200).json({ message: 'Login bem-sucedido' });
     } catch (error) {
         console.error('Erro durante o Login:', error);
         res.status(500).json({ error: 'Erro interno do Servidor' });
     }
 });
+
 
 router.get('/auth-forgot-password', (req, res) => {
     res.render('pages/auth-forgot-password', {

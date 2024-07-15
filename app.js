@@ -29,6 +29,7 @@ app.use(session({
     cookie: { secure: false, maxAge: 1000 * 60 * 60 } // 1 hora
 }));
 
+
 const index = require('./routes/dashboard')
 const register = require('./routes/register')
 const profile = require('./routes/profile')
@@ -44,6 +45,7 @@ const resetPassword = require('./routes/auth-reset-password')
 app.use('/', index);
 //app.use('/', register);
 app.use('/profile', profile);
+app.use('/machine', machineCreate)
 //app.use('/', navigation);
 //app.use('/', post);
 //app.use('/', machineCreate);
