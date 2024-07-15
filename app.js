@@ -43,14 +43,14 @@ const resetPassword = require('./routes/auth-reset-password')
 
 // Rotas
 app.use('/', index);
-//app.use('/', register);
+app.use('/auth', authLogin);
 app.use('/profile', profile);
 app.use('/machine', machineCreate)
+//app.use('/', register);
 //app.use('/', navigation);
 app.use('/machines', machines);
 //app.use('/', machineCreate);
 //app.use('/', authRegister);
-app.use('/auth', authLogin);
 
 
 sequelize.sync()
