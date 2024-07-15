@@ -4,37 +4,45 @@ const sequelize = require('../config/database');
 const Machine = sequelize.define('Machine', {
     name: {
         type: DataTypes.STRING,
-        allowNull: false,
+        allowNull: true,
     },
     client: {
         type: DataTypes.STRING,
-        allowNull: false,
+        allowNull: true,
     },
     images: {
         type: DataTypes.STRING, // Armazenar URLs das imagens como string separada por vírgula
-        allowNull: true,
+        allowNull: true,  // Permitir que seja nulo se necessário
         get() {
             const rawValue = this.getDataValue('images');
             return rawValue ? rawValue.split(',') : [];
         },
         set(value) {
-            this.setDataValue('images', value.join(','));
+            if (Array.isArray(value)) {
+                this.setDataValue('images', value.join(','));
+            } else {
+                this.setDataValue('images', value);
+            }
         },
     },
     tags: {
         type: DataTypes.STRING, // Armazenar tags como string separada por vírgula
-        allowNull: true,
+        allowNull: true,  // Permitir que seja nulo se necessário
         get() {
             const rawValue = this.getDataValue('tags');
             return rawValue ? rawValue.split(',') : [];
         },
         set(value) {
-            this.setDataValue('tags', value.join(','));
+            if (Array.isArray(value)) {
+                this.setDataValue('tags', value.join(','));
+            } else {
+                this.setDataValue('tags', value);
+            }
         },
     },
     status: {
         type: DataTypes.STRING,
-            allowNull: false,
+        allowNull: true,
     },
     description: {
         type: DataTypes.TEXT,
@@ -46,44 +54,3 @@ const Machine = sequelize.define('Machine', {
 });
 
 module.exports = Machine;
-
-
-
-
-/* const { DataTypes } = require('sequelize')
-
-module.exports = (sequelize, DataTypes) => {
-    const Machine = sequelize.define('Machine', {
-        name: {
-            type: DataTypes.STRING,
-            allowNull: false,
-        },
-        client: {
-            type: DataTypes.STRING,
-            allowNull: false,
-        },
-        images:{
-            type: DataTypes.JSON,
-            allowNull: true,
-        },
-        tags: {
-            type: DataTypes.STRING,
-            allowNull: true,
-        },
-        status: {
-            type: DataTypes.STRING,
-            allowNull: false,
-        },
-        description: {
-            type: DataTypes.TEXT,
-            allowNull: true,
-        }, 
-
-    }, {
-        tableName: 'Machines',
-        timestamps: false,
-    });
-    
-    return Machine;
-
-} */
