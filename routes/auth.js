@@ -52,8 +52,8 @@ router.post('/auth-login', async (req, res) => {
 });
 
 
-router.get('/auth-forgot-password', (req, res) => {
-    res.render('pages/auth-forgot-password', {
+router.get('/auth-reset-password', (req, res) => {
+    res.render('pages/auth-reset-password', {
         title: 'Forgot Password',
         site_name: 'Geral - Conservação e Limpeza',
         version: '1.0',
