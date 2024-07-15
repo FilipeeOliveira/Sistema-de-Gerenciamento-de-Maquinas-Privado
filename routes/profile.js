@@ -3,10 +3,14 @@ const router = express.Router();
 
 router.get('/user', async (req, res) => {
     if (!req.session.user || !req.session.user.email) {
-        return res.redirect('/auth-login');
+        if (!req.session.user || !req.session.user.email || !req.session.user.password) {
+            return res.redirect('/auth-login');
+        }
     }
 
     const userEmail = req.session.user.email;
+    const userPassword = req.session.user.password;
+
 
     console.log('Email do usuário:', userEmail);
 
@@ -15,7 +19,8 @@ router.get('/user', async (req, res) => {
         site_name: 'Geral - Conservação e Limpeza',
         version: '1.0',
         year: new Date().getFullYear(),
-        userEmail: userEmail
+        userEmail: userEmail,
+        userPassword: userPassword
     });
 });
 
