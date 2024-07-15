@@ -34,7 +34,7 @@ const index = require('./routes/dashboard')
 const register = require('./routes/register')
 const profile = require('./routes/profile')
 const navigation = require('./routes/navigation')
-const post = require('./routes/post')
+const machines = require('./routes/machines')
 const machineCreate = require('./routes/machine-create')
 const authRegister = require('./routes/auth-register')
 const authLogin = require('./routes/auth')
@@ -48,7 +48,7 @@ const resetPassword = require('./routes/auth-reset-password')
 //app.use('/machine', machineCreate)
 //app.use('/', register);
 //app.use('/', navigation);
-app.use('/', post);
+app.use('/machines', machines);
 //app.use('/', machineCreate);
 //app.use('/', authRegister);
 

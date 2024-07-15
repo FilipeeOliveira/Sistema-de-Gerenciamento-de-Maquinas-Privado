@@ -5,7 +5,6 @@ const fs = require('fs');
 const path = require('path');
 const Machine = require('../models/machine');
 
-// Função para garantir que o diretório exista
 const ensureDirectoryExistence = (dir) => {
     if (!fs.existsSync(dir)) {
         fs.mkdirSync(dir, { recursive: true });
@@ -34,7 +33,7 @@ router.use(express.urlencoded({ extended: true }));
 
 // Rota para exibir o formulário de cadastro
 router.get('/create', (req, res) => {
-    res.render('pages/features-post-create', {
+    res.render('pages/machine-create', {
         title: 'Cadastro de Máquinas',
         site_name: 'Geral - Conservação e Limpeza',
         year: new Date().getFullYear(),
@@ -42,7 +41,7 @@ router.get('/create', (req, res) => {
     });
 });
 
-// Rota para lidar com o envio do formulário
+
 router.post('/create', upload.array('images', 10), async (req, res) => {
     const { name, client, tags, status, description } = req.body;
     const images = req.files.map(file => file.path);
@@ -53,7 +52,7 @@ router.post('/create', upload.array('images', 10), async (req, res) => {
         const machine = await Machine.create({
             name,
             client,
-            images: images, // Certifique-se de que os caminhos das imagens são strings separadas por vírgulas
+            images: images,
             tags: tags ? tags.split(',') : [],
             status,
             description,

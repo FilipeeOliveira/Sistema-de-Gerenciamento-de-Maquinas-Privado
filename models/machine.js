@@ -11,8 +11,8 @@ const Machine = sequelize.define('Machine', {
         allowNull: true,
     },
     images: {
-        type: DataTypes.STRING, // Armazenar URLs das imagens como string separada por vírgula
-        allowNull: true,  // Permitir que seja nulo se necessário
+        type: DataTypes.STRING,
+        allowNull: true,
         get() {
             const rawValue = this.getDataValue('images');
             return rawValue ? rawValue.split(',') : [];
@@ -26,8 +26,8 @@ const Machine = sequelize.define('Machine', {
         },
     },
     tags: {
-        type: DataTypes.STRING, // Armazenar tags como string separada por vírgula
-        allowNull: true,  // Permitir que seja nulo se necessário
+        type: DataTypes.STRING,
+        allowNull: true,
         get() {
             const rawValue = this.getDataValue('tags');
             return rawValue ? rawValue.split(',') : [];
@@ -50,7 +50,7 @@ const Machine = sequelize.define('Machine', {
     },
 }, {
     tableName: 'Machines',
-    timestamps: true, // Adicionar timestamps de criação e atualização
+    timestamps: true,
 });
 
 module.exports = Machine;
