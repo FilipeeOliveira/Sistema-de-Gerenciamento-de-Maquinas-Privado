@@ -58,9 +58,12 @@ function editMachine(id, name, tags, client, status, description) {
       if (response.ok) {
         const result = await response.json();
         console.log(result.message);
+        alert('Máquina atualizada com sucesso')
+        location.reload();
         // Atualize a interface do usuário, se necessário
       } else {
         console.error('Erro ao atualizar a máquina');
+        alert('Erro ao atualizar a máquina')
       }
     } catch (error) {
       console.error('Erro ao atualizar a máquina', error);
