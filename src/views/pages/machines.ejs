@@ -107,7 +107,7 @@
                         <a href="#" title="Editar">
                           <i class="fas fa-edit"></i>
                         </a>
-                        <a href="#" class="text-danger" title="Deletar">
+                        <a href="#" class="text-danger delete-machine" data-id="${machine.id}" title="Deletar">
                           <i class="fas fa-trash-alt"></i>
                         </a>
                       </div>
@@ -158,6 +158,34 @@
 
 
   <%- include('layouts/master.ejs', { bodyContent: bodyContent }) %>
+
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+        document.querySelectorAll('.delete-machine').forEach(button => {
+          button.addEventListener('click', function (event) {
+            event.preventDefault();
+            const machineId = this.getAttribute('data-id');
+            if (confirm('Tem certeza que deseja deletar esta máquina?')) {
+              fetch('/machines/delete/' + machineId, {
+                method: 'DELETE',
+                headers: {
+                  'Content-Type': 'application/json'
+                }
+              })
+                .then(response => response.json())
+                .then(data => {
+                  if (data.success) {
+                    window.location.reload();
+                  } else {
+                    alert('Erro ao deletar a máquina.');
+                  }
+                })
+                .catch(error => console.error('Error:', error));
+            }
+          });
+        });
+      });
+    </script>`;
 
     <script src="../../../node_modules/selectric/public/jquery.selectric.min.js"></script>
     <script src="../../../assets/js/page/features-posts.js"></script>

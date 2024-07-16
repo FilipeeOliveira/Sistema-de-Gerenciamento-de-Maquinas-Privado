@@ -31,4 +31,15 @@ router.get('/views', async (req, res) => {
     }
 });
 
+router.delete('/machines/delete/:id', async (req, res) => {
+    try {
+        const machineId = req.params.id;
+        await machineController.deleteMachine(machineId);
+        res.json({ success: true });
+    } catch (err) {
+        console.error('Error deleting machine:', err);
+        res.json({ success: false });
+    }
+});
+
 module.exports = router;
