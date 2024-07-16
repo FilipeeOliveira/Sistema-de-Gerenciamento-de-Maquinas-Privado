@@ -42,11 +42,12 @@
             <li class="dropdown">
               <a href="#" data-toggle="dropdown" class="nav-link dropdown-toggle nav-link-lg nav-link-user">
                 <img alt="image" src="../../../../assets/img/avatar/avatar-1.png" class="rounded-circle mr-1">
-                <div class="d-sm-none d-lg-inline-block">Olá, Joãozinho</div>
+                <div class="d-sm-none d-lg-inline-block">Olá, <%= user ? user.email : 'Usuário' %>
+                </div>
               </a>
               <div class="dropdown-menu dropdown-menu-right">
                 <div class="dropdown-title">Logado a 5 minutos</div>
-                <a href="profile/user" class="dropdown-item has-icon">
+                <a href="/profile/user" class="dropdown-item has-icon">
                   <i class="far fa-user"></i> Perfil
                 </a>
                 <a href="features-activities.html" class="dropdown-item has-icon">
@@ -62,6 +63,7 @@
               </div>
             </li>
           </ul>
+
         </nav>
         <div class="main-sidebar sidebar-style-2">
           <aside id="sidebar-wrapper">

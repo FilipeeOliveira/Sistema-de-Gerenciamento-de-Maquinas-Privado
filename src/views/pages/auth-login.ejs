@@ -33,7 +33,7 @@
               </div>
 
               <div class="card-body">
-                <form id="loginForm" method="POST" action="/auth/auth-login" class="needs-validation" novalidate>
+                <form id="loginForm" method="POST" action="/" class="needs-validation" novalidate>
                   <div class="form-group">
                     <label for="email">Email</label>
                     <input id="email" type="email" class="form-control" name="email" tabindex="1" required autofocus>
@@ -86,12 +86,12 @@
 
           $.ajax({
             type: 'POST',
-            url: '/auth/auth-login',
+            url: '/',
             data: formData,
             dataType: 'json',
             success: function (response) {
               console.log('Resposta do servidor recebida:', response);
-              window.location.href = '/';
+              window.location.href = '/dashboard/view';
             },
             error: function (error) {
               console.error('Erro durante o envio da requisição:', error.responseJSON);

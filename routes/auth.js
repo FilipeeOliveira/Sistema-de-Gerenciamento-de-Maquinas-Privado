@@ -3,7 +3,7 @@ const router = express.Router();
 const bcrypt = require('bcrypt');
 const User = require('../models/User');
 
-router.get('/auth-login', (req, res) => {
+router.get('/', (req, res) => {
     res.render('pages/auth-login', {
         error: null,
         title: 'Auth Login',
@@ -12,8 +12,7 @@ router.get('/auth-login', (req, res) => {
         year: new Date().getFullYear()
     });
 });
-router.post('/auth-login', async (req, res) => {
-    console.log('POST /auth/auth-login');
+router.post('/', async (req, res) => {
     const { email, password } = req.body;
 
     try {

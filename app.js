@@ -2,11 +2,11 @@ const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const sequelize = require('./config/database');
-const authRoutes = require('./routes/auth');
 const logger = require('morgan');
 const path = require('path');
 const session = require('express-session');
 const SequelizeStore = require('connect-session-sequelize')(session.Store);
+const authRoutes = require('./routes/auth');
 
 const app = express();
 
@@ -29,28 +29,21 @@ app.use(session({
     cookie: { secure: false, maxAge: 1000 * 60 * 60 } // 1 hora
 }));
 
-
-const index = require('./routes/dashboard')
-const register = require('./routes/register')
-const profile = require('./routes/profile')
-const navigation = require('./routes/navigation')
-const machines = require('./routes/machines')
-const machineCreate = require('./routes/machine-create')
-const authRegister = require('./routes/auth-register')
-const authLogin = require('./routes/auth')
-const forgotPassword = require('./routes/auth-forgot-password')
-const resetPassword = require('./routes/auth-reset-password')
+// Middleware para disponibilizar o usuário para todos os templates
+app.use((req, res, next) => {
+    res.locals.user = req.session.user || null;
+    next();
+});
 
 // Rotas
-app.use('/', index);
-app.use('/auth', authLogin);
-app.use('/profile', profile);
-app.use('/machine', machineCreate)
-//app.use('/', register);
-//app.use('/', navigation);
-app.use('/machines', machines); //machines views
-//app.use('/', authRegister);
-
+app.use('/dashboard', require('./routes/dashboard'));
+app.use('/', require('./routes/auth'));
+app.use('/profile', require('./routes/profile'));
+app.use('/machine', require('./routes/machine-create'));
+app.use('/machines', require('./routes/machines'));
+app.use('/auth-register', require('./routes/auth-register'));
+app.use('/auth-forgot-password', require('./routes/auth-forgot-password'));
+app.use('/auth-reset-password', require('./routes/auth-reset-password'));
 
 sequelize.sync()
     .then(() => {
