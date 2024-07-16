@@ -11,3 +11,16 @@ exports.listMachines = async () => {
         throw err;
     }
 };
+
+exports.updateMachine = async (id, updatedData) => {
+    try {
+        const machine = await Machine.findByPk(id);
+        if (machine) {
+            return await machine.update(updatedData);
+        }
+        return null;
+    } catch (error) {
+        console.error('Error updating machine:', error);
+        throw error;
+    }
+};

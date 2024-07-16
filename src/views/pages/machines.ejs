@@ -101,14 +101,14 @@
                     </td>
                     <td title="${machine.name}">${machine.name}
                       <div class="table-links">
-                        <a href="#" title="Ver">
-                          <i class="fas fa-eye"></i>
-                        </a>
-                        <a href="#" title="Editar">
-                          <i class="fas fa-edit"></i>
+                        <!-- <a href="#" title="Ver">
+                          <i class="fas fa-eye"></i> Vê 
+                        </a> -->
+                        <a href="#" title="Editar" data-toggle="modal" data-target="#editMachineModal" onclick="editMachine('${machine.id}', '${machine.name}', '${machine.tags}', '${machine.client}', '${machine.status}')">
+                          <i class="fas fa-edit"></i> Editar
                         </a>
                         <a href="#" class="text-danger" title="Deletar">
-                          <i class="fas fa-trash-alt"></i>
+                          <i class="fas fa-trash-alt"></i> Deletar
                         </a>
                       </div>
                     </td>
@@ -162,7 +162,50 @@
       </div>
     </div>
   </div>
-  </section>
+  </section>  
+
+  <!-- Modal de Edição -->
+<div class="modal fade" id="editMachineModal" tabindex="-1" aria-labelledby="editMachineModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="editMachineModalLabel">Editar Máquina</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form id="editMachineForm">
+          <div class="form-group">
+            <label for="editName">Nome</label>
+            <input type="text" class="form-control" id="editName" name="name" required>
+          </div>
+          <div class="form-group">
+            <label for="editTags">Etiqueta</label>
+            <input type="text" class="form-control" id="editTags" name="tags" required>
+          </div>
+          <div class="form-group">
+            <label for="editClient">Cliente</label>
+            <input type="text" class="form-control" id="editClient" name="client" required>
+          </div>
+          <div class="form-group">
+            <label for="editStatus">Status</label>
+            <select class="form-control" id="editStatus" name="status" required>
+              <option value="Active">Active</option>
+              <option value="Inactive">Inactive</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="editDescription">Descrição</label>
+            <textarea class="form-control" id="editDescription" name="description" rows="6" required></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary">Salvar Alterações</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
   `;
   %>
 
@@ -171,3 +214,4 @@
 
     <script src="../../../node_modules/selectric/public/jquery.selectric.min.js"></script>
     <script src="../../../assets/js/page/features-posts.js"></script>
+
