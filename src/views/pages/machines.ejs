@@ -1,6 +1,4 @@
-<link rel="stylesheet" href="../../../node_modules/selectric/public/selectric.css">
-
-<% const bodyContent=` <section class="section">
+<% const bodyContent=`<section class="section">
   <div class="section-header">
     <h1>Cadastros</h1>
     <div class="section-header-button">
@@ -91,7 +89,7 @@
                 </thead>
                 <tbody>
                   ${machines.map(machine => `
-                  <tr>
+                  <tr id="machine-row-${machine.id}">
                     <td>
                       <div class="custom-checkbox custom-control">
                         <input type="checkbox" data-checkboxes="mygroup" class="custom-control-input"
@@ -107,7 +105,7 @@
                         <a href="#" title="Editar" data-toggle="modal" data-target="#editMachineModal" onclick="editMachine('${machine.id}', '${machine.name}', '${machine.tags}', '${machine.client}', '${machine.status}')">
                           <i class="fas fa-edit"></i> Editar
                         </a>
-                        <a href="#" class="text-danger" title="Deletar">
+                        <a href="#" class="text-danger delete-machine" data-id="${machine.id}" title="Deletar">
                           <i class="fas fa-trash-alt"></i> Deletar
                         </a>
                       </div>
@@ -133,27 +131,17 @@
             <div class="float-right">
               <nav>
                 <ul class="pagination">
-                  <li class="page-item disabled">
-                    <a class="page-link" href="#" aria-label="Previous">
-                      <span aria-hidden="true">&laquo;</span>
-                      <span class="sr-only">Previous</span>
-                    </a>
-                  </li>
+                  ${Array.from({ length: totalPages }, (_, i) => `
+                  ${currentPage === i + 1 ? `
                   <li class="page-item active">
-                    <a class="page-link" href="#">1</a>
+                    <a class="page-link" href="#">${i + 1}</a>
                   </li>
+                  ` : `
                   <li class="page-item">
-                    <a class="page-link" href="#">2</a>
+                    <a class="page-link" href="/machines/views?page=${i + 1}">${i + 1}</a>
                   </li>
-                  <li class="page-item">
-                    <a class="page-link" href="#">3</a>
-                  </li>
-                  <li class="page-item">
-                    <a class="page-link" href="#" aria-label="Next">
-                      <span aria-hidden="true">&raquo;</span>
-                      <span class="sr-only">Next</span>
-                    </a>
-                  </li>
+                  `}
+                  `).join('')}
                 </ul>
               </nav>
             </div>
@@ -209,9 +197,11 @@
   `;
   %>
 
+  <% const additionalStyles=` <link rel="stylesheet" href="../../../node_modules/selectric/public/selectric.css">
+    `;
+    %>
 
   <%- include('layouts/master.ejs', { bodyContent: bodyContent }) %>
 
     <script src="../../../node_modules/selectric/public/jquery.selectric.min.js"></script>
     <script src="../../../assets/js/page/features-posts.js"></script>
-
