@@ -33,11 +33,11 @@ document.getElementById('image-upload').addEventListener('change', function (eve
     }
   });
 });
-  
+
 // Função de validação de formulário
 function validateForm(form) {
   let isValid = true;
-  form.querySelectorAll("[required]").forEach(function(input) {
+  form.querySelectorAll("[required]").forEach(function (input) {
     if (!input.value) {
       isValid = false;
       input.classList.add('is-invalid');
@@ -48,12 +48,8 @@ function validateForm(form) {
   return isValid;
 }
 
-<<<<<<< HEAD
-document.getElementById('machineForm').addEventListener('submit', function (event) {
-=======
 // Adiciona um evento de envio ao formulário
-document.getElementById('machineForm').addEventListener('submit', function(event) {
->>>>>>> d5e7cab748950ed916828630aa7787b906698f2f
+document.getElementById('machineForm').addEventListener('submit', function (event) {
   event.preventDefault(); // Evita o envio padrão do formulário
 
   // Valida o formulário
