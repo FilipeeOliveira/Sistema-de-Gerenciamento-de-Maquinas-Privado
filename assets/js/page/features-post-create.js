@@ -5,8 +5,8 @@ $.uploadPreview({
   input_field: "#image-upload",   // Default: .image-upload
   preview_box: "#image-preview",  // Default: .image-preview
   label_field: "#image-label",    // Default: .image-label
-  label_default: "Choose File",   // Default: Choose File
-  label_selected: "Change File",  // Default: Change File
+  label_default: "Adicionar Imagens",   // Default: Choose File
+  label_selected: "Adicionar Imagens",  // Default: Change File
   no_label: false,                // Default: false
   success_callback: null          // Default: null
 });
@@ -48,8 +48,18 @@ document.getElementById('machineForm').addEventListener('submit', function (even
         // Limpa os campos do formulário após o envio bem-sucedido
         this.reset(); // Resetará os campos do formulário
 
-        // Se estiver utilizando Summernote para o campo de descrição, resete-o explicitamente
-        $('.summernote-simple').summernote('reset'); // Reseta o conteúdo do Summernote
+        // Limpa o conteúdo do Summernote
+        $('.summernote-simple').summernote('reset');
+
+        // Limpa a pré-visualização das imagens
+        document.getElementById('preview').innerHTML = '';
+
+        // Resetar o campo de etiqueta
+        $('.inputtags').tagsinput('removeAll');
+
+        // Resetar o campo de status para a opção padrão
+        $('#editStatus').val('');
+        $('#editStatus').selectric('refresh');
 
         // Você pode adicionar aqui qualquer outra ação após o envio bem-sucedido
       } else {
@@ -60,4 +70,33 @@ document.getElementById('machineForm').addEventListener('submit', function (even
       console.error('Erro:', error);
       alert('Ocorreu um erro ao enviar os dados. Por favor, tente novamente.');
     });
+});
+
+//cores de cadastro
+document.addEventListener('DOMContentLoaded', function () {
+  const selectStatus = document.getElementById('editStatus');
+
+  selectStatus.addEventListener('change', function () {
+    const selectedOption = selectStatus.options[selectStatus.selectedIndex];
+    const statusBadge = document.querySelector('.status-badge');
+
+    switch (selectedOption.value) {
+      case 'Em Manutenção':
+        statusBadge.classList.remove('badge-primary', 'badge-success', 'badge-warning');
+        statusBadge.classList.add('badge-danger');
+        break;
+      case 'Em Uso':
+        statusBadge.classList.remove('badge-primary', 'badge-danger', 'badge-warning');
+        statusBadge.classList.add('badge-success');
+        break;
+      case 'Pendente':
+        statusBadge.classList.remove('badge-primary', 'badge-danger', 'badge-success');
+        statusBadge.classList.add('badge-warning');
+        break;
+      default:
+        statusBadge.classList.remove('badge-danger', 'badge-success', 'badge-warning');
+        statusBadge.classList.add('badge-primary');
+        break;
+    }
+  });
 });

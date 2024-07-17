@@ -60,7 +60,6 @@ function editMachine(id, name, tags, client, status, description) {
         console.log(result.message);
         alert('Máquina atualizada com sucesso')
         location.reload();
-        // Atualize a interface do usuário, se necessário
       } else {
         console.error('Erro ao atualizar a máquina');
         alert('Erro ao atualizar a máquina')
@@ -74,4 +73,29 @@ function editMachine(id, name, tags, client, status, description) {
   };
 }
 
+
+
+
+  document.addEventListener('DOMContentLoaded', function() {
+    const badges = document.querySelectorAll('.status-badge');
+
+    badges.forEach(badge => {
+      const status = badge.textContent.trim();
+
+      switch (status) {
+        case 'Em Manutenção':
+          badge.classList.add('badge-danger'); // Vermelho
+          break;
+        case 'Em Uso':
+          badge.classList.add('badge-success'); // Verde
+          break;
+        case 'Pendente':
+          badge.classList.add('badge-warning'); // Amarelo
+          break;
+        default:
+          badge.classList.add('badge-primary'); // Azul (ou outra cor padrão)
+          break;
+      }
+    });
+  });
 
