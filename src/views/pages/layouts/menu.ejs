@@ -1,28 +1,19 @@
 <ul class="sidebar-menu">
   <li class="menu-header">Dashboard</li>
-  <li{{ ' class="active"' |is_active('^index.html(.*)', page)|safe }}>
-    <a class="nav-link" href="/dashboard/view">
-      <i class="fas fa-pencil-ruler"></i>
-      <span class="menu-text">Dashboard</span>
-    </a>
-    </li>
-    <li class="menu-header">Páginas</li>
-    <li>
-      <a class="nav-link" href="/profile/user">
-        <i class="fas fa-pencil-ruler"></i>
-        <span class="menu-text">Perfil</span>
-      </a>
-    </li>
-    <li class="nav-item dropdown{{ ' active'|is_active('^features-(.*)', page)|safe }}">
-      <a href="#" class="nav-link has-dropdown">
-        <i class="fas fa-bicycle"></i>
-        <span class="menu-text">Maquinas</span>
-      </a>
-      <ul class="dropdown-menu">
-        <li><a class="nav-link" href="/machine/create">Cadastro</a></li>
-        <li><a class="nav-link" href="/machines/views">Lista</a></li>
-      </ul>
-    </li>
+  <li class="nav-item dropdown{{ ' active'|is_active('^index(.*)', page)|safe }}">
+    <a href="/dashboard/view" class="nav-link"><i class="fas fa-home"></i><span class="menu-text">Dashboard</span></a>
+  </li>
+  <li class="menu-header">Páginas</li>
+  <li class="nav-item dropdown{{ ' active'|is_active('^profile-(.*)', page)|safe }}">
+    <a href="/profile/user" class="nav-link"><i class="fas fa-user"></i><span class="menu-text">Perfil</span></a>
+  </li>
+  <li class="nav-item dropdown{{ ' active'|is_active('^features-(.*)', page)|safe }}">
+    <a href="#" class="nav-link has-dropdown"><i class="fas fa-edit"></i><span class="menu-text">Maquinas</span></a>
+    <ul class="dropdown-menu">
+      <li{% if is_active('^machine-create.html', page) %} class="active"{% endif %}><a class="nav-link" href="/machine/create"><i class="fas fa-register"></i> Cadastro</a></li>
+      <li{% if is_active('^machines-views.html', page) %} class="active"{% endif %}><a class="nav-link" href="/machines/views"><i class="fas fa-list"></i>Lista</a></li>
+    </ul>
+  </li>
 </ul>
 
 <div class="mt-4 mb-4 p-3 hide-sidebar-mini">
