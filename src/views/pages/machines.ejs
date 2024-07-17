@@ -102,18 +102,12 @@
                         <!-- <a href="#" title="Ver">
                           <i class="fas fa-eye"></i> Vê 
                         </a> -->
-<<<<<<< HEAD
                         <a href="#" title="Editar" data-toggle="modal" data-target="#editMachineModal"
                           onclick="editMachine('${machine.id}', '${machine.name}', '${machine.tags}', '${machine.client}', '${machine.status}')">
                           <i class="fas fa-edit"></i>
-=======
-                        <a href="#" title="Editar" data-toggle="modal" data-target="#editMachineModal" onclick="editMachine('${machine.id}', '${machine.name}', '${machine.tags}', '${machine.client}', '${machine.status}', '${machine.description}')">
-                          <i class="fas fa-edit"></i> Editar
->>>>>>> d5e7cab748950ed916828630aa7787b906698f2f
-                        </a>
-                        <a href="#" class="text-danger delete-machine" data-id="${machine.id}" title="Deletar">
-                          <i class="fas fa-trash-alt"></i>
-                        </a>
+                          <a href="#" class="text-danger delete-machine" data-id="${machine.id}" title="Deletar">
+                            <i class="fas fa-trash-alt"></i>
+                          </a>
                       </div>
                     </td>
                     <td>${machine.tags}</td>
@@ -159,8 +153,7 @@
   </section>
 
   <!-- Modal de Edição -->
-<<<<<<< HEAD
-  <div class="modal fade" id="editMachineModal" tabindex="-1" aria-labelledby="editMachineModalLabel"
+  <<<<<<< HEAD <div class="modal fade" id="editMachineModal" tabindex="-1" aria-labelledby="editMachineModalLabel"
     aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
@@ -199,62 +192,65 @@
             <button type="submit" class="btn btn-primary">Salvar Alterações</button>
           </form>
         </div>
-=======
-<div class="modal fade" id="editMachineModal" tabindex="-1" aria-labelledby="editMachineModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="editMachineModalLabel">Editar Máquina</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <form id="editMachineForm">
-          <div class="form-group">
-            <label for="editName">Nome</label>
-            <input type="text" class="form-control" id="editName" name="name" required>
+        =======
+        <div class="modal fade" id="editMachineModal" tabindex="-1" aria-labelledby="editMachineModalLabel"
+          aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="editMachineModalLabel">Editar Máquina</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <form id="editMachineForm">
+                  <div class="form-group">
+                    <label for="editName">Nome</label>
+                    <input type="text" class="form-control" id="editName" name="name" required>
+                  </div>
+                  <div class="form-group">
+                    <label for="editTags">Etiqueta</label>
+                    <input type="text" class="form-control" id="editTags" name="tags" required>
+                  </div>
+                  <div class="form-group">
+                    <label for="editClient">Cliente</label>
+                    <input type="text" class="form-control" id="editClient" name="client" required>
+                  </div>
+                  <div class="form-group">
+                    <label for="editStatus">Status</label>
+                    <select class="form-control" id="editStatus" name="status" required>
+                      <option value="Em Manutenção">Em Manutenção</option>
+                      <option value="Em Uso">Em Uso</option>
+                      <option value="Pendente">Pendente</option>
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label for="editDescription">Descrição</label>
+                    <textarea class="form-control " id="editDescription" name="description" rows="3"
+                      style="height: 100px;"></textarea>
+                  </div>
+                  <button type="submit" class="btn btn-primary">Salvar Alterações</button>
+                </form>
+                >>>>>>> d5e7cab748950ed916828630aa7787b906698f2f
+              </div>
+            </div>
           </div>
-          <div class="form-group">
-            <label for="editTags">Etiqueta</label>
-            <input type="text" class="form-control" id="editTags" name="tags" required>
-          </div>
-          <div class="form-group">
-            <label for="editClient">Cliente</label>
-            <input type="text" class="form-control" id="editClient" name="client" required>
-          </div>
-          <div class="form-group">
-            <label for="editStatus">Status</label>
-            <select class="form-control" id="editStatus" name="status" required>
-              <option value="Em Manutenção">Em Manutenção</option>
-              <option value="Em Uso">Em Uso</option>
-              <option value="Pendente">Pendente</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label for="editDescription">Descrição</label>
-            <textarea class="form-control " id="editDescription" name="description" rows="3"  style="height: 100px;"></textarea>
-          </div>
-          <button type="submit" class="btn btn-primary">Salvar Alterações</button>
-        </form>
->>>>>>> d5e7cab748950ed916828630aa7787b906698f2f
-      </div>
-    </div>
-  </div>
 
-  `;
-  %>
+          `;
+          %>
 
-  <% const additionalStyles=` <link rel="stylesheet" href="../../../node_modules/selectric/public/selectric.css">
-    `;
-    %>
+          <% const additionalStyles=` <link rel="stylesheet"
+            href="../../../node_modules/selectric/public/selectric.css">
+            `;
+            %>
 
-    <% const additionalScripts=` <script src="../../../assets/js/page/deleteMachine.js">
-      </script>
-      <script src="../../../node_modules/selectric/public/jquery.selectric.min.js"></script>
-      <script src="../../../assets/js/page/features-posts.js"></script>
-      `;
-      %>
+            <% const additionalScripts=` <script src="../../../assets/js/page/deleteMachine.js">
+              </script>
+              <script src="../../../node_modules/selectric/public/jquery.selectric.min.js"></script>
+              <script src="../../../assets/js/page/features-posts.js"></script>
+              `;
+              %>
 
-      <%- include('layouts/master.ejs', { bodyContent: bodyContent, additionalScripts:additionalScripts,
-        additionalStyles:additionalStyles }) %>
+              <%- include('layouts/master.ejs', { bodyContent: bodyContent, additionalScripts:additionalScripts,
+                additionalStyles:additionalStyles }) %>
