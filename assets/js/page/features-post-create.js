@@ -14,7 +14,6 @@ $(".inputtags").tagsinput('items');
 
 document.getElementById('image-upload').addEventListener('change', function (event) {
   const previewContainer = document.getElementById('preview');
-  previewContainer.innerHTML = "";
   const files = event.target.files;
 
   Array.from(files).forEach(file => {
@@ -22,7 +21,7 @@ document.getElementById('image-upload').addEventListener('change', function (eve
       const reader = new FileReader();
       reader.onload = function (e) {
         const colDiv = document.createElement('div');
-        colDiv.className = 'col-4 col-md-3';
+        colDiv.className = 'col-4 col-md-3 mb-3'; // Ajuste de classes conforme necessário
         const img = document.createElement('img');
         img.src = e.target.result;
         img.className = "img-thumbnail";
@@ -34,7 +33,6 @@ document.getElementById('image-upload').addEventListener('change', function (eve
   });
 });
 
-// Função de validação de formulário
 function validateForm(form) {
   let isValid = true;
   form.querySelectorAll("[required]").forEach(function (input) {
