@@ -25,7 +25,17 @@ document.getElementById('image-upload').addEventListener('change', function (eve
         const img = document.createElement('img');
         img.src = e.target.result;
         img.className = "img-thumbnail";
+        
+        // Botão para remover a imagem
+        const removeBtn = document.createElement('button');
+        removeBtn.textContent = 'Remover';
+        removeBtn.className = 'btn btn-sm btn-danger mt-2';
+        removeBtn.onclick = function() {
+          colDiv.remove(); 
+        };
+        
         colDiv.appendChild(img);
+        colDiv.appendChild(removeBtn);
         previewContainer.appendChild(colDiv);
       }
       reader.readAsDataURL(file);
@@ -33,6 +43,7 @@ document.getElementById('image-upload').addEventListener('change', function (eve
   });
 });
 
+// Função de validação de formulário
 function validateForm(form) {
   let isValid = true;
   form.querySelectorAll("[required]").forEach(function (input) {
@@ -45,6 +56,7 @@ function validateForm(form) {
   });
   return isValid;
 }
+
 
 // Adiciona um evento de envio ao formulário
 document.getElementById('machineForm').addEventListener('submit', function (event) {
