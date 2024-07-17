@@ -1,22 +1,33 @@
 <ul class="sidebar-menu">
   <li class="menu-header">Dashboard</li>
-  <li{{ ' class="active"' |is_active('^index.html(.*)', page)|safe }}><a class="nav-link" href="/dashboard/view"><i
-        class="fas fa-pencil-ruler"></i> <span>Dashboard</span></a>
-    <li>
+  <li{{ ' class="active"' |is_active('^index.html(.*)', page)|safe }}>
+    <a class="nav-link" href="/dashboard/view">
+      <i class="fas fa-pencil-ruler"></i>
+      <span class="menu-text">Dashboard</span>
+    </a>
+    </li>
     <li class="menu-header">Páginas</li>
-    <li><a class="nav-link" href="/profile/user"><i class="fas fa-pencil-ruler"></i> <span>Perfil</span></a>
+    <li>
+      <a class="nav-link" href="/profile/user">
+        <i class="fas fa-pencil-ruler"></i>
+        <span class="menu-text">Perfil</span>
+      </a>
     </li>
     <li class="nav-item dropdown{{ ' active'|is_active('^features-(.*)', page)|safe }}">
-      <a href="#" class="nav-link has-dropdown"><i class="fas fa-bicycle"></i> <span>Maquinas</span></a>
+      <a href="#" class="nav-link has-dropdown">
+        <i class="fas fa-bicycle"></i>
+        <span class="menu-text">Maquinas</span>
+      </a>
       <ul class="dropdown-menu">
-        <li><a class="nav-link" href="/machine/create">Cadastro</a>
-        </li>
+        <li><a class="nav-link" href="/machine/create">Cadastro</a></li>
         <li><a class="nav-link" href="/machines/views">Lista</a></li>
       </ul>
     </li>
 </ul>
+
+
 <div class="mt-4 mb-4 p-3 hide-sidebar-mini">
-  <a href="https://getstisla.com/docs" class="btn btn-primary btn-lg btn-block btn-icon-split">
-    <i class="fas fa-rocket"></i> Documentation
+  <a href="https://gerallimpeza.com.br" class="btn btn-primary btn-lg btn-block btn-icon-split">
+    <i class="fas fa-rocket"></i> Site
   </a>
 </div>

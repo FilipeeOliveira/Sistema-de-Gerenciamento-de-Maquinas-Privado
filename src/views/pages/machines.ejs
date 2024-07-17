@@ -99,10 +99,11 @@
                     </td>
                     <td title="${machine.name}">${machine.name}
                       <div class="table-links">
-                        <a href="#" title="Ver">
-                          <i class="fas fa-eye"></i>
-                        </a>
-                        <a href="#" title="Editar">
+                        <!-- <a href="#" title="Ver">
+                          <i class="fas fa-eye"></i> Vê 
+                        </a> -->
+                        <a href="#" title="Editar" data-toggle="modal" data-target="#editMachineModal"
+                          onclick="editMachine('${machine.id}', '${machine.name}', '${machine.tags}', '${machine.client}', '${machine.status}')">
                           <i class="fas fa-edit"></i>
                         </a>
                         <a href="#" class="text-danger delete-machine" data-id="${machine.id}" title="Deletar">

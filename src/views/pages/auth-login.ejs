@@ -7,8 +7,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
+    <link rel="icon" href="../../../assets/img/geral.png">
     <link rel="stylesheet" href="../../../node_modules/bootstrap/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="../../..//@fortawesome/fontawesome-free/css/all.min.css">
+    <link rel="stylesheet" href="../../../node_modules//@fortawesome/fontawesome-free/css/all.min.css">
     <% if (typeof additionalStyles !=='undefined' ) { %>
       <%- additionalStyles %>
         <% } %>
@@ -24,7 +25,7 @@
         <div class="row">
           <div class="col-12 col-sm-8 offset-sm-2 col-md-6 offset-md-3 col-lg-6 offset-lg-3 col-xl-4 offset-xl-4">
             <div class="login-brand">
-              <img src="/assets/img/stisla-fill.svg" alt="logo" width="100" class="shadow-light rounded-circle">
+              <img src="/assets/img/geral.png" alt="logo" width="120" class="shadow-light rounded-circle">
             </div>
 
             <div class="card card-primary">
@@ -45,10 +46,17 @@
                     <div class="d-block">
                       <label for="password" class="control-label">Senha</label>
                       <div class="float-right">
-                        <a href="/auth/auth-reset-password" class="text-small">Esqueceu a Senha?</a>
+                        <a href="/auth-reset-password" class="text-small">Esqueceu a Senha?</a>
                       </div>
                     </div>
-                    <input id="password" type="password" class="form-control" name="password" tabindex="2" required>
+                    <div class="input-group">
+                      <input id="password" type="password" class="form-control" name="password" tabindex="1" required>
+                      <div class="input-group-append">
+                        <button type="button" id="toggle-password" class="border border-1 btn btn-outline-secondary">
+                          <i id="toggle-icon" class="fas fa-eye"></i>
+                        </button>
+                      </div>
+                    </div>
                     <div class="invalid-feedback">
                       Insira a Senha
                     </div>
@@ -107,6 +115,7 @@
     <script src="../../../node_modules/jquery.nicescroll/dist/jquery.nicescroll.min.js"></script>
     <script src="../../../node_modules/moment/min/moment.min.js"></script>
     <script src="../../../assets/js/stisla.js"></script>
+    <script src="../../../assets/js/page/toggleEyeLogin.js"></script>
 
     <!-- Template JS File -->
     <script src="../../../assets/js/scripts.js"></script>
