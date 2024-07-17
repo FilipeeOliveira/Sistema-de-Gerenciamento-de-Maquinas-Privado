@@ -48,12 +48,8 @@ function validateForm(form) {
   return isValid;
 }
 
-<<<<<<< HEAD
-document.getElementById('machineForm').addEventListener('submit', function (event) {
-=======
 // Adiciona um evento de envio ao formulário
 document.getElementById('machineForm').addEventListener('submit', function(event) {
->>>>>>> d5e7cab748950ed916828630aa7787b906698f2f
   event.preventDefault(); // Evita o envio padrão do formulário
 
   // Valida o formulário
