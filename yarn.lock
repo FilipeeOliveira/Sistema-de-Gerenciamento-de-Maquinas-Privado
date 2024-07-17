@@ -7191,7 +7191,7 @@ sum-up@^1.0.1:
   dependencies:
     chalk "^1.0.0"
 
-summernote@^0.8.11:
+summernote@^0.8.20:
   version "0.8.20"
   resolved "https://registry.npmjs.org/summernote/-/summernote-0.8.20.tgz"
   integrity sha512-W9RhjQjsn+b1s9xiJQgJbCiYGJaDAc9CdEqXo+D13WuStG8lCdtKaO5AiNiSSMJsQJN2EfGSwbBQt+SFE2B8Kw==

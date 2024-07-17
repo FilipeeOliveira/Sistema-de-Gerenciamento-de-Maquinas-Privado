@@ -36,7 +36,7 @@
               <div class="form-group row mb-4">
                 <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Nome</label>
                 <div class="col-sm-12 col-md-7">
-                  <input type="text" class="form-control" name="name">
+                  <input type="text" class="form-control" name="name" required>
                 </div>
               </div>
 
@@ -44,7 +44,7 @@
               <div class="form-group row mb-4">
                 <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Cliente</label>
                 <div class="col-sm-12 col-md-7">
-                  <input type="text" class="form-control" name="client">
+                  <input type="text" class="form-control" name="client" required>
                 </div>
               </div>
 
@@ -54,7 +54,7 @@
                 <div class="col-sm-12 col-md-7">
                   <div id="image-preview-container" class="image-preview-container">
                     <label for="image-upload" id="image-label" class="btn btn-primary">Adicionar Imagens</label>
-                    <input type="file" name="images" id="image-upload" multiple class="d-none" />
+                    <input type="file" name="images" id="image-upload" multiple class="d-none"/>
                   </div>
                   <div id="preview" class="row md-3"></div>
                 </div>
@@ -64,7 +64,7 @@
               <div class="form-group row mb-4">
                 <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Etiqueta</label>
                 <div class="col-sm-12 col-md-7">
-                  <input type="text" class="form-control inputtags" name="tags">
+                  <input type="text" class="form-control inputtags" name="tags" required>
                 </div>
               </div>
 
@@ -85,7 +85,7 @@
               <div class="form-group row mb-4">
                 <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Descrição</label>
                 <div class="col-sm-12 col-md-7">
-                  <textarea class="summernote-simple" name="description"></textarea>
+                  <textarea class="form-control" name="description" style="height: 150px;" required></textarea>
                 </div>
               </div>
 
