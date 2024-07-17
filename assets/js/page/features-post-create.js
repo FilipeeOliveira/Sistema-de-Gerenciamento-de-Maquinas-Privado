@@ -33,9 +33,30 @@ document.getElementById('image-upload').addEventListener('change', function(even
     }
   });
 });
+  
+// Função de validação de formulário
+function validateForm(form) {
+  let isValid = true;
+  form.querySelectorAll("[required]").forEach(function(input) {
+    if (!input.value) {
+      isValid = false;
+      input.classList.add('is-invalid');
+    } else {
+      input.classList.remove('is-invalid');
+    }
+  });
+  return isValid;
+}
 
+// Adiciona um evento de envio ao formulário
 document.getElementById('machineForm').addEventListener('submit', function(event) {
   event.preventDefault(); // Evita o envio padrão do formulário
+
+  // Valida o formulário
+  if (!validateForm(this)) {
+    alert('Por favor, preencha todos os campos obrigatórios.');
+    return;
+  }
 
   // Realiza o envio dos dados utilizando fetch
   fetch('/machine/create', {
