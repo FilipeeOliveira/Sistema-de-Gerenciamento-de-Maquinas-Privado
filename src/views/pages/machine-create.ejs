@@ -72,7 +72,12 @@
               <div class="form-group row mb-4">
                 <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Status</label>
                 <div class="col-sm-12 col-md-7">
-                  <input type="text" class="form-control" name="status">
+                  <select class="form-control selectric" id="editStatus" name="status" required">
+                    <option value="" selected disabled>Selecione uma das opções</option>
+                    <option value="Em Manutenção">Em Manutenção</option>
+                    <option value="Em Uso">Em Uso</option>
+                    <option value="Pendente">Pendente</option>
+                  </select>
                 </div>
               </div>
 
@@ -104,37 +109,6 @@
 
   <%- include('layouts/master.ejs', { title: title, site_name: site_name, bodyContent: bodyContent, year: year, version:
     version }) %>
-
-    <!-- <script>
-    $(document).ready(function () {
-        $('#machineForm').submit(function (event) {
-            event.preventDefault(); // Evita o envio padrão do formulário
-
-            var formData = new FormData(this); // Captura os dados do formulário
-
-            console.log('Enviando dados para /machine/create');
-
-            // Envia os dados para o servidor via AJAX
-            $.ajax({
-                type: 'POST',
-                url: '/machine/create',
-                data: formData,
-                processData: false,
-                contentType: false,
-                success: function (response) {
-                    console.log('Resposta do servidor recebida:', response);
-                    alert('Máquina cadastrada com sucesso!');
-                    // Redireciona ou realiza outra ação após o sucesso
-                    window.location.href = '/'; // Exemplo: redireciona para a página inicial
-                },
-                error: function (error) {
-                    console.error('Erro durante o envio da requisição:', error.responseJSON);
-                    alert('Erro ao cadastrar máquina. Por favor, tente novamente.');
-                }
-            });
-        });
-    });
-</script> -->
 
     <script src="../../../node_modules/summernote/dist/summernote-bs4.js"></script>
     <script src="../../../node_modules/selectric/public/jquery.selectric.min.js"></script>

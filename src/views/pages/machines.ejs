@@ -120,7 +120,7 @@
                     </td>
                     <td>${new Date(machine.createdAt).toLocaleDateString()}</td>
                     <td>
-                      <div class="badge badge-primary">${machine.status}</div>
+                      <div class="badge status-badge">${machine.status}</div>
                     </td>
                   </tr>
                   `).join('')}
@@ -179,13 +179,14 @@
           <div class="form-group">
             <label for="editStatus">Status</label>
             <select class="form-control" id="editStatus" name="status" required>
-              <option value="Active">Active</option>
-              <option value="Inactive">Inactive</option>
+              <option value="Em Manutenção">Em Manutenção</option>
+              <option value="Em Uso">Em Uso</option>
+              <option value="Pendente">Pendente</option>
             </select>
           </div>
           <div class="form-group">
             <label for="editDescription">Descrição</label>
-            <textarea class="form-control" id="editDescription" name="description" rows="6" required></textarea>
+            <textarea class="form-control" id="editDescription" name="description" rows="3" required></textarea>
           </div>
           <button type="submit" class="btn btn-primary">Salvar Alterações</button>
         </form>
@@ -201,7 +202,12 @@
     `;
     %>
 
-  <%- include('layouts/master.ejs', { bodyContent: bodyContent }) %>
-
+    <% const additionalScripts=` <script src="../../../assets/js/page/deleteMachine.js">
+    </script>
     <script src="../../../node_modules/selectric/public/jquery.selectric.min.js"></script>
     <script src="../../../assets/js/page/features-posts.js"></script>
+    `;
+    %>
+
+    <%- include('layouts/master.ejs', { bodyContent: bodyContent, additionalScripts:additionalScripts,
+      additionalStyles:additionalStyles }) %>
