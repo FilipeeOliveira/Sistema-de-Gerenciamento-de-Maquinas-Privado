@@ -5,17 +5,16 @@ const fs = require('fs');
 const path = require('path');
 const Machine = require('../models/machine');
 
+// Função para garantir a existência do diretório
 const ensureDirectoryExistence = (dir) => {
     if (!fs.existsSync(dir)) {
         fs.mkdirSync(dir, { recursive: true });
     }
 };
 
-// Diretório onde as imagens serão salvas
-const uploadDir = path.join(__dirname, '../assets/img/uploads');
+const uploadDir = path.join(__dirname, '../public/uploads');
 ensureDirectoryExistence(uploadDir);
 
-// Configuração do multer para armazenar arquivos
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
         cb(null, uploadDir);
@@ -24,6 +23,7 @@ const storage = multer.diskStorage({
         cb(null, `${Date.now()} - ${file.originalname}`);
     }
 });
+
 
 const upload = multer({ storage });
 
@@ -41,10 +41,10 @@ router.get('/create', (req, res) => {
     });
 });
 
-
+// Rota para lidar com o envio do formulário de criação de máquina
 router.post('/create', upload.array('images', 10), async (req, res) => {
     const { name, client, tags, status, description } = req.body;
-    const images = req.files.map(file => file.path);
+    const images = req.files.map(file => `/uploads/${file.filename}`);
 
     console.log('Dados recebidos:', { name, client, images, tags, status, description });
 
@@ -64,5 +64,6 @@ router.post('/create', upload.array('images', 10), async (req, res) => {
         res.status(500).json({ error: 'Erro interno do servidor' });
     }
 });
+
 
 module.exports = router;
