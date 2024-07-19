@@ -41,7 +41,11 @@ exports.getMachineById = async (id) => {
 };
 
 // Função para atualizar dados da máquina
-exports.updateMachine = async (id, updatedData, files) => {
+const decodeURIPath = (path) => {
+    return decodeURIComponent(path.replace(/\+/g, ' '));
+};
+
+exports.updateMachine = async (id, updatedData, files, imagesToRemove) => {
     try {
         let updatedMachineData = { ...updatedData };
 
@@ -50,8 +54,21 @@ exports.updateMachine = async (id, updatedData, files) => {
             updatedMachineData.images = images.join(',');
         }
 
+        console.log('Imagens a serem removidas no controller:', imagesToRemove);
+
         const machine = await Machine.findByPk(id);
         if (machine) {
+            if (imagesToRemove && imagesToRemove.length > 0) {
+                // Remover imagens do diretório
+                imagesToRemove.forEach(imagePath => {
+                    const decodedPath = decodeURIPath(imagePath);
+                    const filePath = path.join(__dirname, '../public', decodedPath);
+                    if (fs.existsSync(filePath)) {
+                        fs.unlinkSync(filePath);
+                    }
+                });
+            }
+
             await machine.update(updatedMachineData);
             return machine;
         } else {
@@ -62,3 +79,7 @@ exports.updateMachine = async (id, updatedData, files) => {
         throw error;
     }
 };
+
+
+
+

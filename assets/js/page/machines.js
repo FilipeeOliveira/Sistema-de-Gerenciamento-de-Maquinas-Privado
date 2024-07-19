@@ -28,6 +28,8 @@ $("[data-checkboxes]").each(function () {
   });
 });
 
+let imagesToRemove = [];
+
 function editMachine(id, name, tags, client, status, description, images) {
   document.getElementById('editName').value = name;
   document.getElementById('editTags').value = tags;
@@ -35,26 +37,25 @@ function editMachine(id, name, tags, client, status, description, images) {
   document.getElementById('editStatus').value = status;
   document.getElementById('editDescription').value = description;
 
-  // Limpar a pré-visualização das imagens
   const imagePreviewContainer = document.getElementById('editImagePreview');
   imagePreviewContainer.innerHTML = '';
 
-  // Adicionar as imagens existentes na pré-visualização
   if (images) {
     images.split(',').forEach(imagePath => {
       const colDiv = document.createElement('div');
-      colDiv.className = 'col-4 col-md-3 mb-3'; // Ajuste de classes conforme necessário
+      colDiv.className = 'col-4 col-md-3 mb-3';
 
       const img = document.createElement('img');
       img.src = imagePath;
       img.className = "img-thumbnail";
 
-      // Botão para remover a imagem
       const removeBtn = document.createElement('button');
       removeBtn.textContent = 'Remover';
       removeBtn.className = 'btn btn-sm btn-danger mt-2';
       removeBtn.onclick = function () {
         colDiv.remove();
+        imagesToRemove.push(imagePath); // Adiciona imagem à lista de remoção
+        console.log('Imagens a serem removidas:', imagesToRemove);
       };
 
       colDiv.appendChild(img);
@@ -72,12 +73,15 @@ function editMachine(id, name, tags, client, status, description, images) {
     formData.append('status', document.getElementById('editStatus').value);
     formData.append('description', document.getElementById('editDescription').value);
 
-    // Adicionar as imagens selecionadas ao FormData
+    // Adicionar imagens removidas ao FormData
+    imagesToRemove.forEach(image => formData.append('imagesToRemove', image));
+
     const imagesInput = document.getElementById('editImages');
     for (let i = 0; i < imagesInput.files.length; i++) {
       formData.append('images', imagesInput.files[i]);
-      console.log()
     }
+
+    console.log('Dados do FormData:', Array.from(formData.entries()));
 
     try {
       const response = await fetch(`/machines/update/${id}`, {
@@ -99,11 +103,9 @@ function editMachine(id, name, tags, client, status, description, images) {
       alert('Erro ao atualizar a máquina');
     }
 
-    // Feche o modal após a submissão
     $('#editMachineModal').modal('hide');
   };
 }
-
 
 
 

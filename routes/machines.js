@@ -72,6 +72,16 @@ router.put('/update/:id', upload.array('images', 10), async (req, res) => {
     const id = req.params.id;
     const { name, client, tags, status, description } = req.body;
 
+    console.log('Dados recebidos no backend:', {
+        name,
+        client,
+        tags,
+        status,
+        description,
+        files: req.files, // Logs para arquivos recebidos
+        imagesToRemove: req.body.imagesToRemove // Logs para imagens a remover
+    });
+
     let updatedData = {
         name,
         client,
@@ -81,12 +91,15 @@ router.put('/update/:id', upload.array('images', 10), async (req, res) => {
     };
 
     try {
-        const machine = await machineController.updateMachine(id, updatedData, req.files);
+        // Adicione os caminhos das imagens a remover no controlador
+        const imagesToRemove = req.body.imagesToRemove ? req.body.imagesToRemove.split(',') : [];
+        const machine = await machineController.updateMachine(id, updatedData, req.files, imagesToRemove);
         res.json({ message: 'Máquina atualizada com sucesso', machine });
     } catch (error) {
         console.error('Erro ao atualizar a máquina:', error);
         res.status(500).json({ message: 'Erro ao atualizar a máquina', error: error.message });
     }
 });
+
 
 module.exports = router;
