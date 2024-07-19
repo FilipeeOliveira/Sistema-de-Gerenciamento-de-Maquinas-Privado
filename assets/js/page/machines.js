@@ -76,6 +76,7 @@ function editMachine(id, name, tags, client, status, description, images) {
     const imagesInput = document.getElementById('editImages');
     for (let i = 0; i < imagesInput.files.length; i++) {
       formData.append('images', imagesInput.files[i]);
+      console.log()
     }
 
     try {
