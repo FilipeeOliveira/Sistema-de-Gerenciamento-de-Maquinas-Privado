@@ -54,7 +54,7 @@ exports.updateMachine = async (id, updatedData, files, imagesToRemove) => {
             updatedMachineData.images = images.join(',');
         }
 
-        console.log('Imagens a serem removidas no controller:', imagesToRemove);
+        console.log('Imagens a serem removidas no controlador:', imagesToRemove);
 
         const machine = await Machine.findByPk(id);
         if (machine) {
@@ -65,6 +65,8 @@ exports.updateMachine = async (id, updatedData, files, imagesToRemove) => {
                     const filePath = path.join(__dirname, '../public', decodedPath);
                     if (fs.existsSync(filePath)) {
                         fs.unlinkSync(filePath);
+                    } else {
+                        console.warn(`Arquivo não encontrado para remoção: ${filePath}`);
                     }
                 });
             }
@@ -79,6 +81,7 @@ exports.updateMachine = async (id, updatedData, files, imagesToRemove) => {
         throw error;
     }
 };
+
 
 
 
