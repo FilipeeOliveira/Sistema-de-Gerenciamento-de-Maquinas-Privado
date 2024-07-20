@@ -1,8 +1,22 @@
 const express = require('express');
 const router = express.Router();
 const machineController = require('../controllers/machineController');
+const multer = require('multer');
+const path = require('path');
 
-// Rota para listar máquinas
+// Configuração do Multer para o diretório de uploads
+const uploadDir = path.join(__dirname, '../public/uploads');
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, uploadDir);
+    },
+    filename: (req, file, cb) => {
+        cb(null, `${Date.now()} - ${file.originalname}`);
+    }
+});
+const upload = multer({ storage });
+
+// Rota para listar máquinas com paginação
 router.get('/views', async (req, res) => {
     try {
         const machines = await machineController.listMachines();
@@ -30,6 +44,7 @@ router.get('/views', async (req, res) => {
     }
 });
 
+// Rota para deletar máquina
 router.delete('/delete/:id', async (req, res) => {
     try {
         const machineId = req.params.id;
@@ -41,22 +56,43 @@ router.delete('/delete/:id', async (req, res) => {
     }
 });
 
-// Rota para atualizar uma máquina
-router.put('/update/:id', async (req, res) => {
-    const { id } = req.params;
-    const { name, tags, client, status, description } = req.body;
-
+// Rota para buscar dados da máquina
+router.get('/:id', async (req, res) => {
     try {
-        const machine = await machineController.updateMachine(id, { name, tags, client, status, description });
-        if (machine) {
-            res.status(200).json({ message: 'Máquina atualizada com sucesso' });
-        } else {
-            res.status(404).json({ message: 'Máquina não encontrada' });
-        }
-    } catch (error) {
-        console.error('Error updating machine:', error);
-        res.status(500).json({ message: 'Erro ao atualizar a máquina', error });
+        const machine = await machineController.getMachineById(req.params.id);
+        res.json(machine);
+    } catch (err) {
+        console.error('Erro ao buscar máquina:', err);
+        res.status(500).json({ message: 'Erro ao buscar máquina', error: err.message });
     }
 });
+
+// Rota para atualizar dados da máquina
+router.put('/update/:id', upload.array('images', 10), async (req, res) => {
+    const id = req.params.id;
+    const { name, client, tags, status, description } = req.body;
+
+    // Log para verificar os dados recebidos
+    console.log('Dados do Body:', { name, client, tags, status, description });
+    console.log('Arquivos recebidos:', req.files);
+    console.log('Imagens a serem removidas:', req.body.imagesToRemove);
+
+    let updatedData = {
+        name,
+        client,
+        tags: tags ? tags.split(',') : [],
+        status,
+        description,
+    };
+
+    try {
+        const machine = await machineController.updateMachine(id, updatedData, req.files, req.body.imagesToRemove);
+        res.json({ message: 'Máquina atualizada com sucesso', machine });
+    } catch (error) {
+        console.error('Erro ao atualizar a máquina:', error);
+        res.status(500).json({ message: 'Erro ao atualizar a máquina', error: error.message });
+    }
+});
+
 
 module.exports = router;

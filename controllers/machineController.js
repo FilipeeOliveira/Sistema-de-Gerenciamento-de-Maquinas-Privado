@@ -1,10 +1,12 @@
 const Machine = require('../models/machine');
-const { Op } = require('sequelize');
+const fs = require('fs');
+const path = require('path');
 
+// Função para listar máquinas
 exports.listMachines = async () => {
     try {
         const machines = await Machine.findAll({
-            order: [['createdAt', 'DESC']] 
+            order: [['createdAt', 'DESC']]
         });
         return machines;
     } catch (err) {
@@ -13,6 +15,7 @@ exports.listMachines = async () => {
     }
 };
 
+// Função para deletar máquina
 exports.deleteMachine = async (id) => {
     try {
         await Machine.destroy({ where: { id } });
@@ -22,13 +25,57 @@ exports.deleteMachine = async (id) => {
     }
 };
 
-exports.updateMachine = async (id, updatedData) => {
+// Função para buscar dados da máquina
+exports.getMachineById = async (id) => {
     try {
         const machine = await Machine.findByPk(id);
         if (machine) {
-            return await machine.update(updatedData);
+            return machine;
+        } else {
+            throw new Error('Máquina não encontrada');
         }
-        return null;
+    } catch (error) {
+        console.error('Erro ao buscar máquina:', error);
+        throw error;
+    }
+};
+
+// Função para atualizar dados da máquina
+const decodeURIPath = (path) => {
+    return decodeURIComponent(path.replace(/\+/g, ' '));
+};
+
+exports.updateMachine = async (id, updatedData, files, imagesToRemove) => {
+    try {
+        let updatedMachineData = { ...updatedData };
+
+        if (files && files.length > 0) {
+            const images = files.map(file => path.join('/uploads', file.filename));
+            updatedMachineData.images = images.join(',');
+        }
+
+        console.log('Imagens a serem removidas no controlador:', imagesToRemove);
+
+        const machine = await Machine.findByPk(id);
+        if (machine) {
+            if (imagesToRemove && imagesToRemove.length > 0) {
+                // Remover imagens do diretório
+                imagesToRemove.forEach(imagePath => {
+                    const decodedPath = decodeURIPath(imagePath);
+                    const filePath = path.join(__dirname, '../public', decodedPath);
+                    if (fs.existsSync(filePath)) {
+                        fs.unlinkSync(filePath);
+                    } else {
+                        console.warn(`Arquivo não encontrado para remoção: ${filePath}`);
+                    }
+                });
+            }
+
+            await machine.update(updatedMachineData);
+            return machine;
+        } else {
+            throw new Error('Máquina não encontrada');
+        }
     } catch (error) {
         console.error('Erro ao atualizar a máquina:', error);
         throw error;

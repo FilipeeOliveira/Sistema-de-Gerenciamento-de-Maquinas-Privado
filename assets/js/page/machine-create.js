@@ -46,7 +46,7 @@ document.getElementById('image-upload').addEventListener('change', function (eve
 // Função de validação de formulário
 function validateForm(form) {
   let isValid = true;
-  form.querySelectorAll("[required]").forEach(function(input) {
+  form.querySelectorAll("[required]").forEach(function (input) {
     if (!input.value) {
       isValid = false;
       input.classList.add('is-invalid');
@@ -59,7 +59,7 @@ function validateForm(form) {
 
 
 // Adiciona um evento de envio ao formulário
-document.getElementById('machineForm').addEventListener('submit', function(event) {
+document.getElementById('machineForm').addEventListener('submit', function (event) {
   event.preventDefault(); // Evita o envio padrão do formulário
 
   // Valida o formulário

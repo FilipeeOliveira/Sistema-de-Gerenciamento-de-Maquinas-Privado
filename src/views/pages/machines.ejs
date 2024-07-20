@@ -103,11 +103,13 @@
                           <i class="fas fa-eye"></i> Vê 
                         </a> -->
                         <a href="#" title="Editar" data-toggle="modal" data-target="#editMachineModal"
-                          onclick="editMachine('${machine.id}', '${machine.name}', '${machine.tags}', '${machine.client}', '${machine.status}', '${machine.description}')">
+                          onclick="editMachine('${machine.id}', '${machine.name}', '${machine.tags}', '${machine.client}', '${machine.status}', '${machine.description}', '${machine.images}')">
                           <i class="fas fa-edit"></i>
+                        </a>
                         <a href="#" class="text-danger delete-machine" data-id="${machine.id}" title="Deletar">
                           <i class="fas fa-trash-alt"></i>
                         </a>
+
                       </div>
                     </td>
                     <td>${machine.tags}</td>
@@ -153,51 +155,74 @@
   </section>
 
   <!-- Modal de Edição -->
-<div class="modal fade" id="editMachineModal" tabindex="-1" aria-labelledby="editMachineModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="editMachineModalLabel">Editar Máquina</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <form id="editMachineForm">
-          <div class="form-group">
-            <label for="editName">Nome</label>
-            <input type="text" class="form-control" id="editName" name="name" required>
-          </div>
-          <div class="form-group">
-            <label for="editTags">Etiqueta</label>
-            <input type="text" class="form-control" id="editTags" name="tags" required>
-          </div>
-          <div class="form-group">
-            <label for="editClient">Cliente</label>
-            <input type="text" class="form-control" id="editClient" name="client" required>
-          </div>
-          <div class="form-group">
-            <label for="editStatus">Status</label>
-            <select class="form-control" id="editStatus" name="status" required>
-              <option value="Em Manutenção">Em Manutenção</option>
-              <option value="Em Uso">Em Uso</option>
-              <option value="Pendente">Pendente</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label for="editDescription">Descrição</label>
-            <textarea class="form-control " id="editDescription" name="description" rows="3"  style="height: 100px;"></textarea>
-          </div>
-          <button type="submit" class="btn btn-primary">Salvar Alterações</button>
-        </form>
+  <div class="modal fade" id="editMachineModal" tabindex="-1" aria-labelledby="editMachineModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="editMachineModalLabel">Editar Máquina</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form id="editMachineForm" enctype="multipart/form-data">
+            <input type="hidden" id="editMachineId" name="id">
+
+            <div class="form-group">
+              <label for="editName">Nome</label>
+              <input type="text" class="form-control" id="editName" name="name" required>
+            </div>
+
+            <div class="form-group">
+              <label for="editTags">Etiqueta</label>
+              <input type="text" class="form-control" id="editTags" name="tags" required>
+            </div>
+
+            <div class="form-group">
+              <label for="editClient">Cliente</label>
+              <input type="text" class="form-control" id="editClient" name="client" required>
+            </div>
+
+            <div class="form-group">
+              <label for="editStatus">Status</label>
+              <select class="form-control" id="editStatus" name="status" required>
+                <option value="Em Manutenção">Em Manutenção</option>
+                <option value="Em Uso">Em Uso</option>
+                <option value="Pendente">Pendente</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="editDescription">Descrição</label>
+              <textarea class="form-control" id="editDescription" name="description" rows="3"
+                style="height: 100px;"></textarea>
+            </div>
+
+            <div class="form-group">
+              <label for="editImages">Imagens</label>
+              <input type="file" class="form-control-file" id="editImages" name="images" multiple>
+            </div>
+
+            <!-- Preview de Imagens -->
+            <div id="editImagePreview" class="row md-3">
+              <!-- Aqui serão exibidas as imagens -->
+            </div>
+
+            <!-- Botão de Envio -->
+            <button type="submit" class="btn btn-primary">Salvar Alterações</button>
+          </form>
+        </div>
       </div>
     </div>
   </div>
+
 
   `;
   %>
 
   <% const additionalStyles=` <link rel="stylesheet" href="../../../node_modules/selectric/public/selectric.css">
+
     `;
     %>
 
@@ -209,4 +234,4 @@
       %>
 
       <%- include('layouts/master.ejs', { bodyContent: bodyContent, additionalScripts:additionalScripts,
-        additionalStyles:additionalStyles }) %>
+        additionalStyles:additionalStyles })  %>
