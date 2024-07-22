@@ -52,11 +52,16 @@ exports.updateMachine = async (id, updatedData, files, imagesToRemove) => {
 
         console.log('Imagens a serem removidas no controlador:', imagesToRemove);
 
+        // Assegurando que imagesToRemove seja um array
+        if (!Array.isArray(imagesToRemove)) {
+            imagesToRemove = [imagesToRemove];
+        }
+
         const machine = await Machine.findByPk(id);
         if (machine) {
             if (imagesToRemove && imagesToRemove.length > 0) {
                 imagesToRemove.forEach(imagePath => {
-                    const decodedPath = decodeURIPath(imagePath);
+                    const decodedPath = decodeURIComponent(imagePath);
                     const filePath = path.join(__dirname, '../public', decodedPath);
                     if (fs.existsSync(filePath)) {
                         fs.unlinkSync(filePath);
@@ -76,6 +81,7 @@ exports.updateMachine = async (id, updatedData, files, imagesToRemove) => {
         throw error;
     }
 };
+
 
 //estatisticas
 exports.getDashboardStats = async () => {
