@@ -18,6 +18,25 @@ exports.listMachines = async () => {
 // Função para deletar máquina
 exports.deleteMachine = async (id) => {
     try {
+        const machine = await Machine.findByPk(id);
+
+        if (!machine) {
+            throw new Error('Máquina não encontrada');
+        }
+
+        // Remover imagens do diretório
+        if (machine.images && machine.images.length > 0) {
+            machine.images.forEach(imagePath => {
+                const filePath = path.join(__dirname, '../public', imagePath);
+                if (fs.existsSync(filePath)) {
+                    fs.unlinkSync(filePath);
+                } else {
+                    console.warn(`Arquivo não encontrado para remoção: ${filePath}`);
+                }
+            });
+        }
+
+        // Remover a máquina do banco de dados
         await Machine.destroy({ where: { id } });
     } catch (err) {
         console.error('Erro ao deletar a máquina:', err);

@@ -12,28 +12,35 @@ $.uploadPreview({
 });
 $(".inputtags").tagsinput('items');
 
-document.getElementById('image-upload').addEventListener('change', function (event) {
-  const previewContainer = document.getElementById('preview');
-  const files = event.target.files;
+// Função de pré-visualização e remoção de imagens
+const previewContainer = document.getElementById('preview');
+const inputFileElement = document.getElementById('image-upload');
+let filesToUpload = [];
 
-  Array.from(files).forEach(file => {
+inputFileElement.addEventListener('change', function (event) {
+  filesToUpload = Array.from(event.target.files);
+  previewContainer.innerHTML = ''; 
+
+  filesToUpload.forEach((file, index) => {
     if (file.type.startsWith('image/')) {
       const reader = new FileReader();
       reader.onload = function (e) {
         const colDiv = document.createElement('div');
-        colDiv.className = 'col-4 col-md-3 mb-3'; // Ajuste de classes conforme necessário
+        colDiv.className = 'col-4 col-md-3 mb-3';
         const img = document.createElement('img');
         img.src = e.target.result;
         img.className = "img-thumbnail";
-        
+
         // Botão para remover a imagem
         const removeBtn = document.createElement('button');
         removeBtn.textContent = 'Remover';
         removeBtn.className = 'btn btn-sm btn-danger mt-2';
         removeBtn.onclick = function() {
           colDiv.remove(); 
+          filesToUpload.splice(index, 1); // Remove o arquivo da lista
+          inputFileElement.files = createFileList(filesToUpload); // Atualiza os arquivos no input
         };
-        
+
         colDiv.appendChild(img);
         colDiv.appendChild(removeBtn);
         previewContainer.appendChild(colDiv);
@@ -42,6 +49,13 @@ document.getElementById('image-upload').addEventListener('change', function (eve
     }
   });
 });
+
+// Função para criar um objeto FileList
+function createFileList(files) {
+  const dataTransfer = new DataTransfer();
+  files.forEach(file => dataTransfer.items.add(file));
+  return dataTransfer.files;
+}
 
 // Função de validação de formulário
 function validateForm(form) {
@@ -57,7 +71,6 @@ function validateForm(form) {
   return isValid;
 }
 
-
 // Adiciona um evento de envio ao formulário
 document.getElementById('machineForm').addEventListener('submit', function (event) {
   event.preventDefault(); // Evita o envio padrão do formulário
@@ -69,9 +82,11 @@ document.getElementById('machineForm').addEventListener('submit', function (even
   }
 
   // Realiza o envio dos dados utilizando fetch
+  const formData = new FormData(this);
+
   fetch('/machine/create', {
     method: 'POST',
-    body: new FormData(this)
+    body: formData
   })
     .then(response => {
       if (response.ok) {
@@ -83,7 +98,7 @@ document.getElementById('machineForm').addEventListener('submit', function (even
         $('.summernote-simple').summernote('reset');
 
         // Limpa a pré-visualização das imagens
-        document.getElementById('preview').innerHTML = '';
+        previewContainer.innerHTML = '';
 
         // Resetar o campo de etiqueta
         $('.inputtags').tagsinput('removeAll');
@@ -103,7 +118,7 @@ document.getElementById('machineForm').addEventListener('submit', function (even
     });
 });
 
-//cores de cadastro
+// Cores de cadastro
 document.addEventListener('DOMContentLoaded', function () {
   const selectStatus = document.getElementById('editStatus');
 
