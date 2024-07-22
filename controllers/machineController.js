@@ -77,7 +77,22 @@ exports.updateMachine = async (id, updatedData, files, imagesToRemove) => {
     }
 };
 
+//estatisticas
+exports.getDashboardStats = async () => {
+    try {
+        const pendingCount = await Machine.count({ where: { status: 'Pendente' } });
+        const maintenanceCount = await Machine.count({ where: { status: 'Em Manutenção' } });
+        const inUseCount = await Machine.count({ where: { status: 'Em Uso' } });
 
-
-
+        return {
+            pendingCount,
+            maintenanceCount,
+            inUseCount,
+            totalCount: pendingCount + maintenanceCount + inUseCount
+        };
+    } catch (err) {
+        console.error('Erro ao obter estatísticas das máquinas:', err);
+        throw err;
+    }
+};
 

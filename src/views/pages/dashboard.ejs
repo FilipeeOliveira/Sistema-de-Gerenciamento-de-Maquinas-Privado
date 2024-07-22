@@ -1,56 +1,66 @@
 <% const bodyContent=` <section class="section">
-  <div class="row">
-    <div class="col-lg-4 col-md-4 col-sm-12">
-      <div class="card card-statistic-2">
-        <div class="card-stats">
-          <div class="card-stats-title">Estatísticas
-            <div class="dropdown d-inline">
-              <a class="font-weight-600 dropdown-toggle" data-toggle="dropdown" href="#" id="orders-month">Janeiro</a>
-              <ul class="dropdown-menu dropdown-menu-sm">
-                <li class="dropdown-title">Selecione o Mês</li>
-                <li><a href="#" class="dropdown-item active">Janeiro</a></li>
-                <li><a href="#" class="dropdown-item">fevereiro</a></li>
-                <li><a href="#" class="dropdown-item">Março</a></li>
-                <li><a href="#" class="dropdown-item">Abril</a></li>
-                <li><a href="#" class="dropdown-item">Maio</a></li>
-                <li><a href="#" class="dropdown-item">Junho</a></li>
-                <li><a href="#" class="dropdown-item">Julho</a></li>
-                <li><a href="#" class="dropdown-item ">Agosto</a></li>
-                <li><a href="#" class="dropdown-item">Setembro</a></li>
-                <li><a href="#" class="dropdown-item">Outubro</a></li>
-                <li><a href="#" class="dropdown-item">Novembro</a></li>
-                <li><a href="#" class="dropdown-item">Dezembro</a></li>
-              </ul>
+  <div class="section-header">
+    <h1>Dashboard</h1>
+    <div class="section-header-breadcrumb">
+      <div class="breadcrumb-item active"><a href="#">Dashboard</a></div>
+    </div>
+  </div>
+  <div class="section-body">
+    <h2 class="section-title">Estatísticas das Máquinas</h2>
+    <p class="section-lead">
+      Aqui você pode ver o estado atual das máquinas.
+    </p>
+
+    <div class="row">
+      <div class="col-lg-4 col-md-4 col-sm-12">
+        <div class="card card-statistic-2">
+          <div class="card-stats">
+            <div class="card-stats-title">Estatísticas
+              <div class="dropdown d-inline">
+                <a class="font-weight-600 dropdown-toggle" data-toggle="dropdown" href="#" id="orders-month">Janeiro</a>
+                <ul class="dropdown-menu dropdown-menu-sm">
+                  <li class="dropdown-title">Selecione o Mês</li>
+                  <li><a href="#" class="dropdown-item active">Janeiro</a></li>
+                  <li><a href="#" class="dropdown-item">Fevereiro</a></li>
+                  <li><a href="#" class="dropdown-item">Março</a></li>
+                  <li><a href="#" class="dropdown-item">Abril</a></li>
+                  <li><a href="#" class="dropdown-item">Maio</a></li>
+                  <li><a href="#" class="dropdown-item">Junho</a></li>
+                  <li><a href="#" class="dropdown-item">Julho</a></li>
+                  <li><a href="#" class="dropdown-item ">Agosto</a></li>
+                  <li><a href="#" class="dropdown-item">Setembro</a></li>
+                  <li><a href="#" class="dropdown-item">Outubro</a></li>
+                  <li><a href="#" class="dropdown-item">Novembro</a></li>
+                  <li><a href="#" class="dropdown-item">Dezembro</a></li>
+                </ul>
+              </div>
+            </div>
+            <div class="card-stats-items">
+              <div class="card-stats-item">
+                <div class="card-stats-item-count">${stats.pendingCount}</div>
+                <div class="card-stats-item-label">Pendentes</div>
+              </div>
+              <div class="card-stats-item">
+                <div class="card-stats-item-count">${stats.maintenanceCount}</div>
+                <div class="card-stats-item-label">Manutenção</div>
+              </div>
+              <div class="card-stats-item">
+                <div class="card-stats-item-count">${stats.inUseCount}</div>
+                <div class="card-stats-item-label">Em uso</div>
+              </div>
             </div>
           </div>
-          <div class="card-stats-items">
-            <div class="card-stats-item">
-              <div class="card-stats-item-count">24</div>
-              <div class="card-stats-item-label">Pendentes</div>
-            </div>
-            <div class="card-stats-item">
-              <div class="card-stats-item-count">12</div>
-              <div class="card-stats-item-label">Manutenção</div>
-            </div>
-            <div class="card-stats-item">
-              <div class="card-stats-item-count">23</div>
-              <div class="card-stats-item-label">Em uso</div>
-            </div>
+          <div class="card-icon shadow-primary bg-primary">
+            <i class="fas fa-archive"></i>
           </div>
-        </div>
-        <div class="card-icon shadow-primary bg-primary">
-          <i class="fas fa-archive"></i>
-        </div>
-        <div class="card-wrap">
-          <div class="card-header">
-            <h4>Total de Máquinas</h4>
-          </div>
-          <div class="card-body">
-            59
+          <div class="card-wrap">
+            <div class="card-header">
+              <h4>Total de Máquinas</h4>
+            </div>
+            <div class="card-body">${stats.totalCount}</div>
           </div>
         </div>
       </div>
-    </div>
     <div class="col-lg-4 col-md-4 col-sm-12">
       <div class="card card-statistic-2">
         <div class="card-chart">
