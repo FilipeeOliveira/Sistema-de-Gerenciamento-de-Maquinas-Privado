@@ -2,7 +2,6 @@ const Machine = require('../models/machine');
 const fs = require('fs');
 const path = require('path');
 
-// Função para listar máquinas
 exports.listMachines = async () => {
     try {
         const machines = await Machine.findAll({
@@ -15,7 +14,6 @@ exports.listMachines = async () => {
     }
 };
 
-// Função para deletar máquina
 exports.deleteMachine = async (id) => {
     try {
         await Machine.destroy({ where: { id } });
@@ -25,7 +23,6 @@ exports.deleteMachine = async (id) => {
     }
 };
 
-// Função para buscar dados da máquina
 exports.getMachineById = async (id) => {
     try {
         const machine = await Machine.findByPk(id);
@@ -40,7 +37,6 @@ exports.getMachineById = async (id) => {
     }
 };
 
-// Função para atualizar dados da máquina
 const decodeURIPath = (path) => {
     return decodeURIComponent(path.replace(/\+/g, ' '));
 };
@@ -59,7 +55,6 @@ exports.updateMachine = async (id, updatedData, files, imagesToRemove) => {
         const machine = await Machine.findByPk(id);
         if (machine) {
             if (imagesToRemove && imagesToRemove.length > 0) {
-                // Remover imagens do diretório
                 imagesToRemove.forEach(imagePath => {
                     const decodedPath = decodeURIPath(imagePath);
                     const filePath = path.join(__dirname, '../public', decodedPath);

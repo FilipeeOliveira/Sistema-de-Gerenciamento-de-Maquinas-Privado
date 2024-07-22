@@ -54,7 +54,7 @@ function editMachine(id, name, tags, client, status, description, images) {
       removeBtn.className = 'btn btn-sm btn-danger mt-2';
       removeBtn.onclick = function () {
         colDiv.remove();
-        imagesToRemove.push(imagePath); // Adiciona imagem à lista de remoção
+        imagesToRemove.push(imagePath);
         console.log('Imagens a serem removidas:', imagesToRemove);
       };
 
@@ -73,7 +73,6 @@ function editMachine(id, name, tags, client, status, description, images) {
     formData.append('status', document.getElementById('editStatus').value);
     formData.append('description', document.getElementById('editDescription').value);
 
-    // Adicionar imagens removidas ao FormData
     imagesToRemove.forEach(image => formData.append('imagesToRemove', image));
 
     const imagesInput = document.getElementById('editImages');
