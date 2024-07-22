@@ -80,14 +80,13 @@ router.put('/update/:id', upload.array('images', 10), async (req, res) => {
     };
 
     try {
-        const machine = await machineController.updateMachine(id, updatedData, req.files, imagesToRemove);
+        const machine = await machineController.updateMachine(id, updatedData, req.files, JSON.parse(imagesToRemove));
         res.json({ message: 'Máquina atualizada com sucesso', machine });
     } catch (error) {
         console.error('Erro ao atualizar a máquina:', error);
         res.status(500).json({ message: 'Erro ao atualizar a máquina', error: error.message });
     }
 });
-
 
 
 
