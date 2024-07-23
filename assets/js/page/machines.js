@@ -40,6 +40,8 @@ function editMachine(id, name, tags, client, status, description, images) {
   const imagePreviewContainer = document.getElementById('editImagePreview');
   imagePreviewContainer.innerHTML = '';
 
+  imagesToRemove = []; // Reset the imagesToRemove array
+
   if (images) {
     images.split(',').forEach(imagePath => {
       const colDiv = document.createElement('div');
@@ -52,9 +54,10 @@ function editMachine(id, name, tags, client, status, description, images) {
       const removeBtn = document.createElement('button');
       removeBtn.textContent = 'Remover';
       removeBtn.className = 'btn btn-sm btn-danger mt-2';
+
       removeBtn.onclick = function () {
         colDiv.remove();
-        imagesToRemove.push(imagePath); // Adiciona imagem à lista de remoção
+        imagesToRemove.push(imagePath);
         console.log('Imagens a serem removidas:', imagesToRemove);
       };
 
@@ -73,8 +76,7 @@ function editMachine(id, name, tags, client, status, description, images) {
     formData.append('status', document.getElementById('editStatus').value);
     formData.append('description', document.getElementById('editDescription').value);
 
-    // Adicionar imagens removidas ao FormData
-    imagesToRemove.forEach(image => formData.append('imagesToRemove', image));
+    formData.append('imagesToRemove', JSON.stringify(imagesToRemove));
 
     const imagesInput = document.getElementById('editImages');
     for (let i = 0; i < imagesInput.files.length; i++) {
@@ -106,6 +108,12 @@ function editMachine(id, name, tags, client, status, description, images) {
     $('#editMachineModal').modal('hide');
   };
 }
+
+
+
+
+
+
 
 document.addEventListener('DOMContentLoaded', function () {
   const badges = document.querySelectorAll('.status-badge');

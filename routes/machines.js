@@ -4,7 +4,6 @@ const machineController = require('../controllers/machineController');
 const multer = require('multer');
 const path = require('path');
 
-// Configuração do Multer para o diretório de uploads
 const uploadDir = path.join(__dirname, '../public/uploads');
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
@@ -16,7 +15,6 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage });
 
-// Rota para listar máquinas com paginação
 router.get('/views', async (req, res) => {
     try {
         const machines = await machineController.listMachines();
@@ -44,7 +42,6 @@ router.get('/views', async (req, res) => {
     }
 });
 
-// Rota para deletar máquina
 router.delete('/delete/:id', async (req, res) => {
     try {
         const machineId = req.params.id;
@@ -56,7 +53,6 @@ router.delete('/delete/:id', async (req, res) => {
     }
 });
 
-// Rota para buscar dados da máquina
 router.get('/:id', async (req, res) => {
     try {
         const machine = await machineController.getMachineById(req.params.id);
@@ -67,15 +63,13 @@ router.get('/:id', async (req, res) => {
     }
 });
 
-// Rota para atualizar dados da máquina
 router.put('/update/:id', upload.array('images', 10), async (req, res) => {
     const id = req.params.id;
-    const { name, client, tags, status, description } = req.body;
+    const { name, client, tags, status, description, imagesToRemove } = req.body;
 
-    // Log para verificar os dados recebidos
     console.log('Dados do Body:', { name, client, tags, status, description });
     console.log('Arquivos recebidos:', req.files);
-    console.log('Imagens a serem removidas:', req.body.imagesToRemove);
+    console.log('Imagens a serem removidas:', imagesToRemove);
 
     let updatedData = {
         name,
@@ -86,13 +80,15 @@ router.put('/update/:id', upload.array('images', 10), async (req, res) => {
     };
 
     try {
-        const machine = await machineController.updateMachine(id, updatedData, req.files, req.body.imagesToRemove);
+        const machine = await machineController.updateMachine(id, updatedData, req.files, JSON.parse(imagesToRemove));
         res.json({ message: 'Máquina atualizada com sucesso', machine });
     } catch (error) {
         console.error('Erro ao atualizar a máquina:', error);
         res.status(500).json({ message: 'Erro ao atualizar a máquina', error: error.message });
     }
 });
+
+
 
 
 module.exports = router;

@@ -60,46 +60,47 @@ exports.getMachineById = async (id) => {
 };
 
 // Função para atualizar dados da máquina
-const decodeURIPath = (path) => {
-    return decodeURIComponent(path.replace(/\+/g, ' '));
-};
-
 exports.updateMachine = async (id, updatedData, files, imagesToRemove) => {
     try {
-        let updatedMachineData = { ...updatedData };
-
-        if (files && files.length > 0) {
-            const images = files.map(file => path.join('/uploads', file.filename));
-            updatedMachineData.images = images.join(',');
-        }
-
-        console.log('Imagens a serem removidas no controlador:', imagesToRemove);
-
         const machine = await Machine.findByPk(id);
-        if (machine) {
-            if (imagesToRemove && imagesToRemove.length > 0) {
-                // Remover imagens do diretório
-                imagesToRemove.forEach(imagePath => {
-                    const decodedPath = decodeURIPath(imagePath);
-                    const filePath = path.join(__dirname, '../public', decodedPath);
-                    if (fs.existsSync(filePath)) {
-                        fs.unlinkSync(filePath);
-                    } else {
-                        console.warn(`Arquivo não encontrado para remoção: ${filePath}`);
-                    }
-                });
-            }
-
-            await machine.update(updatedMachineData);
-            return machine;
-        } else {
+        if (!machine) {
             throw new Error('Máquina não encontrada');
         }
+
+        // Verificação e tratamento de machine.images
+        let currentImages = [];
+        if (typeof machine.images === 'string') {
+            currentImages = machine.images.split(',');
+        } else if (Array.isArray(machine.images)) {
+            currentImages = machine.images;
+        }
+
+        console.log('Imagens atuais:', currentImages);
+
+        if (imagesToRemove && imagesToRemove.length > 0) {
+            currentImages = currentImages.filter(image => !imagesToRemove.includes(image));
+            console.log('Imagens após remoção:', currentImages);
+        }
+
+        const newImages = files ? files.map(file => `/uploads/${file.filename}`) : [];
+        const updatedImages = currentImages.concat(newImages).join(',');
+
+        await machine.update({
+            ...updatedData,
+            images: updatedImages,
+            updatedAt: new Date()
+        });
+
+        return machine;
     } catch (error) {
         console.error('Erro ao atualizar a máquina:', error);
         throw error;
     }
 };
+
+
+
+
 
 //estatisticas
 exports.getDashboardStats = async () => {
