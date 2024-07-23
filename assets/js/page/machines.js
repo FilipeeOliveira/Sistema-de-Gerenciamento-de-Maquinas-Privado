@@ -107,10 +107,6 @@ function editMachine(id, name, tags, client, status, description, images) {
   };
 }
 
-
-
-
-
 document.addEventListener('DOMContentLoaded', function () {
   const badges = document.querySelectorAll('.status-badge');
 
@@ -133,4 +129,3 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   });
 });
-
