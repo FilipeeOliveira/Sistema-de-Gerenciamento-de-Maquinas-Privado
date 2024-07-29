@@ -135,12 +135,16 @@ document.addEventListener('DOMContentLoaded', function () {
         statusBadge.classList.remove('badge-primary', 'badge-danger', 'badge-warning');
         statusBadge.classList.add('badge-success');
         break;
-      case 'Pendente':
+      case 'Em chamado':
         statusBadge.classList.remove('badge-primary', 'badge-danger', 'badge-success');
         statusBadge.classList.add('badge-warning');
         break;
+      case 'Em Estoque':
+        statusBadge.classList.remove('badge-primary', 'badge-danger', 'badge-success', 'badge-warning');
+        statusBadge.classList.add('badge-brown');
+        break;
       default:
-        statusBadge.classList.remove('badge-danger', 'badge-success', 'badge-warning');
+        statusBadge.classList.remove('badge-danger', 'badge-success', 'badge-warning', 'badge-brown');
         statusBadge.classList.add('badge-primary');
         break;
     }
