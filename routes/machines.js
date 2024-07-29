@@ -15,7 +15,7 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage });
 
-router.get('/views', async (req, res) => {
+/* router.get('/views', async (req, res) => {
     try {
         const machines = await machineController.listMachines();
         const pageSize = 10;
@@ -35,6 +35,39 @@ router.get('/views', async (req, res) => {
             machines: machinesOnPage,
             currentPage: currentPage,
             totalPages: totalPages
+        });
+    } catch (err) {
+        console.error('Error fetching machines:', err);
+        res.status(500).send('Erro ao buscar máquinas');
+    }
+}); */
+
+router.get('/views', async (req, res) => {
+    try {
+        const { status } = req.query;
+        const machines = await machineController.listMachines(status);
+        const pageSize = 10;
+        const currentPage = parseInt(req.query.page) || 1;
+
+        const startIndex = (currentPage - 1) * pageSize;
+        const endIndex = startIndex + pageSize;
+        const machinesOnPage = machines.slice(startIndex, endIndex);
+
+        const totalPages = Math.ceil(machines.length / pageSize);
+
+        // Obter contagem de cada status
+        const counts = await machineController.getDashboardStats();
+
+        res.render('pages/machines', {
+            title: 'Máquinas',
+            site_name: 'Geral - Conservação e Limpeza',
+            version: '1.0',
+            year: new Date().getFullYear(),
+            machines: machinesOnPage,
+            currentPage: currentPage,
+            totalPages: totalPages,
+            counts: counts,
+            filterStatus: status || ''
         });
     } catch (err) {
         console.error('Error fetching machines:', err);
