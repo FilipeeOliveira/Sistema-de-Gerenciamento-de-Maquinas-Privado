@@ -1,6 +1,6 @@
 <% const bodyContent=`<section class="section">
   <div class="section-header">
-    <h1>Máquinas Cadastradas</h1>
+    <h1>Cadastros</h1>
     <div class="section-header-button">
       <a href="features-post-create.html" class="btn btn-primary">Cadastrar Máquina</a>
     </div>
@@ -11,6 +11,10 @@
     </div>
   </div>
   <div class="section-body">
+    <h2 class="section-title">Máquinas Cadastradas</h2>
+    <p class="section-lead">
+      Você pode gerenciar todos os cadastros, como edição, exclusão e muito mais.
+    </p>
 
     <div class="row">
       <div class="col-12">
@@ -18,27 +22,16 @@
           <div class="card-body">
             <ul class="nav nav-pills">
               <li class="nav-item">
-                <a class="nav-link ${!filterStatus ? 'active' : ''}" href="/machines/views">Todos <span
-                    class="badge badge-white">${counts.totalCount}</span></a>
+                <a class="nav-link active" href="#">Todos <span class="badge badge-white">5</span></a>
               </li>
               <li class="nav-item">
-                <a class="nav-link ${filterStatus === 'Em chamado' ? 'active' : ''}"
-                  href="/machines/views?status=Em chamado">Em chamado <span
-                    class="badge badge-warning">${counts.pendingCount}</span></a>
+                <a class="nav-link" href="#">Rascunho <span class="badge badge-primary">1</span></a>
               </li>
               <li class="nav-item">
-                <a class="nav-link ${filterStatus === 'Em Uso' ? 'active' : ''}" href="/machines/views?status=Em Uso">Em
-                  Uso <span class="badge badge-success">${counts.inUseCount}</span></a>
+                <a class="nav-link" href="#">Pending <span class="badge badge-primary">1</span></a>
               </li>
               <li class="nav-item">
-                <a class="nav-link ${filterStatus === 'Em Manutenção' ? 'active' : ''}"
-                  href="/machines/views?status=Em Manutenção">Em Manutenção <span
-                    class="badge badge-danger">${counts.maintenanceCount}</span></a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link ${filterStatus === 'Em estoque' ? 'active' : ''}"
-                  href="/machines/views?status=Em estoque">Em estoque <span
-                    class="badge badge-brown">${counts.maintenanceCount}</span></a>
+                <a class="nav-link" href="#">Trash <span class="badge badge-primary">0</span></a>
               </li>
             </ul>
           </div>
@@ -131,7 +124,6 @@
                   `).join('')}
                 </tbody>
               </table>
-              </table>
             </div>
 
             <div class="float-right">
@@ -187,8 +179,7 @@
               <select class="form-control" id="editStatus" name="status" required>
                 <option value="Em Manutenção">Em Manutenção</option>
                 <option value="Em Uso">Em Uso</option>
-                <option value="Em chamado">Em chamado</option>
-                <option value="Em estoque">Em estoque</option>
+                <option value="Pendente">Pendente</option>
               </select>
             </div>
 
