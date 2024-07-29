@@ -18,29 +18,35 @@ const upload = multer({ storage });
 router.get('/views', async (req, res) => {
     try {
         const search = req.query.search || '';
+        const status = req.query.status || '';
         const currentPage = parseInt(req.query.page) || 1;
         const pageSize = 10;
         const offset = (currentPage - 1) * pageSize;
 
-        const { machines, count } = await machineController.searchMachines(search, pageSize, offset);
+        const { machines, count } = await machineController.searchAndFilterMachines(search, status, pageSize, offset);
 
         const totalPages = Math.ceil(count / pageSize);
 
+        const counts = await machineController.getDashboardStats();
+
         res.render('pages/machines', {
-            title: 'Posts',
+            title: 'Máquinas',
             site_name: 'Geral - Conservação e Limpeza',
             version: '1.0',
             year: new Date().getFullYear(),
-            machines,
-            currentPage,
-            totalPages,
-            search
+            machines: machines,
+            currentPage: currentPage,
+            totalPages: totalPages,
+            counts: counts,
+            search: search,
+            filterStatus: status
         });
     } catch (err) {
         console.error('Error fetching machines:', err);
         res.status(500).send('Erro ao buscar máquinas');
     }
 });
+
 
 router.delete('/delete/:id', async (req, res) => {
     try {

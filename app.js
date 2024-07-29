@@ -49,6 +49,8 @@ app.use('/auth-register', require('./routes/auth-register'));
 app.use('/auth-forgot-password', require('./routes/auth-forgot-password'));
 app.use('/auth-reset-password', require('./routes/auth-reset-password'));
 
+
+//teste funcional
 app.get('/generate-docx', (req, res) => {
     try {
         const simulatedData = {
