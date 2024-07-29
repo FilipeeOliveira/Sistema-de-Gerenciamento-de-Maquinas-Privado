@@ -37,7 +37,6 @@ exports.listMachines = async (status) => {
     }
 };
 
-
 exports.deleteMachine = async (id) => {
     try {
         const machine = await Machine.findByPk(id);
@@ -136,7 +135,4 @@ exports.getDashboardStats = async () => {
         throw err;
     }
 };
-
-
-
 
