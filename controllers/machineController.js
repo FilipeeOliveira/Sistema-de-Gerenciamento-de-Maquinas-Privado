@@ -3,6 +3,25 @@ const fs = require('fs');
 const { Op } = require('sequelize');
 const path = require('path');
 
+exports.searchMachines = async (search, limit, offset) => {
+    try {
+        const { count, rows: machines } = await Machine.findAndCountAll({
+            where: {
+                [Op.or]: [
+                    { name: { [Op.like]: `%${search}%` } },
+                    { tags: { [Op.like]: `%${search}%` } }
+                ]
+            },
+            limit,
+            offset
+        });
+
+        return { machines, count };
+    } catch (error) {
+        console.error('Erro ao buscar as máquinas:', error);
+        throw error;
+    }
+};
 
 exports.listMachines = async (status) => {
     try {
