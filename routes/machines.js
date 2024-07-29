@@ -28,7 +28,6 @@ router.get('/views', async (req, res) => {
 
         const totalPages = Math.ceil(machines.length / pageSize);
 
-        // Obter contagem de cada status
         const counts = await machineController.getDashboardStats();
 
         res.render('pages/machines', {
