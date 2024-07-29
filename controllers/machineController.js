@@ -38,7 +38,6 @@ exports.listMachines = async (status) => {
 };
 
 
-// Função para deletar máquina
 exports.deleteMachine = async (id) => {
     try {
         const machine = await Machine.findByPk(id);
