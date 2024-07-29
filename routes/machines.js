@@ -17,16 +17,15 @@ const upload = multer({ storage });
 
 router.get('/views', async (req, res) => {
     try {
-        const { status } = req.query;
-        const machines = await machineController.listMachines(status);
-        const pageSize = 10;
+        const search = req.query.search || '';
+        const status = req.query.status || '';
         const currentPage = parseInt(req.query.page) || 1;
+        const pageSize = 10;
+        const offset = (currentPage - 1) * pageSize;
 
-        const startIndex = (currentPage - 1) * pageSize;
-        const endIndex = startIndex + pageSize;
-        const machinesOnPage = machines.slice(startIndex, endIndex);
+        const { machines, count } = await machineController.searchAndFilterMachines(search, status, pageSize, offset);
 
-        const totalPages = Math.ceil(machines.length / pageSize);
+        const totalPages = Math.ceil(count / pageSize);
 
         const counts = await machineController.getDashboardStats();
 
@@ -35,11 +34,12 @@ router.get('/views', async (req, res) => {
             site_name: 'Geral - Conservação e Limpeza',
             version: '1.0',
             year: new Date().getFullYear(),
-            machines: machinesOnPage,
+            machines: machines,
             currentPage: currentPage,
             totalPages: totalPages,
             counts: counts,
-            filterStatus: status || ''
+            search: search,
+            filterStatus: status
         });
     } catch (err) {
         console.error('Error fetching machines:', err);
