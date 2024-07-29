@@ -11,7 +11,7 @@ $("#setting-form").submit(function () {
   save_button.addClass('btn-progress');
   output_status.html('');
 
-  console.log()
+  console.log
   setTimeout(function () {
     card_progress.dismiss(function () {
       $('html, body').animate({

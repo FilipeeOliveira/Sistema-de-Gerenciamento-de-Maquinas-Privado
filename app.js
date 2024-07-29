@@ -7,6 +7,9 @@ const path = require('path');
 const session = require('express-session');
 const SequelizeStore = require('connect-session-sequelize')(session.Store);
 const authRoutes = require('./routes/auth');
+const fs = require('fs');
+const PizZip = require('pizzip');
+const Docxtemplater = require('docxtemplater');
 
 const app = express();
 
@@ -45,6 +48,41 @@ app.use('/machines', require('./routes/machines'));
 app.use('/auth-register', require('./routes/auth-register'));
 app.use('/auth-forgot-password', require('./routes/auth-forgot-password'));
 app.use('/auth-reset-password', require('./routes/auth-reset-password'));
+
+// Rota para gerar o documento Word
+app.get('/generate-docx', (req, res) => {
+    try {
+        // Dados simulados
+        const simulatedData = {
+            name: 'João Silva'
+        };
+
+        // Caminho para o arquivo .docx (o modelo)
+        const templatePath = path.join(__dirname, 'Documento7.docx');
+        const content = fs.readFileSync(templatePath, 'binary');
+
+        // Configure o Docxtemplater
+        const zip = new PizZip(content);
+        const doc = new Docxtemplater(zip);
+
+        // Preencha o documento com os dados simulados
+        doc.setData(simulatedData);
+        doc.render();
+
+        // Obtenha o documento preenchido como buffer
+        const buf = doc.getZip().generate({ type: 'nodebuffer' });
+
+        // Envie o documento como resposta
+        res.setHeader('Content-Disposition', 'attachment; filename=documento-preenchido.docx');
+        res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document');
+        res.send(buf);
+
+    } catch (error) {
+        console.error('Erro ao gerar o documento:', error);
+        res.status(500).send('Erro ao gerar o documento');
+    }
+});
+
 
 sequelize.sync()
     .then(() => {

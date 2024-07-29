@@ -40,7 +40,7 @@ function editMachine(id, name, tags, client, status, description, images) {
   const imagePreviewContainer = document.getElementById('editImagePreview');
   imagePreviewContainer.innerHTML = '';
 
-  imagesToRemove = []; // Reset the imagesToRemove array
+  imagesToRemove = [];
 
   if (images) {
     images.split(',').forEach(imagePath => {

@@ -17,24 +17,24 @@ const upload = multer({ storage });
 
 router.get('/views', async (req, res) => {
     try {
-        const machines = await machineController.listMachines();
-        const pageSize = 10;
+        const search = req.query.search || '';
         const currentPage = parseInt(req.query.page) || 1;
+        const pageSize = 10;
+        const offset = (currentPage - 1) * pageSize;
 
-        const startIndex = (currentPage - 1) * pageSize;
-        const endIndex = startIndex + pageSize;
-        const machinesOnPage = machines.slice(startIndex, endIndex);
+        const { machines, count } = await machineController.searchMachines(search, pageSize, offset);
 
-        const totalPages = Math.ceil(machines.length / pageSize);
+        const totalPages = Math.ceil(count / pageSize);
 
         res.render('pages/machines', {
             title: 'Posts',
             site_name: 'Geral - Conservação e Limpeza',
             version: '1.0',
             year: new Date().getFullYear(),
-            machines: machinesOnPage,
-            currentPage: currentPage,
-            totalPages: totalPages
+            machines,
+            currentPage,
+            totalPages,
+            search
         });
     } catch (err) {
         console.error('Error fetching machines:', err);
@@ -87,8 +87,5 @@ router.put('/update/:id', upload.array('images', 10), async (req, res) => {
         res.status(500).json({ message: 'Erro ao atualizar a máquina', error: error.message });
     }
 });
-
-
-
 
 module.exports = router;

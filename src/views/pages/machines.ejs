@@ -55,9 +55,9 @@
               </select>
             </div>
             <div class="float-right">
-              <form>
+              <form method="GET" action="/machines/views">
                 <div class="input-group">
-                  <input type="text" class="form-control" placeholder="Search" />
+                  <input type="text" class="form-control" name="search" placeholder="Search" value="${search || ''}" />
                   <div class="input-group-append">
                     <button class="btn btn-primary">
                       <i class="fas fa-search"></i>
@@ -99,9 +99,6 @@
                     </td>
                     <td title="${machine.name}">${machine.name}
                       <div class="table-links">
-                        <!-- <a href="#" title="Ver">
-                          <i class="fas fa-eye"></i> Vê 
-                        </a> -->
                         <a href="#" title="Editar" data-toggle="modal" data-target="#editMachineModal"
                           onclick="editMachine('${machine.id}', '${machine.name}', '${machine.tags}', '${machine.client}', '${machine.status}', '${machine.description}', '${machine.images}')">
                           <i class="fas fa-edit"></i>
@@ -109,7 +106,6 @@
                         <a href="#" class="text-danger delete-machine" data-id="${machine.id}" title="Deletar">
                           <i class="fas fa-trash-alt"></i>
                         </a>
-
                       </div>
                     </td>
                     <td>${machine.tags}</td>
@@ -133,16 +129,10 @@
             <div class="float-right">
               <nav>
                 <ul class="pagination">
-                  ${Array.from({ length: totalPages }, (_, i) => `
-                  ${currentPage === i + 1 ? `
-                  <li class="page-item active">
-                    <a class="page-link" href="#">${i + 1}</a>
+                  ${Array.from({ length: totalPages }, (_, i) => i + 1).map(page => `
+                  <li class="page-item ${currentPage === page ? 'active' : ''}">
+                    <a class="page-link" href="/machines/views?page=${page}&search=${search || ''}">${page}</a>
                   </li>
-                  ` : `
-                  <li class="page-item">
-                    <a class="page-link" href="/machines/views?page=${i + 1}">${i + 1}</a>
-                  </li>
-                  `}
                   `).join('')}
                 </ul>
               </nav>
@@ -204,12 +194,9 @@
               <input type="file" class="form-control-file" id="editImages" name="images" multiple>
             </div>
 
-            <!-- Preview de Imagens -->
             <div id="editImagePreview" class="row md-3">
-              <!-- Aqui serão exibidas as imagens -->
             </div>
 
-            <!-- Botão de Envio -->
             <button type="submit" class="btn btn-primary">Salvar Alterações</button>
           </form>
         </div>

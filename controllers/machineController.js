@@ -1,8 +1,28 @@
 const Machine = require('../models/machine');
 const fs = require('fs');
+const { Op } = require('sequelize');
 const path = require('path');
 
-// Função para listar máquinas
+exports.searchMachines = async (search, limit, offset) => {
+    try {
+        const { count, rows: machines } = await Machine.findAndCountAll({
+            where: {
+                [Op.or]: [
+                    { name: { [Op.like]: `%${search}%` } },
+                    { tags: { [Op.like]: `%${search}%` } }
+                ]
+            },
+            limit,
+            offset
+        });
+
+        return { machines, count };
+    } catch (error) {
+        console.error('Erro ao buscar as máquinas:', error);
+        throw error;
+    }
+};
+
 exports.listMachines = async () => {
     try {
         const machines = await Machine.findAll({
@@ -15,7 +35,6 @@ exports.listMachines = async () => {
     }
 };
 
-// Função para deletar máquina
 exports.deleteMachine = async (id) => {
     try {
         const machine = await Machine.findByPk(id);
@@ -24,7 +43,6 @@ exports.deleteMachine = async (id) => {
             throw new Error('Máquina não encontrada');
         }
 
-        // Remover imagens do diretório
         if (machine.images && machine.images.length > 0) {
             machine.images.forEach(imagePath => {
                 const filePath = path.join(__dirname, '../public', imagePath);
@@ -36,7 +54,6 @@ exports.deleteMachine = async (id) => {
             });
         }
 
-        // Remover a máquina do banco de dados
         await Machine.destroy({ where: { id } });
     } catch (err) {
         console.error('Erro ao deletar a máquina:', err);
@@ -44,7 +61,6 @@ exports.deleteMachine = async (id) => {
     }
 };
 
-// Função para buscar dados da máquina
 exports.getMachineById = async (id) => {
     try {
         const machine = await Machine.findByPk(id);
@@ -59,7 +75,6 @@ exports.getMachineById = async (id) => {
     }
 };
 
-// Função para atualizar dados da máquina
 exports.updateMachine = async (id, updatedData, files, imagesToRemove) => {
     try {
         const machine = await Machine.findByPk(id);
@@ -67,7 +82,6 @@ exports.updateMachine = async (id, updatedData, files, imagesToRemove) => {
             throw new Error('Máquina não encontrada');
         }
 
-        // Verificação e tratamento de machine.images
         let currentImages = [];
         if (typeof machine.images === 'string') {
             currentImages = machine.images.split(',');
@@ -102,7 +116,6 @@ exports.updateMachine = async (id, updatedData, files, imagesToRemove) => {
 
 
 
-//estatisticas
 exports.getDashboardStats = async () => {
     try {
         const pendingCount = await Machine.count({ where: { status: 'Pendente' } });
