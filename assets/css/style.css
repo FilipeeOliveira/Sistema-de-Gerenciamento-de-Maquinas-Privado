@@ -1362,6 +1362,11 @@ table tr:hover .table-links {
   background-color: #191d21;
 }
 
+.badge.badge-brown {
+  background-color: #5a2525; /* Cor marrom */
+  color: white;
+}
+
 h1 .badge {
   font-size: 24px;
   padding: 16px 21px;

@@ -3,29 +3,12 @@ const fs = require('fs');
 const { Op } = require('sequelize');
 const path = require('path');
 
-exports.searchMachines = async (search, limit, offset) => {
-    try {
-        const { count, rows: machines } = await Machine.findAndCountAll({
-            where: {
-                [Op.or]: [
-                    { name: { [Op.like]: `%${search}%` } },
-                    { tags: { [Op.like]: `%${search}%` } }
-                ]
-            },
-            limit,
-            offset
-        });
 
-        return { machines, count };
-    } catch (error) {
-        console.error('Erro ao buscar as máquinas:', error);
-        throw error;
-    }
-};
-
-exports.listMachines = async () => {
+exports.listMachines = async (status) => {
     try {
+        const whereClause = status ? { status } : {};
         const machines = await Machine.findAll({
+            where: whereClause,
             order: [['createdAt', 'DESC']]
         });
         return machines;
@@ -35,6 +18,8 @@ exports.listMachines = async () => {
     }
 };
 
+
+// Função para deletar máquina
 exports.deleteMachine = async (id) => {
     try {
         const machine = await Machine.findByPk(id);
@@ -114,23 +99,26 @@ exports.updateMachine = async (id, updatedData, files, imagesToRemove) => {
 
 
 
-
-
 exports.getDashboardStats = async () => {
     try {
-        const pendingCount = await Machine.count({ where: { status: 'Pendente' } });
+        const pendingCount = await Machine.count({ where: { status: 'Em chamado' } });
         const maintenanceCount = await Machine.count({ where: { status: 'Em Manutenção' } });
         const inUseCount = await Machine.count({ where: { status: 'Em Uso' } });
+        const inStockCount = await Machine.count({ where: { status: 'Em estoque' } });
 
         return {
             pendingCount,
             maintenanceCount,
             inUseCount,
-            totalCount: pendingCount + maintenanceCount + inUseCount
+            inStockCount,
+            totalCount: pendingCount + maintenanceCount + inUseCount + inUseCount
         };
     } catch (err) {
         console.error('Erro ao obter estatísticas das máquinas:', err);
         throw err;
     }
 };
+
+
+
 

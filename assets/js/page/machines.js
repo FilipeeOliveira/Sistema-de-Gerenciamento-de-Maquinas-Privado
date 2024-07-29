@@ -115,10 +115,6 @@ function editMachine(id, name, tags, client, status, description, images) {
 
 
 
-
-
-
-
 document.addEventListener('DOMContentLoaded', function () {
   const badges = document.querySelectorAll('.status-badge');
 
@@ -132,8 +128,11 @@ document.addEventListener('DOMContentLoaded', function () {
       case 'Em Uso':
         badge.classList.add('badge-success'); // Verde
         break;
-      case 'Pendente':
+      case 'Em chamado':
         badge.classList.add('badge-warning'); // Amarelo
+        break;
+      case 'Em estoque':
+        badge.classList.add('badge-brown'); // Amarelo
         break;
       default:
         badge.classList.add('badge-primary'); // Azul (ou outra cor padrão)
@@ -141,4 +140,3 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   });
 });
-
