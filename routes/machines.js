@@ -86,34 +86,35 @@ router.put('/update/:id', upload.array('images', 10), async (req, res) => {
     };
 
     try {
-        // Atualiza a máquina
-        const updatedMachine = await machineController.updateMachine(id, updatedData, req.files, JSON.parse(imagesToRemove));
+        const machine = await machineController.updateMachine(id, updatedData, req.files, JSON.parse(imagesToRemove));
+        res.json({ message: 'Máquina atualizada com sucesso', machine });
 
-        // Verifica se a atualização foi bem-sucedida
-        if (updatedMachine) {
-            if (status === 'Em chamado') {
-                // Adiciona um atraso antes de gerar o documento
-                setTimeout(async () => {
-                    try {
-                        const documentBuffer = await machineController.generateDocument(updatedMachine);
-
-                        // Envie o documento como resposta
-                        res.setHeader('Content-Disposition', `attachment; filename=${updatedMachine.name}-detalhes.docx`);
-                        res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document');
-                        res.end(documentBuffer);
-                    } catch (docError) {
-                        console.error('Erro ao gerar o documento:', docError);
-                        if (!res.headersSent) {
-                            res.status(500).json({ message: 'Erro ao gerar documento', error: docError.message });
-                        }
+        if (status === 'Em chamado') {
+            process.nextTick(async () => {
+                try {
+                    const documentBuffer = await machineController.generateDocument(machine);
+                    const docResponse = await fetch(`/machines/generate-document/${id}`);
+                    if (docResponse.ok) {
+                        const contentDisposition = docResponse.headers.get('Content-Disposition');
+                        const blob = await docResponse.blob();
+                        const url = window.URL.createObjectURL(blob);
+                        const link = document.createElement('a');
+                        link.href = url;
+                        link.download = contentDisposition.split('filename=')[1];
+                        document.body.appendChild(link);
+                        link.click();
+                        link.remove();
+                    } else {
+                        console.error('Erro ao gerar o documento');
+                        alert('Erro ao gerar o documento');
                     }
-                }, 1000); // Atraso de 1 segundo
-            } else {
-                // Retorne a resposta JSON para outras atualizações
-                res.json({ message: 'Máquina atualizada com sucesso', machine: updatedMachine });
-            }
-        } else {
-            res.status(500).json({ message: 'Erro ao atualizar a máquina' });
+                } catch (docError) {
+                    console.error('Erro ao gerar o documento:', docError);
+                    if (!res.headersSent) {
+                        res.status(500).json({ message: 'Erro ao gerar documento', error: docError.message });
+                    }
+                }
+            });
         }
     } catch (error) {
         console.error('Erro ao atualizar a máquina:', error);
@@ -122,9 +123,6 @@ router.put('/update/:id', upload.array('images', 10), async (req, res) => {
         }
     }
 });
-
-
-
 
 router.get('/generate-document/:id', async (req, res) => {
     const id = req.params.id;
@@ -154,6 +152,7 @@ router.get('/generate-document/:id', async (req, res) => {
         }
     }
 });
+
 
 
 

@@ -165,6 +165,7 @@ exports.updateMachineStatus = async (id, status, res) => {
 };
 
 
+
 exports.generateDocument = async (machine) => {
     try {
         const data = {

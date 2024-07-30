@@ -49,36 +49,6 @@ app.use('/auth-register', require('./routes/auth-register'));
 app.use('/auth-forgot-password', require('./routes/auth-forgot-password'));
 app.use('/auth-reset-password', require('./routes/auth-reset-password'));
 
-
-//teste funcional   
-app.get('/generate-docx', (req, res) => {
-    try {
-        const simulatedData = {
-            name: 'João Silva'
-        };
-
-        const templatePath = path.join(__dirname, 'ModeloParaAssinatura.docx');
-        const content = fs.readFileSync(templatePath, 'binary');
-
-        const zip = new PizZip(content);
-        const doc = new Docxtemplater(zip);
-
-        doc.setData(simulatedData);
-        doc.render();
-
-        const buf = doc.getZip().generate({ type: 'nodebuffer' });
-
-        res.setHeader('Content-Disposition', 'attachment; filename=documento-preenchido.docx');
-        res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document');
-        res.send(buf);
-
-    } catch (error) {
-        console.error('Erro ao gerar o documento:', error);
-        res.status(500).send('Erro ao gerar o documento');
-    }
-});
-
-
 sequelize.sync()
     .then(() => {
         console.log('Database sincronizado');
