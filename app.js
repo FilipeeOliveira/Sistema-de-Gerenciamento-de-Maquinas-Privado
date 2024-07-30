@@ -50,14 +50,14 @@ app.use('/auth-forgot-password', require('./routes/auth-forgot-password'));
 app.use('/auth-reset-password', require('./routes/auth-reset-password'));
 
 
-//teste funcional
+//teste funcional   
 app.get('/generate-docx', (req, res) => {
     try {
         const simulatedData = {
             name: 'João Silva'
         };
 
-        const templatePath = path.join(__dirname, 'Documento7.docx');
+        const templatePath = path.join(__dirname, 'ModeloParaAssinatura.docx');
         const content = fs.readFileSync(templatePath, 'binary');
 
         const zip = new PizZip(content);

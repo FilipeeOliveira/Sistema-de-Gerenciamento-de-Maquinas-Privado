@@ -1,8 +1,9 @@
 const Machine = require('../models/machine');
 const fs = require('fs');
-const { Op } = require('sequelize');
 const path = require('path');
-
+const PizZip = require('pizzip');
+const Docxtemplater = require('docxtemplater');
+const { Op } = require('sequelize');
 
 exports.searchAndFilterMachines = async (search, status, limit, offset) => {
     try {
@@ -29,7 +30,6 @@ exports.searchAndFilterMachines = async (search, status, limit, offset) => {
         throw error;
     }
 };
-
 
 exports.listMachines = async (status) => {
     try {
@@ -122,8 +122,6 @@ exports.updateMachine = async (id, updatedData, files, imagesToRemove) => {
     }
 };
 
-
-
 exports.getDashboardStats = async () => {
     try {
         const pendingCount = await Machine.count({ where: { status: 'Em chamado' } });
@@ -136,11 +134,62 @@ exports.getDashboardStats = async () => {
             maintenanceCount,
             inUseCount,
             inStockCount,
-            totalCount: pendingCount + maintenanceCount + inUseCount + inUseCount
+            totalCount: pendingCount + maintenanceCount + inUseCount + inStockCount
         };
     } catch (err) {
         console.error('Erro ao obter estatísticas das máquinas:', err);
         throw err;
     }
 };
+
+exports.updateMachineStatus = async (id, status, res) => {
+    try {
+        const machine = await Machine.findByPk(id);
+        if (!machine) {
+            throw new Error('Máquina não encontrada');
+        }
+
+        console.log(`Atualizando o status da máquina com ID: ${id} para: ${status}`);
+        await machine.update({ status });
+        console.log(`Status da máquina atualizado para: ${status}`);
+
+        if (status === 'Em chamado') {
+            console.log('Gerando documento para o status "Em chamado"');
+            const documentBuffer = await exports.generateDocument(machine);
+            return documentBuffer;
+        }
+    } catch (error) {
+        console.error('Erro ao atualizar o status da máquina:', error);
+        throw error;
+    }
+};
+
+
+exports.generateDocument = async (machine) => {
+    try {
+        const data = {
+            client: machine.client,
+            tags: machine.tags,
+            description: machine.description
+        };
+
+        const templatePath = path.join(__dirname, '../docs/ModeloParaAssinatura.docx');
+        if (!fs.existsSync(templatePath)) {
+            throw new Error('Template de documento não encontrado');
+        }
+
+        const content = fs.readFileSync(templatePath, 'binary');
+        const zip = new PizZip(content);
+        const doc = new Docxtemplater(zip);
+
+        doc.setData(data);
+        doc.render();
+
+        return doc.getZip().generate({ type: 'nodebuffer' });
+    } catch (error) {
+        console.error('Erro ao gerar documento:', error);
+        throw error;
+    }
+};
+
 

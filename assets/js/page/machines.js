@@ -79,8 +79,10 @@ function editMachine(id, name, tags, client, status, description, images) {
     formData.append('imagesToRemove', JSON.stringify(imagesToRemove));
 
     const imagesInput = document.getElementById('editImages');
-    for (let i = 0; i < imagesInput.files.length; i++) {
-      formData.append('images', imagesInput.files[i]);
+    if (imagesInput) {
+      for (let i = 0; i < imagesInput.files.length; i++) {
+        formData.append('images', imagesInput.files[i]);
+      }
     }
 
     console.log('Dados do FormData:', Array.from(formData.entries()));
@@ -92,10 +94,22 @@ function editMachine(id, name, tags, client, status, description, images) {
       });
 
       if (response.ok) {
-        const result = await response.json();
-        console.log(result.message);
-        alert('Máquina atualizada com sucesso');
-        location.reload();
+        const contentDisposition = response.headers.get('Content-Disposition');
+        if (contentDisposition && contentDisposition.includes('attachment')) {
+          const blob = await response.blob();
+          const url = window.URL.createObjectURL(blob);
+          const link = document.createElement('a');
+          link.href = url;
+          link.download = contentDisposition.split('filename=')[1];
+          document.body.appendChild(link);
+          link.click();
+          link.remove();
+        } else {
+          const result = await response.json();
+          console.log(result.message);
+          alert('Máquina atualizada com sucesso');
+          location.reload();
+        }
       } else {
         console.error('Erro ao atualizar a máquina');
         alert('Erro ao atualizar a máquina');
@@ -108,6 +122,7 @@ function editMachine(id, name, tags, client, status, description, images) {
     $('#editMachineModal').modal('hide');
   };
 }
+
 
 
 

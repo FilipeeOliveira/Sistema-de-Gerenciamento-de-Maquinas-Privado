@@ -87,11 +87,36 @@ router.put('/update/:id', upload.array('images', 10), async (req, res) => {
 
     try {
         const machine = await machineController.updateMachine(id, updatedData, req.files, JSON.parse(imagesToRemove));
-        res.json({ message: 'Máquina atualizada com sucesso', machine });
+
+        if (status === 'Em chamado') {
+            try {
+                const documentBuffer = await machineController.generateDocument(machine);
+                if (!res.headersSent) {
+                    res.setHeader('Content-Disposition', `attachment; filename=${machine.name}-detalhes.docx`);
+                    res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document');
+                    res.end(documentBuffer);
+                }
+            } catch (docError) {
+                console.error('Erro ao gerar o documento:', docError);
+                if (!res.headersSent) {
+                    res.status(500).json({ message: 'Erro ao gerar documento', error: docError.message });
+                }
+            }
+        } else {
+            if (!res.headersSent) {
+                res.json({ message: 'Máquina atualizada com sucesso', machine });
+            }
+        }
     } catch (error) {
         console.error('Erro ao atualizar a máquina:', error);
-        res.status(500).json({ message: 'Erro ao atualizar a máquina', error: error.message });
+        if (!res.headersSent) {
+            res.status(500).json({ message: 'Erro ao atualizar a máquina', error: error.message });
+        }
     }
 });
+
+
+
+
 
 module.exports = router;
