@@ -94,22 +94,32 @@ function editMachine(id, name, tags, client, status, description, images) {
       });
 
       if (response.ok) {
-        const contentDisposition = response.headers.get('Content-Disposition');
-        if (contentDisposition && contentDisposition.includes('attachment')) {
-          const blob = await response.blob();
-          const url = window.URL.createObjectURL(blob);
-          const link = document.createElement('a');
-          link.href = url;
-          link.download = contentDisposition.split('filename=')[1];
-          document.body.appendChild(link);
-          link.click();
-          link.remove();
+        const result = await response.json();
+        console.log(result.message);
+
+        // Se o status for 'Em chamado', gere o documento em uma nova requisição
+        if (document.getElementById('editStatus').value === 'Em chamado') {
+          // Gere o documento em uma nova requisição
+          const docResponse = await fetch(`/machines/generate-document/${id}`);
+          if (docResponse.ok) {
+            const contentDisposition = docResponse.headers.get('Content-Disposition');
+            const blob = await docResponse.blob();
+            const url = window.URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = contentDisposition.split('filename=')[1];
+            document.body.appendChild(link);
+            link.click();
+            link.remove();
+          } else {
+            console.error('Erro ao gerar o documento');
+            alert('Erro ao gerar o documento');
+          }
         } else {
-          const result = await response.json();
-          console.log(result.message);
           alert('Máquina atualizada com sucesso');
-          location.reload();
         }
+
+        location.reload();
       } else {
         console.error('Erro ao atualizar a máquina');
         alert('Erro ao atualizar a máquina');
