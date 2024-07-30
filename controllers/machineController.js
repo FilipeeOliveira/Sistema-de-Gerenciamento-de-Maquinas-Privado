@@ -20,7 +20,8 @@ exports.searchAndFilterMachines = async (search, status, limit, offset) => {
                 ]
             },
             limit,
-            offset
+            offset,
+            order: [['createdAt', 'DESC']] // Adicione a ordenação aqui
         });
 
         return { machines, count };
@@ -30,8 +31,8 @@ exports.searchAndFilterMachines = async (search, status, limit, offset) => {
     }
 };
 
-
-exports.listMachines = async (status) => {
+//DEIXEI COMENTADO PARA CASO TENHA UM BUG NO SISTEMA DE MAQUINAS
+/* exports.listMachines = async (status) => {
     try {
         const whereClause = status ? { status } : {};
         const machines = await Machine.findAll({
@@ -43,7 +44,7 @@ exports.listMachines = async (status) => {
         console.error('Erro ao encontrar as máquinas:', err);
         throw err;
     }
-};
+}; */
 
 exports.deleteMachine = async (id) => {
     try {
