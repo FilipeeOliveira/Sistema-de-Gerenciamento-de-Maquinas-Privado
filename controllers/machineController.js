@@ -136,7 +136,7 @@ exports.getDashboardStats = async () => {
             maintenanceCount,
             inUseCount,
             inStockCount,
-            totalCount: pendingCount + maintenanceCount + inUseCount + inUseCount
+            totalCount: pendingCount + maintenanceCount + inUseCount + inUseCount + inStockCount
         };
     } catch (err) {
         console.error('Erro ao obter estatísticas das máquinas:', err);

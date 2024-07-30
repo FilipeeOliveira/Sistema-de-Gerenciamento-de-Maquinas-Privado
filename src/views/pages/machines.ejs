@@ -38,7 +38,7 @@
               <li class="nav-item">
                 <a class="nav-link ${filterStatus === 'Em estoque' ? 'active' : ''}"
                   href="/machines/views?status=Em estoque">Em estoque <span
-                    class="badge badge-brown">${counts.maintenanceCount}</span></a>
+                    class="badge badge-brown">${counts.inStockCount}</span></a>
               </li>
             </ul>
           </div>
@@ -99,8 +99,7 @@
                   <tr id="machine-row-${machine.id}">
                     <td>
                       <div class="custom-checkbox custom-control">
-                        <input type="checkbox" data-checkboxes="mygroup" class="custom-control-input"
-                          id="checkbox-${machine.id}" />
+                        <input type="checkbox" data-checkboxes="mygroup" class="custom-control-input" id="checkbox-${machine.id}" />
                         <label for="checkbox-${machine.id}" class="custom-control-label">&nbsp;</label>
                       </div>
                     </td>
@@ -112,6 +111,9 @@
                         </a>
                         <a href="#" class="text-danger delete-machine" data-id="${machine.id}" title="Deletar">
                           <i class="fas fa-trash-alt"></i>
+                        </a>
+                        <a href="/machines/logs/${machine.id}" title="Registro ou Log">
+                          <i class="fas fa-history"></i>
                         </a>
                       </div>
                     </td>
