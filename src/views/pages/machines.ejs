@@ -99,7 +99,8 @@
                   <tr id="machine-row-${machine.id}">
                     <td>
                       <div class="custom-checkbox custom-control">
-                        <input type="checkbox" data-checkboxes="mygroup" class="custom-control-input" id="checkbox-${machine.id}" />
+                        <input type="checkbox" data-checkboxes="mygroup" class="custom-control-input"
+                          id="checkbox-${machine.id}" />
                         <label for="checkbox-${machine.id}" class="custom-control-label">&nbsp;</label>
                       </div>
                     </td>
@@ -183,6 +184,8 @@
               <input type="text" class="form-control" id="editClient" name="client" required>
             </div>
 
+            <input type="hidden" id="machineStatus" value="Em Uso">
+
             <div class="form-group">
               <label for="editStatus">Status</label>
               <select class="form-control" id="editStatus" name="status" required>
@@ -214,7 +217,57 @@
     </div>
   </div>
 
-
+  <!-- Modal para Detalhes Adicionais -->
+  <div class="modal fade" id="additionalDetailsModal" tabindex="-1" aria-labelledby="additionalDetailsModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="additionalDetailsModalLabel">Detalhes Adicionais</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form id="additionalDetailsForm" enctype="multipart/form-data">
+            <input type="hidden" id="machineId" name="id">
+            <div class="form-group">
+              <label for="additionalDescription">Descrição</label>
+              <textarea class="form-control" id="additionalDescription" name="description" rows="3" required></textarea>
+            </div>
+            <div class="form-group">
+              <label for="partsList">Peças</label>
+              <div id="partsList">
+                <div class="row mb-2">
+                  <div class="col-md-5">
+                    <input type="text" class="form-control" name="parts[]" placeholder="Peça" required>
+                  </div>
+                  <div class="col-md-3">
+                    <input type="number" class="form-control" name="quantity[]" placeholder="Quantidade" required>
+                  </div>
+                  <div class="col-md-3">
+                    <input type="number" class="form-control" name="value[]" placeholder="Valor" required>
+                  </div>
+                  <div class="col-md-1">
+                    <button type="button" class="btn btn-success btn-sm add-part"><i class="fas fa-plus"></i></button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="additionalImages">Imagens</label>
+              <input type="file" class="form-control-file" id="additionalImages" name="evidence[]" multiple>
+            </div>
+            <div class="form-group">
+              <label>Valor Total das Peças</label>
+              <input type="text" class="form-control" id="totalValue" readonly>
+            </div>
+            <button type="submit" class="btn btn-primary">Salvar</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
 
   `;
   %>

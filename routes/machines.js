@@ -5,14 +5,22 @@ const multer = require('multer');
 const path = require('path');
 
 const uploadDir = path.join(__dirname, '../public/uploads');
+const evidenceDir = path.join(__dirname, '../public/evidence');
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
-        cb(null, uploadDir);
+        let targetDir;
+        if (file.fieldname === 'evidence') {
+            targetDir = evidenceDir;
+        } else {
+            targetDir = uploadDir;
+        }
+        cb(null, targetDir);
     },
     filename: (req, file, cb) => {
         cb(null, `${Date.now()} - ${file.originalname}`);
     }
 });
+
 const upload = multer({ storage });
 
 router.get('/views', async (req, res) => {
@@ -153,9 +161,26 @@ router.get('/generate-document/:id', async (req, res) => {
     }
 });
 
+router.post('/update-details', upload.array('evidence', 10), async (req, res) => {
+    try {
+        const { id, description, parts, quantity, value } = req.body;
 
+        const machine = await machineController.getMachineById(id);
+        if (!machine) {
+            return res.status(404).json({ message: 'Máquina não encontrada' });
+        }
 
+        if (machine.status !== 'Em uso') {
+            return res.status(400).json({ message: 'Os detalhes adicionais só podem ser atualizados para máquinas "Em uso"' });
+        }
 
+        const machineDetail = await machineController.updateAdditionalDetails(id, description, parts, quantity, value, req.files);
+        res.status(200).json({ message: 'Detalhes adicionais atualizados com sucesso.', machineDetail });
+    } catch (error) {
+        console.error('Erro ao salvar os detalhes adicionais:', error);
+        res.status(500).json({ message: 'Erro ao salvar os detalhes adicionais.', error: error.message });
+    }
+});
 
 
 

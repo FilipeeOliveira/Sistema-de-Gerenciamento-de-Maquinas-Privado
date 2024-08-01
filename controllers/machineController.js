@@ -1,9 +1,11 @@
 const Machine = require('../models/machine');
+const MachineDetail = require('../models/machineDetails');
 const fs = require('fs');
 const path = require('path');
 const PizZip = require('pizzip');
 const Docxtemplater = require('docxtemplater');
 const { Op } = require('sequelize');
+
 
 exports.searchAndFilterMachines = async (search, status, limit, offset) => {
     try {
@@ -22,7 +24,7 @@ exports.searchAndFilterMachines = async (search, status, limit, offset) => {
             },
             limit,
             offset,
-            order: [['createdAt', 'DESC']] // Adicione a ordenação aqui
+            order: [['createdAt', 'DESC']]
         });
 
         return { machines, count };
@@ -194,5 +196,33 @@ exports.generateDocument = async (machine) => {
         throw error;
     }
 };
+
+exports.updateAdditionalDetails = async (id, description, parts, quantity, value, files) => {
+    try {
+        const images = files.map(file => file.path);
+
+        const totalValue = value.reduce((acc, curr) => acc + parseFloat(curr), 0);
+
+        const machineDetail = await MachineDetail.create({
+            description,
+            parts: parts.map((part, index) => ({
+                name: part,
+                quantity: quantity[index],
+                value: value[index]
+            })),
+            images,
+            totalValue,
+            machineId: id,
+        });
+
+        return machineDetail;
+    } catch (error) {
+        console.error('Erro ao salvar os detalhes adicionais:', error);
+        throw error;
+    }
+};
+
+
+
 
 

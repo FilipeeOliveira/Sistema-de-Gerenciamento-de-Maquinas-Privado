@@ -131,7 +131,112 @@ function editMachine(id, name, tags, client, status, description, images) {
   };
 }
 
+$(document).ready(function () {
+  // Adiciona um listener para mudanças no status
+  $('#editStatus').change(function () {
+    const status = $(this).val();
+    console.log("Status selecionado:", status);
 
+    // Verifica o status da máquina
+    const machineStatus = $('#machineStatus').val(); // Leitura do valor do input oculto
+    console.log("Status da máquina:", machineStatus);
+
+    if (status === 'Em Uso') {
+      if (machineStatus === 'Em Uso') {
+        $('#additionalDetailsModal').modal('show');
+      } else {
+        alert('O status da máquina não permite abrir o modal.');
+      }
+    }
+  });
+
+  // Adiciona um listener para o fechamento do modal
+  $('#additionalDetailsModal').on('hide.bs.modal', function (e) {
+    const status = $('#editStatus').val();
+    console.log("Tentativa de fechar o modal com status:", status);
+
+    if (status === 'Em Uso') {
+      e.preventDefault(); // Impede o fechamento do modal
+
+      // Adiciona uma mensagem ou lógica para o usuário preencher os detalhes adicionais
+      alert('Você precisa preencher os detalhes adicionais antes de alterar o status para "Em Uso".');
+
+      // Mostra novamente o modal
+      $('#additionalDetailsModal').modal('show');
+    }
+  });
+
+  // Adiciona um listener para o formulário de detalhes adicionais
+  $('#additionalDetailsForm').submit(function (e) {
+    e.preventDefault();
+
+    // Cria um objeto FormData para enviar o formulário
+    const formData = new FormData(this);
+    console.log('Formulário de detalhes adicionais enviado.');
+
+    $.ajax({
+      url: '/machines/update-details',
+      type: 'POST',
+      data: formData,
+      contentType: false,
+      processData: false,
+      success: function (response) {
+        console.log('Detalhes adicionais atualizados com sucesso.', response);
+        $('#additionalDetailsModal').modal('hide');
+      },
+      error: function (xhr, status, error) {
+        console.error('Erro ao atualizar detalhes adicionais:', error);
+        alert('Erro ao atualizar detalhes adicionais.');
+      }
+    });
+  });
+});
+
+
+
+// Função para calcular o valor total das peças
+function calculateTotalValue() {
+  let total = 0;
+  $('input[name="value[]"]').each(function () {
+    const value = parseFloat($(this).val()) || 0;
+    total += value;
+  });
+  $('#totalValue').val(total.toFixed(2));
+}
+
+// Adiciona uma nova linha de campos para peças
+$(document).on('click', '.add-part', function () {
+  const partRow = `
+    <div class="row mb-2">
+      <div class="col-md-5">
+        <input type="text" class="form-control" name="parts[]" placeholder="Peça" required>
+      </div>
+      <div class="col-md-3">
+        <input type="number" class="form-control" name="quantity[]" placeholder="Quantidade" required>
+      </div>
+      <div class="col-md-3">
+        <input type="number" class="form-control" name="value[]" placeholder="Valor" required>
+      </div>
+      <div class="col-md-1">
+        <button type="button" class="btn btn-danger btn-sm remove-part"><i class="fas fa-minus"></i></button>
+      </div>
+    </div>`;
+  $('#partsList').append(partRow);
+});
+
+// Remove uma linha de campos de peças e recalcula o valor total
+$(document).on('click', '.remove-part', function () {
+  $(this).closest('.row').remove();
+  calculateTotalValue();
+});
+
+// Recalcula o valor total quando o valor de uma peça é alterado
+$(document).on('input', 'input[name="value[]"]', calculateTotalValue);
+
+// Calcula o valor total das peças ao carregar a página
+$(document).ready(function () {
+  calculateTotalValue();
+});
 
 
 
