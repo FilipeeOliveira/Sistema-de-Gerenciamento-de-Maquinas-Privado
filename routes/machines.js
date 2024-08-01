@@ -145,10 +145,10 @@ router.get('/logs/:id', async (req, res) => {
         res.render('pages/machinesLog', {
             machineId: machineId,
             logs: logs,
-            title: 'Logs de Máquinas',  
-            site_name: 'Geral - Conservação e Limpeza',  
-            year: new Date().getFullYear(),  
-            version: '1.0'  
+            title: 'Logs de Máquinas',
+            site_name: 'Geral - Conservação e Limpeza',
+            year: new Date().getFullYear(),
+            version: '1.0'
         });
     } catch (error) {
         console.error(error);
@@ -185,19 +185,51 @@ router.get('/generate-document/:id', async (req, res) => {
     }
 });
 
-router.post('/update-details', upload.array('evidence', 10), async (req, res) => {
-    try {
-        const { id, description, parts, quantity, value } = req.body;
+router.get('/generateDocument/:id', async (req, res) => {
+    const id = req.params.id;
 
+    try {
         const machine = await machineController.getMachineById(id);
         if (!machine) {
             return res.status(404).json({ message: 'Máquina não encontrada' });
         }
 
-        if (machine.status !== 'Em uso') {
-            return res.status(400).json({ message: 'Os detalhes adicionais só podem ser atualizados para máquinas "Em uso"' });
+        if (machine.status !== 'Em Uso') {
+            return res.status(400).json({ message: 'O documento só pode ser gerado para máquinas "Em chamado"' });
         }
 
+        const documentBuffer = await machineController.generateOtherDocument(machine);
+        if (documentBuffer) {
+            res.setHeader('Content-Disposition', `attachment; filename=${machine.name}-detalhes.docx`);
+            res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document');
+            res.end(documentBuffer);
+        } else {
+            res.status(500).json({ message: 'Erro ao gerar documento' });
+        }
+    } catch (error) {
+        console.error('Erro ao gerar o documento:', error);
+        if (!res.headersSent) {
+            res.status(500).json({ message: 'Erro ao gerar o documento', error: error.message });
+        }
+    }
+});
+
+router.post('/update-details', upload.array('evidence', 10), async (req, res) => {
+    try {
+        const { id, description, parts, quantity, value } = req.body;
+
+        // Obter a máquina pelo ID
+        const machine = await machineController.getMachineById(id);
+        if (!machine) {
+            return res.status(404).json({ message: 'Máquina não encontrada' });
+        }
+
+        // Verificar se a máquina está "Em uso" ou "Em Manutenção"
+        if (machine.status !== 'Em uso' && machine.status !== 'Em Manutenção') {
+            return res.status(400).json({ message: 'Os detalhes adicionais só podem ser atualizados para máquinas "Em uso" ou "Em Manutenção".' });
+        }
+
+        // Atualizar os detalhes adicionais da máquina
         const machineDetail = await machineController.updateAdditionalDetails(id, description, parts, quantity, value, req.files);
         res.status(200).json({ message: 'Detalhes adicionais atualizados com sucesso.', machineDetail });
     } catch (error) {
@@ -205,6 +237,7 @@ router.post('/update-details', upload.array('evidence', 10), async (req, res) =>
         res.status(500).json({ message: 'Erro ao salvar os detalhes adicionais.', error: error.message });
     }
 });
+
 
 
 

@@ -187,31 +187,56 @@ exports.getDashboardStats = async () => {
     }
 };
 
-exports.updateMachineStatus = async (id, status, res) => {
+// exports.updateMachineStatus = async (id, status, res) => {
+//     try {
+//         const machine = await Machine.findByPk(id);
+//         if (!machine) {
+//             throw new Error('Máquina não encontrada');
+//         }
+
+//         console.log(`Atualizando o status da máquina com ID: ${id} para: ${status}`);
+//         await machine.update({ status });
+//         console.log(`Status da máquina atualizado para: ${status}`);
+
+//         if (status === 'Em chamado') {
+//             console.log('Gerando documento para o status "Em chamado"');
+//             const documentBuffer = await exports.generateDocument(machine);
+//             return documentBuffer;
+//         }
+//     } catch (error) {
+//         console.error('Erro ao atualizar o status da máquina:', error);
+//         throw error;
+//     }
+// };
+
+exports.generateDocument = async (machine) => {
     try {
-        const machine = await Machine.findByPk(id);
-        if (!machine) {
-            throw new Error('Máquina não encontrada');
+        const data = {
+            client: machine.client,
+            tags: machine.tags,
+            description: machine.name
+        };
+
+        const templatePath = path.join(__dirname, '../docs/ModeloParaAssinatura.docx');
+        if (!fs.existsSync(templatePath)) {
+            throw new Error('Template de documento não encontrado');
         }
 
-        console.log(`Atualizando o status da máquina com ID: ${id} para: ${status}`);
-        await machine.update({ status });
-        console.log(`Status da máquina atualizado para: ${status}`);
+        const content = fs.readFileSync(templatePath, 'binary');
+        const zip = new PizZip(content);
+        const doc = new Docxtemplater(zip);
 
-        if (status === 'Em chamado') {
-            console.log('Gerando documento para o status "Em chamado"');
-            const documentBuffer = await exports.generateDocument(machine);
-            return documentBuffer;
-        }
+        doc.setData(data);
+        doc.render();
+
+        return doc.getZip().generate({ type: 'nodebuffer' });
     } catch (error) {
-        console.error('Erro ao atualizar o status da máquina:', error);
+        console.error('Erro ao gerar documento:', error);
         throw error;
     }
 };
 
-
-
-exports.generateDocument = async (machine) => {
+exports.generateOtherDocument = async (machine) => {
     try {
         const data = {
             client: machine.client,
@@ -234,6 +259,39 @@ exports.generateDocument = async (machine) => {
         return doc.getZip().generate({ type: 'nodebuffer' });
     } catch (error) {
         console.error('Erro ao gerar documento:', error);
+        throw error;
+    }
+};
+
+exports.updateAdditionalDetails = async (id, description, parts, quantity, value, files) => {
+    try {
+        if (!Array.isArray(parts) || !Array.isArray(quantity) || !Array.isArray(value)) {
+            throw new Error('As partes, quantidades e valores devem ser arrays.');
+        }
+
+        if (parts.length !== quantity.length || parts.length !== value.length) {
+            throw new Error('As arrays de partes, quantidades e valores devem ter o mesmo comprimento.');
+        }
+
+        const images = files.map(file => file.path);
+
+        const totalValue = value.reduce((acc, curr) => acc + parseFloat(curr), 0);
+
+        const machineDetail = await MachineDetail.create({
+            description,
+            parts: parts.map((part, index) => ({
+                name: part,
+                quantity: quantity[index],
+                value: value[index]
+            })),
+            images,
+            totalValue,
+            machineId: id,
+        });
+
+        return machineDetail;
+    } catch (error) {
+        console.error('Erro ao salvar os detalhes adicionais:', error);
         throw error;
     }
 };

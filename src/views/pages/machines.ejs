@@ -31,10 +31,11 @@
                   Uso <span class="badge badge-success">${counts.inUseCount}</span></a>
               </li>
               <li class="nav-item">
-                <a class="nav-link ${filterStatus === 'Em Manutenção' ? 'active' : ''}"
-                  href="/machines/views?status=Em Manutenção">Em Manutenção <span
+                <a class="nav-link ${filterStatus === 'Em Manutenção' ? 'active' : ''}" href="javascript:void(0);"
+                  data-status="Em Manutenção">Em Manutenção <span
                     class="badge badge-danger">${counts.maintenanceCount}</span></a>
               </li>
+
               <li class="nav-item">
                 <a class="nav-link ${filterStatus === 'Em estoque' ? 'active' : ''}"
                   href="/machines/views?status=Em estoque">Em estoque <span
