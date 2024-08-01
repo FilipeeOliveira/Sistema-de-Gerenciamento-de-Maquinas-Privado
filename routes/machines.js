@@ -89,9 +89,39 @@ router.put('/update/:id', upload.array('images', 10), async (req, res) => {
     try {
         const machine = await machineController.updateMachine(id, updatedData, req.files, JSON.parse(imagesToRemove));
         res.json({ message: 'Máquina atualizada com sucesso', machine });
+
+        if (status === 'Em chamado') {
+            process.nextTick(async () => {
+                try {
+                    const documentBuffer = await machineController.generateDocument(machine);
+                    const docResponse = await fetch(`/machines/generate-document/${id}`);
+                    if (docResponse.ok) {
+                        const contentDisposition = docResponse.headers.get('Content-Disposition');
+                        const blob = await docResponse.blob();
+                        const url = window.URL.createObjectURL(blob);
+                        const link = document.createElement('a');
+                        link.href = url;
+                        link.download = contentDisposition.split('filename=')[1];
+                        document.body.appendChild(link);
+                        link.click();
+                        link.remove();
+                    } else {
+                        console.error('Erro ao gerar o documento');
+                        alert('Erro ao gerar o documento');
+                    }
+                } catch (docError) {
+                    console.error('Erro ao gerar o documento:', docError);
+                    if (!res.headersSent) {
+                        res.status(500).json({ message: 'Erro ao gerar documento', error: docError.message });
+                    }
+                }
+            });
+        }
     } catch (error) {
         console.error('Erro ao atualizar a máquina:', error);
-        res.status(500).json({ message: 'Erro ao atualizar a máquina', error: error.message });
+        if (!res.headersSent) {
+            return res.status(500).json({ message: 'Erro ao atualizar a máquina', error: error.message });
+        }
     }
 });
 
@@ -117,5 +147,40 @@ router.get('/logs/:id', async (req, res) => {
         res.status(500).send('Internal Server Error');
     }
 });
+
+router.get('/generate-document/:id', async (req, res) => {
+    const id = req.params.id;
+
+    try {
+        const machine = await machineController.getMachineById(id);
+        if (!machine) {
+            return res.status(404).json({ message: 'Máquina não encontrada' });
+        }
+
+        if (machine.status !== 'Em chamado') {
+            return res.status(400).json({ message: 'O documento só pode ser gerado para máquinas "Em chamado"' });
+        }
+
+        const documentBuffer = await machineController.generateDocument(machine);
+        if (documentBuffer) {
+            res.setHeader('Content-Disposition', `attachment; filename=${machine.name}-detalhes.docx`);
+            res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document');
+            res.end(documentBuffer);
+        } else {
+            res.status(500).json({ message: 'Erro ao gerar documento' });
+        }
+    } catch (error) {
+        console.error('Erro ao gerar o documento:', error);
+        if (!res.headersSent) {
+            res.status(500).json({ message: 'Erro ao gerar o documento', error: error.message });
+        }
+    }
+});
+
+
+
+
+
+
 
 module.exports = router;
