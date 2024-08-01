@@ -249,6 +249,8 @@ router.post('/update-details', upload.fields([
     }
 });
 
+console.log()
+
 
 
 
