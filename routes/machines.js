@@ -7,11 +7,15 @@ const MachineLog = require('../models/MachineLog');
 
 const uploadDir = path.join(__dirname, '../public/uploads');
 const evidenceDir = path.join(__dirname, '../public/evidence');
+const documentsDir = path.join(__dirname, '../public/documents');
+
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
         let targetDir;
         if (file.fieldname === 'evidence') {
             targetDir = evidenceDir;
+        } else if (file.fieldname === 'document') {
+            targetDir = documentsDir;
         } else {
             targetDir = uploadDir;
         }
@@ -22,7 +26,17 @@ const storage = multer.diskStorage({
     }
 });
 
-const upload = multer({ storage });
+const upload = multer({
+    storage,
+    fileFilter: (req, file, cb) => {
+        const allowedTypes = ['image/jpeg', 'image/png', 'application/pdf'];
+        if (allowedTypes.includes(file.mimetype)) {
+            cb(null, true);
+        } else {
+            cb(new Error('Tipo de arquivo não permitido'), false);
+        }
+    }
+});
 
 router.get('/views', async (req, res) => {
     try {
@@ -214,29 +228,28 @@ router.get('/generateDocument/:id', async (req, res) => {
     }
 });
 
-router.post('/update-details', upload.array('evidence', 10), async (req, res) => {
+router.post('/update-details', upload.fields([
+    { name: 'evidence', maxCount: 10 }, // Limite de 10 imagens
+    { name: 'document', maxCount: 1 } // Limite de 1 documento
+]), async (req, res) => {
     try {
         const { id, description, parts, quantity, value } = req.body;
+        const files = req.files;
 
-        // Obter a máquina pelo ID
-        const machine = await machineController.getMachineById(id);
-        if (!machine) {
-            return res.status(404).json({ message: 'Máquina não encontrada' });
-        }
+        // Adapte para lidar com documentos também
+        const images = files['evidence'] ? files['evidence'].map(file => file.path) : [];
+        const documents = files['document'] ? files['document'].map(file => file.path) : [];
 
-        // Verificar se a máquina está "Em uso" ou "Em Manutenção"
-        if (machine.status !== 'Em uso' && machine.status !== 'Em Manutenção') {
-            return res.status(400).json({ message: 'Os detalhes adicionais só podem ser atualizados para máquinas "Em uso" ou "Em Manutenção".' });
-        }
+        const totalValue = value.reduce((acc, curr) => acc + parseFloat(curr), 0);
 
-        // Atualizar os detalhes adicionais da máquina
-        const machineDetail = await machineController.updateAdditionalDetails(id, description, parts, quantity, value, req.files);
+        const machineDetail = await machineController.updateAdditionalDetails(id, description, parts, quantity, value, images, documents);
         res.status(200).json({ message: 'Detalhes adicionais atualizados com sucesso.', machineDetail });
     } catch (error) {
         console.error('Erro ao salvar os detalhes adicionais:', error);
         res.status(500).json({ message: 'Erro ao salvar os detalhes adicionais.', error: error.message });
     }
 });
+
 
 
 

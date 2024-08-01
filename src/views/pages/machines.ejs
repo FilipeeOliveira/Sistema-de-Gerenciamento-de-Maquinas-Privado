@@ -31,9 +31,8 @@
                   Uso <span class="badge badge-success">${counts.inUseCount}</span></a>
               </li>
               <li class="nav-item">
-                <a class="nav-link ${filterStatus === 'Em Manutenção' ? 'active' : ''}" href="javascript:void(0);"
-                  data-status="Em Manutenção">Em Manutenção <span
-                    class="badge badge-danger">${counts.maintenanceCount}</span></a>
+                <a class="nav-link ${filterStatus === 'Em Manutenção' ? 'active' : ''}" href="javascript:void(0);">Em
+                  Manutenção <span class="badge badge-danger">${counts.maintenanceCount}</span></a>
               </li>
 
               <li class="nav-item">
@@ -263,13 +262,17 @@
               <label>Valor Total das Peças</label>
               <input type="text" class="form-control" id="totalValue" readonly>
             </div>
+            <!-- Novo campo para upload de documentos -->
+            <div class="form-group">
+              <label for="additionalDocument">Documento</label>
+              <input type="file" class="form-control-file" id="additionalDocument" name="document">
+            </div>
             <button type="submit" class="btn btn-primary">Salvar</button>
           </form>
         </div>
       </div>
     </div>
   </div>
-
   `;
   %>
 

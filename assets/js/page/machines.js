@@ -150,25 +150,23 @@ function editMachine(id, name, tags, client, status, description, images) {
 
 
 $(document).ready(function () {
-  console.log("Página carregada.");
+  console.log("Documento pronto.");
 
-  // Verifica se o elemento está presente
-  console.log("Elemento encontrado:", $('a[data-status="Em Manutenção"]').length > 0);
+  // Adiciona um listener para o clique nos badges de status
+  $('.status-badge').click(function () {
+    const status = $(this).text().trim(); // Obtém o texto do badge
+    console.log("Status clicado:", status);
 
-  // Adiciona um listener para o clique no status "Em Manutenção"
-  $('a[data-status="Em Manutenção"]').click(function () {
-    const status = $(this).attr('data-status');
-    console.log("Status selecionado:", status);
-
+    // Verifica se o status é "Em Manutenção"
     if (status === 'Em Manutenção') {
-      console.log("Abrindo o modal de detalhes de manutenção.");
+      console.log("Status é 'Em Manutenção'. Abrindo o modal.");
       $('#additionalDetailsModal').modal('show');
     } else {
-      console.log("Status não corresponde a 'Em Manutenção'.");
+      console.log("Status não é 'Em Manutenção'. Nenhuma ação necessária.");
     }
   });
 
-  // Código para lidar com o formulário de detalhes adicionais
+  // Adiciona um listener para o formulário de detalhes adicionais
   $('#additionalDetailsForm').submit(function (e) {
     e.preventDefault();
 
@@ -176,7 +174,7 @@ $(document).ready(function () {
     console.log('Formulário de detalhes adicionais enviado.');
 
     $.ajax({
-      url: '/machines/update-details', // Certifique-se de que esta URL está correta
+      url: '/machines/update-details',
       type: 'POST',
       data: formData,
       contentType: false,
@@ -191,23 +189,22 @@ $(document).ready(function () {
       }
     });
   });
+});
 
 
+// Função para calcular o valor total das peças
+function calculateTotalValue() {
+  let total = 0;
+  $('input[name="value[]"]').each(function () {
+    const value = parseFloat($(this).val()) || 0;
+    total += value;
+  });
+  $('#totalValue').val(total.toFixed(2));
+}
 
-
-  // Função para calcular o valor total das peças
-  function calculateTotalValue() {
-    let total = 0;
-    $('input[name="value[]"]').each(function () {
-      const value = parseFloat($(this).val()) || 0;
-      total += value;
-    });
-    $('#totalValue').val(total.toFixed(2));
-  }
-
-  // Adiciona uma nova linha de campos para peças
-  $(document).on('click', '.add-part', function () {
-    const partRow = `
+// Adiciona uma nova linha de campos para peças
+$(document).on('click', '.add-part', function () {
+  const partRow = `
     <div class="row mb-2">
       <div class="col-md-5">
         <input type="text" class="form-control" name="parts[]" placeholder="Peça" required>
@@ -222,24 +219,24 @@ $(document).ready(function () {
         <button type="button" class="btn btn-danger btn-sm remove-part"><i class="fas fa-minus"></i></button>
       </div>
     </div>`;
-    $('#partsList').append(partRow);
-  });
-
-  // Remove uma linha de campos de peças e recalcula o valor total
-  $(document).on('click', '.remove-part', function () {
-    $(this).closest('.row').remove();
-    calculateTotalValue();
-  });
-
-  // Recalcula o valor total quando o valor de uma peça é alterado
-  $(document).on('input', 'input[name="value[]"]', calculateTotalValue);
-
-  // Calcula o valor total das peças ao carregar a página
-  $(document).ready(function () {
-    calculateTotalValue();
-  });
-
+  $('#partsList').append(partRow);
 });
+
+// Remove uma linha de campos de peças e recalcula o valor total
+$(document).on('click', '.remove-part', function () {
+  $(this).closest('.row').remove();
+  calculateTotalValue();
+});
+
+// Recalcula o valor total quando o valor de uma peça é alterado
+$(document).on('input', 'input[name="value[]"]', calculateTotalValue);
+
+// Calcula o valor total das peças ao carregar a página
+$(document).ready(function () {
+  calculateTotalValue();
+});
+
+
 
 document.addEventListener('DOMContentLoaded', function () {
   const badges = document.querySelectorAll('.status-badge');

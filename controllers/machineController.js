@@ -244,7 +244,7 @@ exports.generateOtherDocument = async (machine) => {
             description: machine.description
         };
 
-        const templatePath = path.join(__dirname, '../docs/ModeloParaAssinatura.docx');
+        const templatePath = path.join(__dirname, '../docs/ModeloParaAssinaturaDev.docx');
         if (!fs.existsSync(templatePath)) {
             throw new Error('Template de documento não encontrado');
         }
@@ -263,7 +263,7 @@ exports.generateOtherDocument = async (machine) => {
     }
 };
 
-exports.updateAdditionalDetails = async (id, description, parts, quantity, value, files) => {
+exports.updateAdditionalDetails = async (id, description, parts, quantity, value, images, documents) => {
     try {
         if (!Array.isArray(parts) || !Array.isArray(quantity) || !Array.isArray(value)) {
             throw new Error('As partes, quantidades e valores devem ser arrays.');
@@ -272,8 +272,6 @@ exports.updateAdditionalDetails = async (id, description, parts, quantity, value
         if (parts.length !== quantity.length || parts.length !== value.length) {
             throw new Error('As arrays de partes, quantidades e valores devem ter o mesmo comprimento.');
         }
-
-        const images = files.map(file => file.path);
 
         const totalValue = value.reduce((acc, curr) => acc + parseFloat(curr), 0);
 
@@ -285,6 +283,7 @@ exports.updateAdditionalDetails = async (id, description, parts, quantity, value
                 value: value[index]
             })),
             images,
+            documents,
             totalValue,
             machineId: id,
         });
@@ -295,4 +294,5 @@ exports.updateAdditionalDetails = async (id, description, parts, quantity, value
         throw error;
     }
 };
+
 
