@@ -1,5 +1,6 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../config/database');
+const MachineLog = require('./MachineLog');
 
 const Machine = sequelize.define('Machine', {
     name: {
@@ -50,7 +51,17 @@ const Machine = sequelize.define('Machine', {
     },
 }, {
     tableName: 'Machines',
-    timestamps: true,
+    timestamps: true
+});
+
+Machine.hasMany(MachineLog, {
+    foreignKey: 'machineId',
+    onDelete: 'CASCADE',
+});
+
+MachineLog.belongsTo(Machine, {
+    foreignKey: 'machineId',
+    onDelete: 'CASCADE',
 });
 
 module.exports = Machine;

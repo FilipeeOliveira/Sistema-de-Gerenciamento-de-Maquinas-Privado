@@ -5,7 +5,7 @@ const path = require('path');
 const PizZip = require('pizzip');
 const Docxtemplater = require('docxtemplater');
 const { Op } = require('sequelize');
-
+const MachineLog = require('../models/MachineLog');
 
 exports.searchAndFilterMachines = async (search, status, limit, offset) => {
     try {
@@ -57,6 +57,10 @@ exports.deleteMachine = async (id) => {
             throw new Error('Máquina não encontrada');
         }
 
+        // Deletar logs associados à máquina
+        await MachineLog.destroy({ where: { machineId: id } });
+
+        // Deletar imagens associadas à máquina
         if (machine.images && machine.images.length > 0) {
             machine.images.forEach(imagePath => {
                 const filePath = path.join(__dirname, '../public', imagePath);
@@ -68,6 +72,7 @@ exports.deleteMachine = async (id) => {
             });
         }
 
+        // Deletar a máquina
         await Machine.destroy({ where: { id } });
     } catch (err) {
         console.error('Erro ao deletar a máquina:', err);
@@ -94,6 +99,19 @@ exports.updateMachine = async (id, updatedData, files, imagesToRemove) => {
         const machine = await Machine.findByPk(id);
         if (!machine) {
             throw new Error('Máquina não encontrada');
+        }
+
+        const previousStatus = machine.status;
+        const newStatus = updatedData.status;
+
+        // Registrar a alteração de status, se houver
+        if (previousStatus !== newStatus) {
+            await MachineLog.create({
+                machineId: id,
+                previousStatus: previousStatus,
+                newStatus: newStatus,
+                changeDate: new Date()
+            });
         }
 
         let currentImages = [];
@@ -126,6 +144,29 @@ exports.updateMachine = async (id, updatedData, files, imagesToRemove) => {
     }
 };
 
+exports.getMachineLogsPage = async (req, res) => {
+    try {
+        const machineId = req.params.id;
+        const logs = await MachineLog.findAll({
+            where: { machineId },
+            order: [['changeDate', 'DESC']]
+        });
+
+
+        res.render('pages/machinesLog', {
+            machineId,
+            logs,
+            title: 'Logs de Máquinas',
+            site_name: 'Geral - Conservação e Limpeza',
+            year: new Date().getFullYear(),
+            version: '1.0'
+        });
+    } catch (err) {
+        console.error('Erro ao obter logs da máquina:', err);
+        res.status(500).send('Erro ao obter logs da máquina');
+    }
+};
+
 exports.getDashboardStats = async () => {
     try {
         const pendingCount = await Machine.count({ where: { status: 'Em chamado' } });
@@ -138,7 +179,7 @@ exports.getDashboardStats = async () => {
             maintenanceCount,
             inUseCount,
             inStockCount,
-            totalCount: pendingCount + maintenanceCount + inUseCount + inUseCount + inStockCount
+            totalCount: pendingCount + maintenanceCount + inUseCount + inStockCount
         };
     } catch (err) {
         console.error('Erro ao obter estatísticas das máquinas:', err);
@@ -196,33 +237,4 @@ exports.generateDocument = async (machine) => {
         throw error;
     }
 };
-
-exports.updateAdditionalDetails = async (id, description, parts, quantity, value, files) => {
-    try {
-        const images = files.map(file => file.path);
-
-        const totalValue = value.reduce((acc, curr) => acc + parseFloat(curr), 0);
-
-        const machineDetail = await MachineDetail.create({
-            description,
-            parts: parts.map((part, index) => ({
-                name: part,
-                quantity: quantity[index],
-                value: value[index]
-            })),
-            images,
-            totalValue,
-            machineId: id,
-        });
-
-        return machineDetail;
-    } catch (error) {
-        console.error('Erro ao salvar os detalhes adicionais:', error);
-        throw error;
-    }
-};
-
-
-
-
 

@@ -1,0 +1,63 @@
+<%
+const bodyContent = `
+  <section class="section">
+    <div class="section-header">
+      <h1>Logs de Status da Máquina</h1>
+      <div class="section-header-breadcrumb">
+        <div class="breadcrumb-item active"><a href="#">Dashboard</a></div>
+        <div class="breadcrumb-item"><a href="#">Máquinas</a></div>
+        <div class="breadcrumb-item">Logs de Status</div>
+      </div>
+    </div>
+    <div class="section-body">
+      <div class="card">
+        <div class="card-header">
+          <h4>Histórico de Status - Máquina ${machineId}</h4>
+        </div>
+        <div class="card-body">
+          <div class="table-responsive">
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th>Data da Alteração</th>
+                  <th>Hora da Alteração</th>
+                  <th>Status Anterior</th>
+                  <th>Novo Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${logs.map(log => {
+                  const date = new Date(log.changeDate);
+                  return `
+                  <tr>
+                    <td>${date.toLocaleDateString()}</td>
+                    <td>${date.toLocaleTimeString()}</td>
+                    <td>${log.previousStatus}</td>
+                    <td>${log.newStatus}</td>
+                  </tr>
+                  `;
+                }).join('')}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+`;
+%>
+
+<%
+const additionalStyles = `
+<link rel="stylesheet" href="../../../node_modules/selectric/public/selectric.css">
+`;
+
+const additionalScripts = `
+<script src="../../../node_modules/selectric/public/jquery.selectric.min.js"></script>
+`;
+
+const title = 'Logs de Status';  
+const site_name = 'Sistema de Máquinas'; 
+%>
+
+<%- include('layouts/master.ejs', { bodyContent: bodyContent, additionalScripts: additionalScripts, additionalStyles: additionalStyles, title: title, site_name: site_name }) %>
