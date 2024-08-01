@@ -229,14 +229,13 @@ router.get('/generateDocument/:id', async (req, res) => {
 });
 
 router.post('/update-details', upload.fields([
-    { name: 'evidence', maxCount: 10 }, // Limite de 10 imagens
-    { name: 'document', maxCount: 1 } // Limite de 1 documento
+    { name: 'evidence', maxCount: 10 },
+    { name: 'document', maxCount: 1 }
 ]), async (req, res) => {
     try {
         const { id, description, parts, quantity, value } = req.body;
         const files = req.files;
 
-        // Adapte para lidar com documentos também
         const images = files['evidence'] ? files['evidence'].map(file => file.path) : [];
         const documents = files['document'] ? files['document'].map(file => file.path) : [];
 

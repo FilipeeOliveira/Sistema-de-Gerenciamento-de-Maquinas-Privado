@@ -152,12 +152,10 @@ function editMachine(id, name, tags, client, status, description, images) {
 $(document).ready(function () {
   console.log("Documento pronto.");
 
-  // Adiciona um listener para o clique nos badges de status
   $('.status-badge').click(function () {
-    const status = $(this).text().trim(); // Obtém o texto do badge
+    const status = $(this).text().trim();
     console.log("Status clicado:", status);
 
-    // Verifica se o status é "Em Manutenção"
     if (status === 'Em Manutenção') {
       console.log("Status é 'Em Manutenção'. Abrindo o modal.");
       $('#additionalDetailsModal').modal('show');
@@ -166,7 +164,7 @@ $(document).ready(function () {
     }
   });
 
-  // Adiciona um listener para o formulário de detalhes adicionais
+
   $('#additionalDetailsForm').submit(function (e) {
     e.preventDefault();
 
@@ -181,7 +179,7 @@ $(document).ready(function () {
       processData: false,
       success: function (response) {
         console.log('Detalhes adicionais atualizados com sucesso.', response);
-        $('#additionalDetailsModal').modal('hide'); // Fechar o modal ao atualizar com sucesso
+        $('#additionalDetailsModal').modal('hide');
       },
       error: function (xhr, status, error) {
         console.error('Erro ao atualizar detalhes adicionais:', error);
@@ -192,7 +190,6 @@ $(document).ready(function () {
 });
 
 
-// Função para calcular o valor total das peças
 function calculateTotalValue() {
   let total = 0;
   $('input[name="value[]"]').each(function () {
@@ -202,7 +199,6 @@ function calculateTotalValue() {
   $('#totalValue').val(total.toFixed(2));
 }
 
-// Adiciona uma nova linha de campos para peças
 $(document).on('click', '.add-part', function () {
   const partRow = `
     <div class="row mb-2">
@@ -222,16 +218,13 @@ $(document).on('click', '.add-part', function () {
   $('#partsList').append(partRow);
 });
 
-// Remove uma linha de campos de peças e recalcula o valor total
 $(document).on('click', '.remove-part', function () {
   $(this).closest('.row').remove();
   calculateTotalValue();
 });
 
-// Recalcula o valor total quando o valor de uma peça é alterado
 $(document).on('input', 'input[name="value[]"]', calculateTotalValue);
 
-// Calcula o valor total das peças ao carregar a página
 $(document).ready(function () {
   calculateTotalValue();
 });
