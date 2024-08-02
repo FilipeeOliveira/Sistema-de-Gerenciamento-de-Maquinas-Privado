@@ -104,7 +104,6 @@ exports.updateMachine = async (id, updatedData, files, imagesToRemove) => {
         const previousStatus = machine.status;
         const newStatus = updatedData.status;
 
-        // Registrar a alteração de status, se houver
         if (previousStatus !== newStatus) {
             await MachineLog.create({
                 machineId: id,
@@ -263,7 +262,8 @@ exports.generateOtherDocument = async (machine) => {
     }
 };
 
-exports.updateAdditionalDetails = async (id, description, parts, quantity, value, images, documents) => {
+
+exports.updateAdditionalDetails = async (id, description, parts, quantity, value, images, document) => {
     try {
         if (!Array.isArray(parts) || !Array.isArray(quantity) || !Array.isArray(value)) {
             throw new Error('As partes, quantidades e valores devem ser arrays.');
@@ -272,6 +272,9 @@ exports.updateAdditionalDetails = async (id, description, parts, quantity, value
         if (parts.length !== quantity.length || parts.length !== value.length) {
             throw new Error('As arrays de partes, quantidades e valores devem ter o mesmo comprimento.');
         }
+
+        const imagesArray = Array.isArray(images) ? images : []; // Certifique-se de que images seja um array
+        const documentPath = document ? document : null; // Verifique se o document é nulo ou não
 
         const totalValue = value.reduce((acc, curr) => acc + parseFloat(curr), 0);
 
@@ -282,8 +285,8 @@ exports.updateAdditionalDetails = async (id, description, parts, quantity, value
                 quantity: quantity[index],
                 value: value[index]
             })),
-            images,
-            documents,
+            images: imagesArray,
+            documents: documentPath, // Use o nome correto do campo
             totalValue,
             machineId: id,
         });
@@ -294,5 +297,12 @@ exports.updateAdditionalDetails = async (id, description, parts, quantity, value
         throw error;
     }
 };
+
+
+
+
+
+
+
 
 

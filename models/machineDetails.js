@@ -17,6 +17,9 @@ const MachineDetail = sequelize.define('MachineDetail', {
         type: DataTypes.FLOAT,
         allowNull: false,
     },
+    documents: {
+        type: DataTypes.STRING,
+    },
     machineId: {
         type: DataTypes.INTEGER,
         references: {

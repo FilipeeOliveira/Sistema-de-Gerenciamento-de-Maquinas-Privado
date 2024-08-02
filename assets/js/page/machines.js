@@ -158,18 +158,28 @@ $(document).ready(function () {
 
     if (status === 'Em Manutenção') {
       console.log("Status é 'Em Manutenção'. Abrindo o modal.");
+
+      // Obtenha o ID da máquina a partir do atributo data-machine-id
+      const machineId = $(this).data('machine-id');
+      $('#machineId').val(machineId); // Preenche o campo oculto com o ID da máquina
+
       $('#additionalDetailsModal').modal('show');
     } else {
       console.log("Status não é 'Em Manutenção'. Nenhuma ação necessária.");
     }
   });
 
-
   $('#additionalDetailsForm').submit(function (e) {
     e.preventDefault();
 
     const formData = new FormData(this);
-    console.log('Formulário de detalhes adicionais enviado.');
+    for (let [key, value] of formData.entries()) {
+      if (value instanceof File) {
+        console.log(`${key}: ${value.name}`);
+      } else {
+        console.log(`${key}: ${value}`);
+      }
+    }
 
     $.ajax({
       url: '/machines/update-details',
@@ -188,6 +198,8 @@ $(document).ready(function () {
     });
   });
 });
+
+
 
 
 function calculateTotalValue() {

@@ -26,6 +26,7 @@ const storage = multer.diskStorage({
     }
 });
 
+
 const upload = multer({
     storage,
     fileFilter: (req, file, cb) => {
@@ -232,16 +233,17 @@ router.post('/update-details', upload.fields([
     { name: 'evidence', maxCount: 10 },
     { name: 'document', maxCount: 1 }
 ]), async (req, res) => {
+    console.log(req.files); // Adicione isso para depuração
     try {
         const { id, description, parts, quantity, value } = req.body;
         const files = req.files;
 
         const images = files['evidence'] ? files['evidence'].map(file => file.path) : [];
-        const documents = files['document'] ? files['document'].map(file => file.path) : [];
+        const document = files['document'] ? files['document'][0].path : null;
 
         const totalValue = value.reduce((acc, curr) => acc + parseFloat(curr), 0);
 
-        const machineDetail = await machineController.updateAdditionalDetails(id, description, parts, quantity, value, images, documents);
+        const machineDetail = await machineController.updateAdditionalDetails(id, description, parts, quantity, value, images, document);
         res.status(200).json({ message: 'Detalhes adicionais atualizados com sucesso.', machineDetail });
     } catch (error) {
         console.error('Erro ao salvar os detalhes adicionais:', error);
@@ -249,7 +251,11 @@ router.post('/update-details', upload.fields([
     }
 });
 
-console.log()
+
+
+
+
+
 
 
 

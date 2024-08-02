@@ -31,7 +31,8 @@
                   Uso <span class="badge badge-success">${counts.inUseCount}</span></a>
               </li>
               <li class="nav-item">
-                <a class="nav-link ${filterStatus === 'Em Manutenção' ? 'active' : ''}" href="javascript:void(0);">Em
+                <a class="nav-link ${filterStatus === 'Em Manutenção' ? 'active' : ''}"
+                  href="/machines/views?status=Em manutenção">Em
                   Manutenção <span class="badge badge-danger">${counts.maintenanceCount}</span></a>
               </li>
 
@@ -128,7 +129,7 @@
                     </td>
                     <td>${new Date(machine.createdAt).toLocaleDateString()}</td>
                     <td>
-                      <div class="badge status-badge">${machine.status}</div>
+                      <div class="badge status-badge" data-machine-id="${machine.id}">${machine.status}</div>
                     </td>
                   </tr>
                   `).join('')}
@@ -255,12 +256,12 @@
               </div>
             </div>
             <div class="form-group">
-              <label for="additionalImages">Imagens</label>
-              <input type="file" class="form-control-file" id="additionalImages" name="evidence[]" multiple>
-            </div>
-            <div class="form-group">
               <label>Valor Total das Peças</label>
               <input type="text" class="form-control" id="totalValue" readonly>
+            </div>
+            <div class="form-group">
+              <label for="additionalImages">Imagens</label>
+              <input type="file" class="form-control-file" id="additionalImages" name="evidence" multiple>
             </div>
             <div class="form-group">
               <label for="additionalDocument">Documento</label>
