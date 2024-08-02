@@ -7,15 +7,37 @@ const MachineLog = require('../models/MachineLog');
 const { Op } = require('sequelize'); // Importando Op de sequelize
 
 const uploadDir = path.join(__dirname, '../public/uploads');
+const evidenceDir = path.join(__dirname, '../public/evidence');
+const documentsDir = path.join(__dirname, '../public/documents');
+
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
-        cb(null, uploadDir);
+        let targetDir;
+        if (file.fieldname === 'evidence') {
+            targetDir = evidenceDir;
+        } else if (file.fieldname === 'document') {
+            targetDir = documentsDir;
+        } else {
+            targetDir = uploadDir;
+        }
+        cb(null, targetDir);
     },
     filename: (req, file, cb) => {
         cb(null, `${Date.now()} - ${file.originalname}`);
     }
 });
-const upload = multer({ storage });
+
+const upload = multer({
+    storage,
+    fileFilter: (req, file, cb) => {
+        const allowedTypes = ['image/jpeg', 'image/png', 'application/pdf'];
+        if (allowedTypes.includes(file.mimetype)) {
+            cb(null, true);
+        } else {
+            cb(new Error('Tipo de arquivo não permitido'), false);
+        }
+    }
+});
 
 router.get('/views', async (req, res) => {
     try {
@@ -190,5 +212,61 @@ router.get('/generate-document/:id', async (req, res) => {
         }
     }
 });
+
+router.get('/generateDocument/:id', async (req, res) => {
+    const id = req.params.id;
+
+    try {
+        const machine = await machineController.getMachineById(id);
+        if (!machine) {
+            return res.status(404).json({ message: 'Máquina não encontrada' });
+        }
+
+        if (machine.status !== 'Em Uso') {
+            return res.status(400).json({ message: 'O documento só pode ser gerado para máquinas "Em chamado"' });
+        }
+
+        const documentBuffer = await machineController.generateOtherDocument(machine);
+        if (documentBuffer) {
+            res.setHeader('Content-Disposition', `attachment; filename=${machine.name}-detalhes.docx`);
+            res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document');
+            res.end(documentBuffer);
+        } else {
+            res.status(500).json({ message: 'Erro ao gerar documento' });
+        }
+    } catch (error) {
+        console.error('Erro ao gerar o documento:', error);
+        if (!res.headersSent) {
+            res.status(500).json({ message: 'Erro ao gerar o documento', error: error.message });
+        }
+    }
+});
+
+router.post('/update-details', upload.fields([
+    { name: 'evidence', maxCount: 10 },
+    { name: 'document', maxCount: 1 }
+]), async (req, res) => {
+    try {
+        const { id, description, parts, quantity, value } = req.body;
+        const files = req.files;
+
+        const images = files['evidence'] ? files['evidence'].map(file => file.path) : [];
+        const documents = files['document'] ? files['document'].map(file => file.path) : [];
+
+        const totalValue = value.reduce((acc, curr) => acc + parseFloat(curr), 0);
+
+        const machineDetail = await machineController.updateAdditionalDetails(id, description, parts, quantity, value, images, documents);
+        res.status(200).json({ message: 'Detalhes adicionais atualizados com sucesso.', machineDetail });
+    } catch (error) {
+        console.error('Erro ao salvar os detalhes adicionais:', error);
+        res.status(500).json({ message: 'Erro ao salvar os detalhes adicionais.', error: error.message });
+    }
+});
+
+console.log()
+
+
+
+
 
 module.exports = router;

@@ -14,7 +14,15 @@ const db = {};
 
 const User = require('./User');
 
+const MachineDetail = require('./MachineDetail');
+
+MachineDetail.sync({ alter: true })
+  .then(() => console.log('Tabela sincronizada com sucesso.'))
+  .catch(err => console.error('Erro ao sincronizar a tabela', err));
+
+
 db.User = User;
+db.MachineDetail = MachineDetail;
 
 Object.values(db).forEach(model => {
   if (model.associate) {

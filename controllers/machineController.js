@@ -1,4 +1,5 @@
 const Machine = require('../models/machine');
+const MachineDetail = require('../models/machineDetails');
 const fs = require('fs');
 const path = require('path');
 const PizZip = require('pizzip');
@@ -23,7 +24,7 @@ exports.searchAndFilterMachines = async (search, status, limit, offset) => {
             },
             limit,
             offset,
-            order: [['createdAt', 'DESC']] // Adicione a ordenação aqui
+            order: [['createdAt', 'DESC']]
         });
 
         return { machines, count };
@@ -149,10 +150,10 @@ exports.getMachineLogsPage = async (req, res) => {
         res.render('pages/machinesLog', {
             machineId,
             logs,
-            title: 'Logs de Máquinas',  
-            site_name: 'Geral - Conservação e Limpeza', 
-            year: new Date().getFullYear(), 
-            version: '1.0'  
+            title: 'Logs de Máquinas',
+            site_name: 'Geral - Conservação e Limpeza',
+            year: new Date().getFullYear(),
+            version: '1.0'
         });
     } catch (err) {
         console.error('Erro ao obter logs da máquina:', err);
@@ -182,36 +183,34 @@ exports.getDashboardStats = async () => {
     }
 };
 
-exports.updateMachineStatus = async (id, status, res) => {
-    try {
-        const machine = await Machine.findByPk(id);
-        if (!machine) {
-            throw new Error('Máquina não encontrada');
-        }
+// exports.updateMachineStatus = async (id, status, res) => {
+//     try {
+//         const machine = await Machine.findByPk(id);
+//         if (!machine) {
+//             throw new Error('Máquina não encontrada');
+//         }
 
-        console.log(`Atualizando o status da máquina com ID: ${id} para: ${status}`);
-        await machine.update({ status });
-        console.log(`Status da máquina atualizado para: ${status}`);
+//         console.log(`Atualizando o status da máquina com ID: ${id} para: ${status}`);
+//         await machine.update({ status });
+//         console.log(`Status da máquina atualizado para: ${status}`);
 
-        if (status === 'Em chamado') {
-            console.log('Gerando documento para o status "Em chamado"');
-            const documentBuffer = await exports.generateDocument(machine);
-            return documentBuffer;
-        }
-    } catch (error) {
-        console.error('Erro ao atualizar o status da máquina:', error);
-        throw error;
-    }
-};
-
-
+//         if (status === 'Em chamado') {
+//             console.log('Gerando documento para o status "Em chamado"');
+//             const documentBuffer = await exports.generateDocument(machine);
+//             return documentBuffer;
+//         }
+//     } catch (error) {
+//         console.error('Erro ao atualizar o status da máquina:', error);
+//         throw error;
+//     }
+// };
 
 exports.generateDocument = async (machine) => {
     try {
         const data = {
             client: machine.client,
             tags: machine.tags,
-            description: machine.description
+            description: machine.name
         };
 
         const templatePath = path.join(__dirname, '../docs/ModeloParaAssinatura.docx');
@@ -232,4 +231,64 @@ exports.generateDocument = async (machine) => {
         throw error;
     }
 };
+
+exports.generateOtherDocument = async (machine) => {
+    try {
+        const data = {
+            client: machine.client,
+            tags: machine.tags,
+            description: machine.description
+        };
+
+        const templatePath = path.join(__dirname, '../docs/ModeloParaAssinaturaDev.docx');
+        if (!fs.existsSync(templatePath)) {
+            throw new Error('Template de documento não encontrado');
+        }
+
+        const content = fs.readFileSync(templatePath, 'binary');
+        const zip = new PizZip(content);
+        const doc = new Docxtemplater(zip);
+
+        doc.setData(data);
+        doc.render();
+
+        return doc.getZip().generate({ type: 'nodebuffer' });
+    } catch (error) {
+        console.error('Erro ao gerar documento:', error);
+        throw error;
+    }
+};
+
+exports.updateAdditionalDetails = async (id, description, parts, quantity, value, images, documents) => {
+    try {
+        if (!Array.isArray(parts) || !Array.isArray(quantity) || !Array.isArray(value)) {
+            throw new Error('As partes, quantidades e valores devem ser arrays.');
+        }
+
+        if (parts.length !== quantity.length || parts.length !== value.length) {
+            throw new Error('As arrays de partes, quantidades e valores devem ter o mesmo comprimento.');
+        }
+
+        const totalValue = value.reduce((acc, curr) => acc + parseFloat(curr), 0);
+
+        const machineDetail = await MachineDetail.create({
+            description,
+            parts: parts.map((part, index) => ({
+                name: part,
+                quantity: quantity[index],
+                value: value[index]
+            })),
+            images,
+            documents,
+            totalValue,
+            machineId: id,
+        });
+
+        return machineDetail;
+    } catch (error) {
+        console.error('Erro ao salvar os detalhes adicionais:', error);
+        throw error;
+    }
+};
+
 

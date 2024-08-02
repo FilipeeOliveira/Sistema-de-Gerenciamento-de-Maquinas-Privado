@@ -113,6 +113,22 @@ function editMachine(id, name, tags, client, status, description, images) {
             console.error('Erro ao gerar o documento');
             alert('Erro ao gerar o documento');
           }
+        } else if (document.getElementById('editStatus').value === 'Em Uso') {
+          const docResponse = await fetch(`/machines/generateDocument/${id}`);
+          if (docResponse.ok) {
+            const contentDisposition = docResponse.headers.get('Content-Disposition');
+            const blob = await docResponse.blob();
+            const url = window.URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = contentDisposition.split('filename=')[1];
+            document.body.appendChild(link);
+            link.click();
+            link.remove();
+          } else {
+            console.error('Erro ao gerar o documento');
+            alert('Erro ao gerar o documento');
+          }
         } else {
           alert('Máquina atualizada com sucesso');
         }
@@ -132,6 +148,86 @@ function editMachine(id, name, tags, client, status, description, images) {
 }
 
 
+
+$(document).ready(function () {
+  console.log("Documento pronto.");
+
+  $('.status-badge').click(function () {
+    const status = $(this).text().trim();
+    console.log("Status clicado:", status);
+
+    if (status === 'Em Manutenção') {
+      console.log("Status é 'Em Manutenção'. Abrindo o modal.");
+      $('#additionalDetailsModal').modal('show');
+    } else {
+      console.log("Status não é 'Em Manutenção'. Nenhuma ação necessária.");
+    }
+  });
+
+
+  $('#additionalDetailsForm').submit(function (e) {
+    e.preventDefault();
+
+    const formData = new FormData(this);
+    console.log('Formulário de detalhes adicionais enviado.');
+
+    $.ajax({
+      url: '/machines/update-details',
+      type: 'POST',
+      data: formData,
+      contentType: false,
+      processData: false,
+      success: function (response) {
+        console.log('Detalhes adicionais atualizados com sucesso.', response);
+        $('#additionalDetailsModal').modal('hide');
+      },
+      error: function (xhr, status, error) {
+        console.error('Erro ao atualizar detalhes adicionais:', error);
+        alert('Erro ao atualizar detalhes adicionais.');
+      }
+    });
+  });
+});
+
+
+function calculateTotalValue() {
+  let total = 0;
+  $('input[name="value[]"]').each(function () {
+    const value = parseFloat($(this).val()) || 0;
+    total += value;
+  });
+  $('#totalValue').val(total.toFixed(2));
+}
+
+$(document).on('click', '.add-part', function () {
+  const partRow = `
+    <div class="row mb-2">
+      <div class="col-md-5">
+        <input type="text" class="form-control" name="parts[]" placeholder="Peça" required>
+      </div>
+      <div class="col-md-3">
+        <input type="number" class="form-control" name="quantity[]" placeholder="Quantidade" required>
+      </div>
+      <div class="col-md-3">
+        <input type="number" class="form-control" name="value[]" placeholder="Valor" required>
+      </div>
+      <div class="col-md-1">
+        <button type="button" class="btn btn-danger btn-sm remove-part"><i class="fas fa-minus"></i></button>
+      </div>
+    </div>`;
+  $('#partsList').append(partRow);
+});
+
+$(document).on('click', '.remove-part', function () {
+  $(this).closest('.row').remove();
+  calculateTotalValue();
+});
+
+$(document).on('input', 'input[name="value[]"]', calculateTotalValue);
+
+$(document).ready(function () {
+  calculateTotalValue();
+});
 
 
 
