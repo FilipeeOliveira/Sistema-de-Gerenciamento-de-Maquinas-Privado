@@ -151,8 +151,11 @@ document.addEventListener('DOMContentLoaded', function () {
       case 'Em chamado':
         badge.classList.add('badge-warning'); // Amarelo
         break;
+      case 'Em espera':
+        badge.classList.add('badge-primary'); // Azul
+        break;
       case 'Em estoque':
-        badge.classList.add('badge-brown'); // Amarelo
+        badge.classList.add('badge-brown'); // Marrom
         break;
       default:
         badge.classList.add('badge-primary'); // Azul (ou outra cor padrão)

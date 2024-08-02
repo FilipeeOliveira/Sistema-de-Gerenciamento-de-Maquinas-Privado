@@ -172,13 +172,15 @@ exports.getDashboardStats = async () => {
         const maintenanceCount = await Machine.count({ where: { status: 'Em Manutenção' } });
         const inUseCount = await Machine.count({ where: { status: 'Em Uso' } });
         const inStockCount = await Machine.count({ where: { status: 'Em estoque' } });
+        const onHoldCount= await Machine.count({ where: { status: 'Em espera' } });
 
         return {
             pendingCount,
             maintenanceCount,
             inUseCount,
             inStockCount,
-            totalCount: pendingCount + maintenanceCount + inUseCount + inStockCount
+            onHoldCount,
+            totalCount: pendingCount + maintenanceCount + inUseCount + inStockCount + onHoldCount
         };
     } catch (err) {
         console.error('Erro ao obter estatísticas das máquinas:', err);

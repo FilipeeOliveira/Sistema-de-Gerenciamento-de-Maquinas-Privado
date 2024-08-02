@@ -40,6 +40,11 @@
                   href="/machines/views?status=Em estoque">Em estoque <span
                     class="badge badge-brown">${counts.inStockCount}</span></a>
               </li>
+              <li class="nav-item">
+                <a class="nav-link ${filterStatus === 'Em espera' ? 'active' : ''}"
+                  href="/machines/views?status=Em espera">Em espera <span
+                    class="badge badge-primary">${counts.onHoldCount}</span></a>
+              </li>
             </ul>
           </div>
         </div>
@@ -190,6 +195,7 @@
                 <option value="Em Uso">Em Uso</option>
                 <option value="Em chamado">Em chamado</option>
                 <option value="Em estoque">Em estoque</option>
+                <option value="Em espera">Em espera</option>
               </select>
             </div>
 
