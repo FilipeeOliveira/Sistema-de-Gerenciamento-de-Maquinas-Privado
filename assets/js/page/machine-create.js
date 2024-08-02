@@ -143,6 +143,10 @@ document.addEventListener('DOMContentLoaded', function () {
         statusBadge.classList.remove('badge-primary', 'badge-danger', 'badge-success', 'badge-warning');
         statusBadge.classList.add('badge-brown');
         break;
+      case 'Em espera':
+        statusBadge.classList.remove('badge-primary', 'badge-danger', 'badge-success', 'badge-warning');
+        statusBadge.classList.add('badge-primary');
+        break;
       default:
         statusBadge.classList.remove('badge-danger', 'badge-success', 'badge-warning', 'badge-brown');
         statusBadge.classList.add('badge-primary');
