@@ -4,7 +4,7 @@ const machineController = require('../controllers/machineController');
 const multer = require('multer');
 const path = require('path');
 const MachineLog = require('../models/MachineLog');
-const { Op } = require('sequelize'); // Importando Op de sequelize
+const { Op } = require('sequelize');
 
 const uploadDir = path.join(__dirname, '../public/uploads');
 const evidenceDir = path.join(__dirname, '../public/evidence');
