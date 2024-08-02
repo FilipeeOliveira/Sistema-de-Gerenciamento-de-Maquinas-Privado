@@ -233,13 +233,17 @@ router.post('/update-details', upload.fields([
     { name: 'evidence', maxCount: 10 },
     { name: 'document', maxCount: 1 }
 ]), async (req, res) => {
-    console.log(req.files); // Adicione isso para depuração
+    console.log('Arquivos recebidos:', req.files);
+
     try {
         const { id, description, parts, quantity, value } = req.body;
         const files = req.files;
 
-        const images = files['evidence'] ? files['evidence'].map(file => file.path) : [];
-        const document = files['document'] ? files['document'][0].path : null;
+        const images = files['evidence'] ? files['evidence'].map(file => `/evidence/${file.filename}`) : [];
+        const document = files['document'] ? `/documents/${files['document'][0].filename}` : null;
+
+        console.log('Caminhos das imagens:', images);
+        console.log('Caminho do documento:', document);
 
         const totalValue = value.reduce((acc, curr) => acc + parseFloat(curr), 0);
 
@@ -250,15 +254,5 @@ router.post('/update-details', upload.fields([
         res.status(500).json({ message: 'Erro ao salvar os detalhes adicionais.', error: error.message });
     }
 });
-
-
-
-
-
-
-
-
-
-
 
 module.exports = router;

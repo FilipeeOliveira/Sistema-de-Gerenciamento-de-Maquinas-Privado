@@ -273,8 +273,11 @@ exports.updateAdditionalDetails = async (id, description, parts, quantity, value
             throw new Error('As arrays de partes, quantidades e valores devem ter o mesmo comprimento.');
         }
 
-        const imagesArray = Array.isArray(images) ? images : []; // Certifique-se de que images seja um array
-        const documentPath = document ? document : null; // Verifique se o document é nulo ou não
+        const adjustedImages = images.map(image => image.startsWith('/evidence/') ? image : `/evidence/${path.basename(image)}`);
+        const adjustedDocument = document ? (document.startsWith('/documents/') ? document : `/documents/${path.basename(document)}`) : null;
+
+        console.log('Caminhos ajustados das imagens:', adjustedImages);
+        console.log('Caminho ajustado do documento:', adjustedDocument);
 
         const totalValue = value.reduce((acc, curr) => acc + parseFloat(curr), 0);
 
@@ -285,8 +288,8 @@ exports.updateAdditionalDetails = async (id, description, parts, quantity, value
                 quantity: quantity[index],
                 value: value[index]
             })),
-            images: imagesArray,
-            documents: documentPath, // Use o nome correto do campo
+            images: adjustedImages,
+            documents: adjustedDocument,
             totalValue,
             machineId: id,
         });
@@ -297,6 +300,11 @@ exports.updateAdditionalDetails = async (id, description, parts, quantity, value
         throw error;
     }
 };
+
+
+
+
+
 
 
 

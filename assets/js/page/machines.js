@@ -159,9 +159,8 @@ $(document).ready(function () {
     if (status === 'Em Manutenção') {
       console.log("Status é 'Em Manutenção'. Abrindo o modal.");
 
-      // Obtenha o ID da máquina a partir do atributo data-machine-id
       const machineId = $(this).data('machine-id');
-      $('#machineId').val(machineId); // Preenche o campo oculto com o ID da máquina
+      $('#machineId').val(machineId);
 
       $('#additionalDetailsModal').modal('show');
     } else {
