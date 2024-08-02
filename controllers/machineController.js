@@ -33,21 +33,6 @@ exports.searchAndFilterMachines = async (search, status, limit, offset) => {
     }
 };
 
-//DEIXEI COMENTADO PARA CASO TENHA UM BUG NO SISTEMA DE MAQUINAS
-/* exports.listMachines = async (status) => {
-    try {
-        const whereClause = status ? { status } : {};
-        const machines = await Machine.findAll({
-            where: whereClause,
-            order: [['createdAt', 'DESC']]
-        });
-        return machines;
-    } catch (err) {
-        console.error('Erro ao encontrar as máquinas:', err);
-        throw err;
-    }
-}; */
-
 exports.deleteMachine = async (id) => {
     try {
         const machine = await Machine.findByPk(id);
@@ -146,12 +131,21 @@ exports.updateMachine = async (id, updatedData, files, imagesToRemove) => {
 exports.getMachineLogsPage = async (req, res) => {
     try {
         const machineId = req.params.id;
+        const { startDate, endDate } = req.query;
+
+        const whereClause = { machineId };
+
+        if (startDate && endDate) {
+            whereClause.changeDate = {
+                [Op.between]: [new Date(startDate), new Date(new Date(endDate).setHours(23, 59, 59, 999))]
+            };
+        }
+
         const logs = await MachineLog.findAll({
-            where: { machineId },
+            where: whereClause,
             order: [['changeDate', 'DESC']]
         });
 
-       
         res.render('pages/machinesLog', {
             machineId,
             logs,

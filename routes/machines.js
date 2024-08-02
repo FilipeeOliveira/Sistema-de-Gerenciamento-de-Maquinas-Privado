@@ -4,6 +4,7 @@ const machineController = require('../controllers/machineController');
 const multer = require('multer');
 const path = require('path');
 const MachineLog = require('../models/MachineLog');
+const { Op } = require('sequelize'); // Importando Op de sequelize
 
 const uploadDir = path.join(__dirname, '../public/uploads');
 const storage = multer.diskStorage({
@@ -47,7 +48,6 @@ router.get('/views', async (req, res) => {
         res.status(500).send('Erro ao buscar máquinas');
     }
 });
-
 
 router.delete('/delete/:id', async (req, res) => {
     try {
@@ -129,24 +129,38 @@ router.put('/update/:id', upload.array('images', 10), async (req, res) => {
 router.get('/logs/:id', async (req, res) => {
     try {
         const machineId = req.params.id;
+        const { startDate, endDate } = req.query;
+
+        let whereClause = { machineId };
+
+        if (startDate && endDate) {
+            whereClause.changeDate = {
+                [Op.between]: [
+                    new Date(`${startDate}T00:00:00`),
+                    new Date(`${endDate}T23:59:59`)
+                ]
+            };
+        }
+
         const logs = await MachineLog.findAll({
-            where: { machineId: machineId },
-            order: [['changeDate', 'DESC']],
+            where: whereClause,
+            order: [['changeDate', 'DESC']]
         });
 
         res.render('pages/machinesLog', {
-            machineId: machineId,
-            logs: logs,
-            title: 'Logs de Máquinas',  
-            site_name: 'Geral - Conservação e Limpeza',  
-            year: new Date().getFullYear(),  
-            version: '1.0'  
+            machineId,
+            logs,
+            title: 'Logs de Máquinas',
+            site_name: 'Geral - Conservação e Limpeza',
+            year: new Date().getFullYear(),
+            version: '1.0'
         });
-    } catch (error) {
-        console.error(error);
-        res.status(500).send('Internal Server Error');
+    } catch (err) {
+        console.error('Erro ao buscar logs de máquinas:', err);
+        res.status(500).send('Erro ao buscar logs de máquinas');
     }
 });
+
 
 router.get('/generate-document/:id', async (req, res) => {
     const id = req.params.id;
@@ -176,11 +190,5 @@ router.get('/generate-document/:id', async (req, res) => {
         }
     }
 });
-
-
-
-
-
-
 
 module.exports = router;
