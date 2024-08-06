@@ -4273,3 +4273,16 @@ body:not(.sidebar-mini) .sidebar-style-2 .sidebar-menu li.active ul.dropdown-men
   animation-iteration-count: infinite;
   opacity: 1;
 }
+
+.modal-dialog {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: calc(100% - 1rem);
+}
+
+.modal-content {
+  border-radius: 0.3rem;
+  width: 100%;
+  max-width: 500px; /* Ajuste conforme necessário */
+}
