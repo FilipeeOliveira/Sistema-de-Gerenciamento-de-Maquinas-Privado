@@ -128,82 +128,6 @@ exports.updateMachine = async (id, updatedData, files, imagesToRemove) => {
     }
 };
 
-exports.getMachineLogsPage = async (req, res) => {
-    try {
-        const machineId = req.params.id;
-        const { startDate, endDate } = req.query;
-
-        const whereClause = { machineId };
-
-        if (startDate && endDate) {
-            whereClause.changeDate = {
-                [Op.between]: [new Date(startDate), new Date(new Date(endDate).setHours(23, 59, 59, 999))]
-            };
-        }
-
-        const logs = await MachineLog.findAll({
-            where: whereClause,
-            order: [['changeDate', 'DESC']]
-        });
-
-        res.render('pages/machinesLog', {
-            machineId,
-            logs,
-            title: 'Logs de Máquinas',
-            site_name: 'Geral - Conservação e Limpeza',
-            year: new Date().getFullYear(),
-            version: '1.0'
-        });
-    } catch (err) {
-        console.error('Erro ao obter logs da máquina:', err);
-        res.status(500).send('Erro ao obter logs da máquina');
-    }
-};
-
-exports.getDashboardStats = async () => {
-    try {
-        const pendingCount = await Machine.count({ where: { status: 'Em chamado' } });
-        const maintenanceCount = await Machine.count({ where: { status: 'Em Manutenção' } });
-        const inUseCount = await Machine.count({ where: { status: 'Em Uso' } });
-        const inStockCount = await Machine.count({ where: { status: 'Em estoque' } });
-        const onHoldCount= await Machine.count({ where: { status: 'Em espera' } });
-
-        return {
-            pendingCount,
-            maintenanceCount,
-            inUseCount,
-            inStockCount,
-            onHoldCount,
-            totalCount: pendingCount + maintenanceCount + inUseCount + inStockCount + onHoldCount
-        };
-    } catch (err) {
-        console.error('Erro ao obter estatísticas das máquinas:', err);
-        throw err;
-    }
-};
-
-// exports.updateMachineStatus = async (id, status, res) => {
-//     try {
-//         const machine = await Machine.findByPk(id);
-//         if (!machine) {
-//             throw new Error('Máquina não encontrada');
-//         }
-
-//         console.log(`Atualizando o status da máquina com ID: ${id} para: ${status}`);
-//         await machine.update({ status });
-//         console.log(`Status da máquina atualizado para: ${status}`);
-
-//         if (status === 'Em chamado') {
-//             console.log('Gerando documento para o status "Em chamado"');
-//             const documentBuffer = await exports.generateDocument(machine);
-//             return documentBuffer;
-//         }
-//     } catch (error) {
-//         console.error('Erro ao atualizar o status da máquina:', error);
-//         throw error;
-//     }
-// };
-
 exports.generateDocument = async (machine) => {
     try {
         const data = {
@@ -296,6 +220,80 @@ exports.updateAdditionalDetails = async (id, description, parts, quantity, value
         throw error;
     }
 };
+
+exports.getMachineLogsPage = async (req, res) => {
+    try {
+        const machineId = req.params.id;
+        const { startDate, endDate } = req.query;
+
+        const whereClause = { machineId };
+
+        if (startDate && endDate) {
+            whereClause.changeDate = {
+                [Op.between]: [new Date(startDate), new Date(new Date(endDate).setHours(23, 59, 59, 999))]
+            };
+        }
+
+        const logs = await MachineLog.findAll({
+            where: whereClause,
+            order: [['changeDate', 'DESC']]
+        });
+
+        res.render('pages/machinesLog', {
+            machineId,
+            logs,
+            title: 'Logs de Máquinas',
+            site_name: 'Geral - Conservação e Limpeza',
+            year: new Date().getFullYear(),
+            version: '1.0'
+        });
+    } catch (err) {
+        console.error('Erro ao obter logs da máquina:', err);
+        res.status(500).send('Erro ao obter logs da máquina');
+    }
+};
+
+exports.getDashboardStats = async () => {
+    try {
+        const pendingCount = await Machine.count({ where: { status: 'Em chamado' } });
+        const maintenanceCount = await Machine.count({ where: { status: 'Em Manutenção' } });
+        const inUseCount = await Machine.count({ where: { status: 'Em Uso' } });
+        const inStockCount = await Machine.count({ where: { status: 'Em estoque' } });
+        const onHoldCount= await Machine.count({ where: { status: 'Em espera' } });
+
+        return {
+            pendingCount,
+            maintenanceCount,
+            inUseCount,
+            inStockCount,
+            onHoldCount,
+            totalCount: pendingCount + maintenanceCount + inUseCount + inStockCount + onHoldCount
+        };
+    } catch (err) {
+        console.error('Erro ao obter estatísticas das máquinas:', err);
+        throw err;
+    }
+};
+
+
+exports.editMachine = async (req, res) => {
+    try {
+        const machineId = req.params.id;
+        const machine = await Machine.findByPk(machineId);
+        
+        if (!machine) {
+            return res.status(404).json({ message: 'Máquina não encontrada' });
+        }
+        
+        res.render('editMachine', {
+            machine
+        });
+    } catch (error) {
+        console.error('Erro ao buscar máquina:', error);
+        res.status(500).json({ message: 'Erro ao buscar máquina', error: error.message });
+    }
+};
+
 
 
 

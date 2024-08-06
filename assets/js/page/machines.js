@@ -40,7 +40,7 @@ function editMachine(id, name, tags, client, status, description, images) {
   const imagePreviewContainer = document.getElementById('editImagePreview');
   imagePreviewContainer.innerHTML = '';
 
-  imagesToRemove = [];
+  let imagesToRemove = [];
 
   if (images) {
     images.split(',').forEach(imagePath => {
@@ -97,43 +97,13 @@ function editMachine(id, name, tags, client, status, description, images) {
         const result = await response.json();
         console.log(result.message);
 
-        if (document.getElementById('editStatus').value === 'Em chamado') {
-          const docResponse = await fetch(`/machines/generate-document/${id}`);
-          if (docResponse.ok) {
-            const contentDisposition = docResponse.headers.get('Content-Disposition');
-            const blob = await docResponse.blob();
-            const url = window.URL.createObjectURL(blob);
-            const link = document.createElement('a');
-            link.href = url;
-            link.download = contentDisposition.split('filename=')[1];
-            document.body.appendChild(link);
-            link.click();
-            link.remove();
-          } else {
-            console.error('Erro ao gerar o documento');
-            alert('Erro ao gerar o documento');
-          }
-        } else if (document.getElementById('editStatus').value === 'Em Uso') {
-          const docResponse = await fetch(`/machines/generateDocument/${id}`);
-          if (docResponse.ok) {
-            const contentDisposition = docResponse.headers.get('Content-Disposition');
-            const blob = await docResponse.blob();
-            const url = window.URL.createObjectURL(blob);
-            const link = document.createElement('a');
-            link.href = url;
-            link.download = contentDisposition.split('filename=')[1];
-            document.body.appendChild(link);
-            link.click();
-            link.remove();
-          } else {
-            console.error('Erro ao gerar o documento');
-            alert('Erro ao gerar o documento');
-          }
+        const status = document.getElementById('editStatus').value;
+        if (status === 'Em chamado' || status === 'Em Uso') {
+          showModalConfirmation(id, status);
         } else {
           alert('Máquina atualizada com sucesso');
+          location.reload();
         }
-
-        location.reload();
       } else {
         console.error('Erro ao atualizar a máquina');
         alert('Erro ao atualizar a máquina');
@@ -145,8 +115,59 @@ function editMachine(id, name, tags, client, status, description, images) {
 
     $('#editMachineModal').modal('hide');
   };
-}
 
+  function showModalConfirmation(machineId, status) {
+    const confirmationModal = new bootstrap.Modal(document.getElementById('confirmationModal'));
+    const confirmDownloadButton = document.getElementById('confirmDownloadButton');
+    const cancelDownloadButton = document.getElementById('cancelDownloadButton');
+
+    confirmDownloadButton.onclick = async function () {
+      confirmationModal.hide();
+
+      if (status === 'Em chamado') {
+        const docResponse = await fetch(`/machines/generate-document/${machineId}`);
+        if (docResponse.ok) {
+          const contentDisposition = docResponse.headers.get('Content-Disposition');
+          const blob = await docResponse.blob();
+          const url = window.URL.createObjectURL(blob);
+          const link = document.createElement('a');
+          link.href = url;
+          link.download = contentDisposition.split('filename=')[1];
+          document.body.appendChild(link);
+          link.click();
+          link.remove();
+        } else {
+          console.error('Erro ao gerar o documento');
+          alert('Erro ao gerar o documento');
+        }
+      } else if (status === 'Em Uso') {
+        const docResponse = await fetch(`/machines/generateDocument/${machineId}`);
+        if (docResponse.ok) {
+          const contentDisposition = docResponse.headers.get('Content-Disposition');
+          const blob = await docResponse.blob();
+          const url = window.URL.createObjectURL(blob);
+          const link = document.createElement('a');
+          link.href = url;
+          link.download = contentDisposition.split('filename=')[1];
+          document.body.appendChild(link);
+          link.click();
+          link.remove();
+        } else {
+          console.error('Erro ao gerar o documento');
+          alert('Erro ao gerar o documento');
+        }
+      }
+      location.reload();
+    };
+
+    cancelDownloadButton.onclick = function () {
+      confirmationModal.hide();
+      location.reload();
+    };
+
+    confirmationModal.show();
+  }
+}
 
 
 $(document).ready(function () {
