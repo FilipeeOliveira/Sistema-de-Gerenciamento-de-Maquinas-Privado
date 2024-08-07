@@ -1,11 +1,62 @@
 const Machine = require('../models/machine');
-const MachineDetail = require('../models/machineDetails');
+const MachineDetail = require('../models/machineDetails'); // Certifique-se de que o caminho está correto
 const fs = require('fs');
 const path = require('path');
 const PizZip = require('pizzip');
 const Docxtemplater = require('docxtemplater');
 const { Op } = require('sequelize');
 const MachineLog = require('../models/MachineLog');
+
+// Função para obter documentos por ID da máquina
+exports.getDocumentsByMachineId = async (machineId) => {
+    try {
+        const documents = await MachineDetail.findAll({
+            where: { machineId: machineId }
+        });
+        return documents;
+    } catch (error) {
+        throw new Error('Erro ao obter documentos: ' + error.message);
+    }
+};
+
+exports.getDocumentsTable = async (req, res) => {
+    const { machineId } = req.params;
+
+    try {
+        const documents = await MachineDetail.findAll({
+            where: { machineId }
+        });
+
+        // Corrigir os caminhos dos documentos removendo o prefixo duplicado
+        documents.forEach(document => {
+            // Corrigir o caminho dos documentos
+            if (document.documents) {
+                document.documents = document.documents.replace(/^\/documents\//, '');
+            }
+            if (document.doc2) {
+                document.doc2 = document.doc2.replace(/^\/documents\//, '');
+            }
+            console.log('Caminho para download:', `/machines/documents/${document.documents}`);
+        });
+
+        res.render('pages/tableDocuments', {
+            title: 'Tabela de Documentos',
+            site_name: 'Geral - Conservação e Limpeza',
+            version: '1.0',
+            year: new Date().getFullYear(),
+            machineId: machineId,
+            documents: documents || []  // Passa documentos para a visão
+        });
+    } catch (error) {
+        console.error('Erro ao obter documentos:', error);
+        res.status(500).send('Erro interno do servidor');
+    }
+};
+
+
+
+
+
 
 exports.searchAndFilterMachines = async (search, status, limit, offset) => {
     try {
@@ -221,6 +272,7 @@ exports.updateAdditionalDetails = async (id, description, parts, quantity, value
     }
 };
 
+
 exports.getMachineLogsPage = async (req, res) => {
     try {
         const machineId = req.params.id;
@@ -259,7 +311,7 @@ exports.getDashboardStats = async () => {
         const maintenanceCount = await Machine.count({ where: { status: 'Em Manutenção' } });
         const inUseCount = await Machine.count({ where: { status: 'Em Uso' } });
         const inStockCount = await Machine.count({ where: { status: 'Em estoque' } });
-        const onHoldCount= await Machine.count({ where: { status: 'Em espera' } });
+        const onHoldCount = await Machine.count({ where: { status: 'Em espera' } });
 
         return {
             pendingCount,
@@ -280,11 +332,11 @@ exports.editMachine = async (req, res) => {
     try {
         const machineId = req.params.id;
         const machine = await Machine.findByPk(machineId);
-        
+
         if (!machine) {
             return res.status(404).json({ message: 'Máquina não encontrada' });
         }
-        
+
         res.render('editMachine', {
             machine
         });

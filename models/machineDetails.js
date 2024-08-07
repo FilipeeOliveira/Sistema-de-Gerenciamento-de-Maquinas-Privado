@@ -20,6 +20,9 @@ const MachineDetail = sequelize.define('MachineDetail', {
     documents: {
         type: DataTypes.STRING,
     },
+    docDevolution: {
+        type: DataTypes.STRING,
+    },
     machineId: {
         type: DataTypes.INTEGER,
         references: {

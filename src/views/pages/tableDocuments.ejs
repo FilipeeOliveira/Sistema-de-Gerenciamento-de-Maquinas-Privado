@@ -1,0 +1,87 @@
+<% const bodyContent=` <section class="section">
+    <div class="section-header">
+        <h1>Tabela de Documentos da Máquina</h1>
+        <div class="section-header-breadcrumb">
+            <div class="breadcrumb-item active"><a href="/dashboard/view">Dashboard</a></div>
+            <div class="breadcrumb-item"><a href="/machines/views">Máquinas</a></div>
+            <div class="breadcrumb-item">Tabela de Documentos</div>
+        </div>
+    </div>
+    <div class="section-body">
+        <div class="card">
+            <div class="card-header">
+                <h4>Documentos - Máquina ${machineId}</h4>
+                <form id="dateFilterForm" class="form-inline" method="get" action="/machines/${machineId}">
+                    <div class="form-group">
+                        <label for="startDate" class="mr-2">De:</label>
+                        <input type="date" id="startDate" name="startDate" class="form-control mr-2" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="endDate" class="mr-2">Até:</label>
+                        <input type="date" id="endDate" name="endDate" class="form-control mr-2" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Filtrar</button>
+                </form>
+            </div>
+
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Data</th>
+                                <th>Doc. Retirada</th>
+                                <th>Ordem de Serviço</th>
+                                <th>Imagens Máquina</th>
+                                <th>Doc. Devolução</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${documents.length > 0 ? documents.map(document => `
+                            <tr>
+                                <td>${new Date(document.createdAt).toLocaleDateString()}</td>
+                                <td>
+                                    ${document.documents ?
+                                    `<a href="/machines/documents/${document.documents}" download>Download</a>` :
+                                    'Nenhum documento'}
+                                </td>
+                                <td class="text-truncate" style="max-width: 150px;">
+                                    ${document.ordemDeServico || 'Não especificado'}
+                                </td>
+                                <td class="text-center" style="max-width: 200px;">
+                                    ${document.imagens && document.imagens.length > 0 ? document.imagens.map(imagem => `
+                                    <img src="/evidence/${imagem}" alt="${imagem}" class="img-thumbnail"
+                                        style="max-width: 100px; margin: 2px;">
+                                    `).join('') : 'Nenhuma imagem'}
+                                </td>
+                                <td>
+                                    ${document.doc2 ? `<a href="/machines/documents/${document.doc2}"
+                                        download>Download</a>` : 'Nenhum documento'}
+                                </td>
+                            </tr>
+                            `).join('') : `<tr>
+                                <td colspan="5">Nenhum documento encontrado</td>
+                            </tr>`}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    </section>
+
+
+    `;
+
+    const additionalStyles = `
+    <link rel="stylesheet" href="../../../node_modules/selectric/public/selectric.css">
+    `;
+
+    const additionalScripts = `
+    <script src="../../../node_modules/selectric/public/jquery.selectric.min.js"></script>
+    <script src="../../../assets/js/page/tableDocuments.js"></script>
+    `;
+    %>
+
+    <%- include('layouts/master.ejs', { bodyContent: bodyContent, additionalScripts: additionalScripts,
+        additionalStyles: additionalStyles }) %>
