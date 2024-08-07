@@ -182,7 +182,7 @@ exports.generateOtherDocument = async (machine) => {
     }
 };
 
-
+//para exportar
 exports.updateAdditionalDetails = async (id, description, parts, quantity, value, images, document) => {
     try {
         if (!Array.isArray(parts) || !Array.isArray(quantity) || !Array.isArray(value)) {

@@ -208,6 +208,7 @@ router.get('/generateDocument/:id', async (req, res) => {
     }
 });
 
+//export documents
 router.post('/update-details', upload.fields([
     { name: 'evidence', maxCount: 10 },
     { name: 'document', maxCount: 1 }

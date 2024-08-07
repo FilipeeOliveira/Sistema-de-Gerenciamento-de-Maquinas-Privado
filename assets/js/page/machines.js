@@ -101,7 +101,6 @@ function editMachine(id, name, tags, client, status, description, images) {
         if (status === 'Em chamado' || status === 'Em espera') {
           showModalConfirmation(id, status);
         } else {
-          alert('Máquina atualizada com sucesso');
           location.reload();
         }
       } else {
