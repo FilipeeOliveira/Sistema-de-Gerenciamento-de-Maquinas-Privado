@@ -98,7 +98,7 @@ function editMachine(id, name, tags, client, status, description, images) {
         console.log(result.message);
 
         const status = document.getElementById('editStatus').value;
-        if (status === 'Em chamado' || status === 'Em Uso') {
+        if (status === 'Em chamado' || status === 'Em espera') {
           showModalConfirmation(id, status);
         } else {
           alert('Máquina atualizada com sucesso');
@@ -140,7 +140,7 @@ function editMachine(id, name, tags, client, status, description, images) {
           console.error('Erro ao gerar o documento');
           alert('Erro ao gerar o documento');
         }
-      } else if (status === 'Em Uso') {
+      } else if (status === 'Em espera') {
         const docResponse = await fetch(`/machines/generateDocument/${machineId}`);
         if (docResponse.ok) {
           const contentDisposition = docResponse.headers.get('Content-Disposition');
