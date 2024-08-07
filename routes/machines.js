@@ -152,17 +152,17 @@ router.put('/update/:id', upload.array('images', 10), async (req, res) => {
 
 router.get('/generate-document/:id', async (req, res) => {
     const id = req.params.id;
-    
+
     try {
         const machine = await machineController.getMachineById(id);
         if (!machine) {
             return res.status(404).json({ message: 'Máquina não encontrada' });
         }
-        
+
         if (machine.status !== 'Em chamado') {
             return res.status(400).json({ message: 'O documento só pode ser gerado para máquinas "Em chamado"' });
         }
-        
+
         const documentBuffer = await machineController.generateDocument(machine);
         if (documentBuffer) {
             res.setHeader('Content-Disposition', `attachment; filename=${machine.name}-detalhes.docx`);
@@ -181,17 +181,17 @@ router.get('/generate-document/:id', async (req, res) => {
 
 router.get('/generateDocument/:id', async (req, res) => {
     const id = req.params.id;
-    
+
     try {
         const machine = await machineController.getMachineById(id);
         if (!machine) {
             return res.status(404).json({ message: 'Máquina não encontrada' });
         }
-        
-        if (machine.status !== 'Em Uso') {
+
+        if (machine.status !== 'Em espera') {
             return res.status(400).json({ message: 'O documento só pode ser gerado para máquinas "Em chamado"' });
         }
-        
+
         const documentBuffer = await machineController.generateOtherDocument(machine);
         if (documentBuffer) {
             res.setHeader('Content-Disposition', `attachment; filename=${machine.name}-detalhes.docx`);
@@ -213,19 +213,19 @@ router.post('/update-details', upload.fields([
     { name: 'document', maxCount: 1 }
 ]), async (req, res) => {
     console.log('Arquivos recebidos:', req.files);
-    
+
     try {
         const { id, description, parts, quantity, value } = req.body;
         const files = req.files;
-        
+
         const images = files['evidence'] ? files['evidence'].map(file => `/evidence/${file.filename}`) : [];
         const document = files['document'] ? `/documents/${files['document'][0].filename}` : null;
-        
+
         console.log('Caminhos das imagens:', images);
         console.log('Caminho do documento:', document);
-        
+
         const totalValue = value.reduce((acc, curr) => acc + parseFloat(curr), 0);
-        
+
         const machineDetail = await machineController.updateAdditionalDetails(id, description, parts, quantity, value, images, document);
         res.status(200).json({ message: 'Detalhes adicionais atualizados com sucesso.', machineDetail });
     } catch (error) {
