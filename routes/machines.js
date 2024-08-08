@@ -5,20 +5,22 @@ const multer = require('multer');
 const path = require('path');
 const MachineLog = require('../models/MachineLog');
 const { Op } = require('sequelize');
+const MachineDetail = require('../models/machineDetails');
 
-const uploadDir = path.join(__dirname, '../public/uploads');
+//const uploadDir = path.join(__dirname, '../public/uploads');
 const evidenceDir = path.join(__dirname, '../public/evidence');
 const documentsDir = path.join(__dirname, '../public/documents');
+const devolutionDir = path.join(__dirname, '../public/documents/devolution');
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
         let targetDir;
         if (file.fieldname === 'evidence') {
             targetDir = evidenceDir;
-        } else if (file.fieldname === 'document') {
-            targetDir = documentsDir;
+        } else if (file.fieldname === 'document' && req.url.includes('export-devolution')) {
+            targetDir = devolutionDir;
         } else {
-            targetDir = uploadDir;
+            targetDir = documentsDir;
         }
         cb(null, targetDir);
     },
@@ -26,7 +28,6 @@ const storage = multer.diskStorage({
         cb(null, `${Date.now()} - ${file.originalname}`);
     }
 });
-
 
 const upload = multer({
     storage,
@@ -208,11 +209,12 @@ router.get('/generateDocument/:id', async (req, res) => {
     }
 });
 
+// Em Manutenção - Salva em public/evidence/ para imagens e public/documents/ para documentos
 router.post('/update-details', upload.fields([
     { name: 'evidence', maxCount: 10 },
     { name: 'document', maxCount: 1 }
 ]), async (req, res) => {
-    console.log('Arquivos recebidos:', req.files);
+    console.log('Arquivos recebidos (Em Manutenção):', req.files);
 
     try {
         const { id, description, parts, quantity, value } = req.body;
@@ -221,18 +223,48 @@ router.post('/update-details', upload.fields([
         const images = files['evidence'] ? files['evidence'].map(file => `/evidence/${file.filename}`) : [];
         const document = files['document'] ? `/documents/${files['document'][0].filename}` : null;
 
-        console.log('Caminhos das imagens:', images);
-        console.log('Caminho do documento:', document);
+        console.log('Caminhos das imagens (Em Manutenção):', images);
+        console.log('Caminho do documento (Em Manutenção):', document);
 
         const totalValue = value.reduce((acc, curr) => acc + parseFloat(curr), 0);
 
         const machineDetail = await machineController.updateAdditionalDetails(id, description, parts, quantity, value, images, document);
         res.status(200).json({ message: 'Detalhes adicionais atualizados com sucesso.', machineDetail });
     } catch (error) {
-        console.error('Erro ao salvar os detalhes adicionais:', error);
+        console.error('Erro ao salvar os detalhes adicionais (Em Manutenção):', error);
         res.status(500).json({ message: 'Erro ao salvar os detalhes adicionais.', error: error.message });
     }
 });
+
+// Em Uso - Salva em public/documents/devolution/ para documentos
+router.post('/export-devolution', upload.single('document'), async (req, res) => {
+    console.log('Arquivo de devolução recebido:', req.file);
+    console.log('ID da máquina recebido:', req.body.id);
+
+    try {
+        const { id } = req.body;
+        const document = req.file ? `/documents/devolution/${req.file.filename}` : null;
+
+        if (!id) {
+            return res.status(400).json({ message: 'ID da máquina é necessário.' });
+        }
+
+        const machineDetail = await MachineDetail.findOne({ where: { machineId: id } });
+        if (!machineDetail) {
+            return res.status(404).json({ message: 'Detalhes da máquina não encontrados.' });
+        }
+
+        console.log('Caminho do documento de devolução:', document);
+
+        const updatedMachineDetail = await machineController.updateDevolutionDocument(id, document);
+        res.status(200).json({ message: 'Documento de devolução exportado com sucesso.', updatedMachineDetail });
+    } catch (error) {
+        console.error('Erro ao exportar documento de devolução:', error);
+        res.status(500).json({ message: 'Erro ao exportar documento de devolução.', error: error.message });
+    }
+});
+
+
 
 // Rota para renderizar a página de logs
 router.get('/logs/:id', async (req, res) => {

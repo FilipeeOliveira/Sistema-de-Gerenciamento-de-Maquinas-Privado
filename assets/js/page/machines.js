@@ -101,7 +101,6 @@ function editMachine(id, name, tags, client, status, description, images) {
         if (status === 'Em chamado' || status === 'Em espera') {
           showModalConfirmation(id, status);
         } else {
-          alert('Máquina atualizada com sucesso');
           location.reload();
         }
       } else {
@@ -184,8 +183,15 @@ $(document).ready(function () {
       $('#machineId').val(machineId);
 
       $('#additionalDetailsModal').modal('show');
+    } else if (status === 'Em Uso') {
+      console.log("Status é 'Em Uso'. Abrindo o modal para exportar documento de devolução.");
+
+      const machineId = $(this).data('machine-id');
+      $('#devolutionMachineId').val(machineId);
+
+      $('#exportDevolutionModal').modal('show');
     } else {
-      console.log("Status não é 'Em Manutenção'. Nenhuma ação necessária.");
+      console.log("Status não é 'Em Manutenção' ou 'Em Uso'. Nenhuma ação necessária.");
     }
   });
 
@@ -217,6 +223,28 @@ $(document).ready(function () {
       }
     });
   });
+
+  $('#exportDevolutionForm').submit(function (e) {
+    e.preventDefault();
+
+    const formData = new FormData(this);
+
+    $.ajax({
+      url: '/machines/export-devolution',
+      type: 'POST',
+      data: formData,
+      contentType: false,
+      processData: false,
+      success: function (response) {
+        console.log('Documento de devolução exportado com sucesso.', response);
+        $('#exportDevolutionModal').modal('hide');
+      },
+      error: function (xhr, status, error) {
+        console.error('Erro ao exportar documento de devolução:', error);
+        alert('Erro ao exportar documento de devolução.');
+      }
+    });
+  });
 });
 
 function calculateTotalValue() {
@@ -234,8 +262,8 @@ function calculateTotalValue() {
 
 
 $(document).on('click', '.add-part', function () {
-  const partRow = `
-    <div class="row mb-2">
+  const partRow = 
+    `<div class="row mb-2">
       <div class="col-md-5">
         <input type="text" class="form-control" name="parts[]" placeholder="Peça" required>
       </div>
@@ -262,7 +290,6 @@ $(document).on('input', 'input[name="value[]"]', calculateTotalValue);
 $(document).ready(function () {
   calculateTotalValue();
 });
-
 
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -293,3 +320,5 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   });
 });
+
+

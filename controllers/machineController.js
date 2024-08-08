@@ -225,7 +225,7 @@ exports.generateOtherDocument = async (machine) => {
     }
 };
 
-
+//para exportar
 exports.updateAdditionalDetails = async (id, description, parts, quantity, value, images, document) => {
     try {
         if (!Array.isArray(parts) || !Array.isArray(quantity) || !Array.isArray(value)) {
@@ -264,6 +264,26 @@ exports.updateAdditionalDetails = async (id, description, parts, quantity, value
     }
 };
 
+exports.updateDevolutionDocument = async (id, document) => {
+    try {
+        // Encontra os detalhes existentes da máquina
+        const machineDetail = await MachineDetail.findOne({ where: { machineId: id } });
+
+        if (!machineDetail) {
+            // Se não encontrar, retorne um erro
+            throw new Error('Detalhes da máquina não encontrados.');
+        }
+
+        // Atualiza o campo docDevolution
+        machineDetail.docDevolution = document;
+        await machineDetail.save();
+
+        return machineDetail;
+    } catch (error) {
+        console.error('Erro ao atualizar o documento de devolução:', error);
+        throw error;
+    }
+};
 
 exports.getMachineLogsPage = async (req, res) => {
     try {
