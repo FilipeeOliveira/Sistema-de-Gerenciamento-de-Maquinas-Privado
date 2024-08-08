@@ -219,9 +219,6 @@ $(document).ready(function () {
   });
 });
 
-
-
-
 function calculateTotalValue() {
   let total = 0;
 
