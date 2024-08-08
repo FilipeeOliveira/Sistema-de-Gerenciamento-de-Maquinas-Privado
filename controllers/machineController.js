@@ -1,5 +1,5 @@
 const Machine = require('../models/machine');
-const MachineDetail = require('../models/machineDetails'); // Certifique-se de que o caminho está correto
+const MachineDetail = require('../models/machineDetails');
 const fs = require('fs');
 const path = require('path');
 const PizZip = require('pizzip');
@@ -7,7 +7,6 @@ const Docxtemplater = require('docxtemplater');
 const { Op } = require('sequelize');
 const MachineLog = require('../models/MachineLog');
 
-// Função para obter documentos por ID da máquina
 exports.getDocumentsByMachineId = async (machineId) => {
     try {
         const documents = await MachineDetail.findAll({
@@ -27,9 +26,7 @@ exports.getDocumentsTable = async (req, res) => {
             where: { machineId }
         });
 
-        // Corrigir os caminhos dos documentos removendo o prefixo duplicado
         documents.forEach(document => {
-            // Corrigir o caminho dos documentos
             if (document.documents) {
                 document.documents = document.documents.replace(/^\/documents\//, '');
             }
@@ -45,18 +42,13 @@ exports.getDocumentsTable = async (req, res) => {
             version: '1.0',
             year: new Date().getFullYear(),
             machineId: machineId,
-            documents: documents || []  // Passa documentos para a visão
+            documents: documents || []
         });
     } catch (error) {
         console.error('Erro ao obter documentos:', error);
         res.status(500).send('Erro interno do servidor');
     }
 };
-
-
-
-
-
 
 exports.searchAndFilterMachines = async (search, status, limit, offset) => {
     try {

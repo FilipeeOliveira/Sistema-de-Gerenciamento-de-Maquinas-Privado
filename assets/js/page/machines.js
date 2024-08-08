@@ -224,12 +224,17 @@ $(document).ready(function () {
 
 function calculateTotalValue() {
   let total = 0;
-  $('input[name="value[]"]').each(function () {
-    const value = parseFloat($(this).val()) || 0;
-    total += value;
+
+  $('#partsList .row').each(function () {
+    const quantity = parseFloat($(this).find('input[name="quantity[]"]').val()) || 0;
+    const value = parseFloat($(this).find('input[name="value[]"]').val()) || 0;
+
+    total += quantity * value;
   });
+
   $('#totalValue').val(total.toFixed(2));
 }
+
 
 $(document).on('click', '.add-part', function () {
   const partRow = `
