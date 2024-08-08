@@ -263,30 +263,31 @@
   </div>
 </div>
 
-<!-- Adicione este código abaixo do modal de 'Em Manutenção' -->
-<div class="modal fade" id="exportFilesModal" tabindex="-1" aria-labelledby="exportFilesModalLabel"
+<!-- Modal para Exportar Documento de Devolução -->
+<div class="modal fade" id="exportDevolutionModal" tabindex="-1" aria-labelledby="exportDevolutionModalLabel"
   aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exportFilesModalLabel">Exportar Arquivos</h5>
+        <h5 class="modal-title" id="exportDevolutionModalLabel">Exportar Documento de Devolução</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
-        <form id="exportFilesForm" enctype="multipart/form-data">
-          <input type="hidden" id="machineIdExport" name="id">
+        <form id="exportDevolutionForm" enctype="multipart/form-data">
+          <input type="hidden" id="devolutionMachineId" name="id">
           <div class="form-group">
-            <label for="exportFiles">Arquivos</label>
-            <input type="file" class="form-control-file" id="exportFiles" name="files" multiple required>
+            <label for="devolutionDocument">Documento de Devolução</label>
+            <input type="file" class="form-control-file" id="devolutionDocument" name="document" required>
           </div>
-          <button type="submit" class="btn btn-primary">Exportar</button>
+          <button type="submit" class="btn btn-primary">Salvar</button>
         </form>
       </div>
     </div>
   </div>
 </div>
+
 
   <!-- Modal para Detalhes Adicionais -->
   <div class="modal fade" id="additionalDetailsModal" tabindex="-1" aria-labelledby="additionalDetailsModalLabel"
