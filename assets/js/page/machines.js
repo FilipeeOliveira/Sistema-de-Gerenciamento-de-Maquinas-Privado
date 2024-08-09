@@ -31,6 +31,7 @@ $("[data-checkboxes]").each(function () {
 let imagesToRemove = [];
 
 function editMachine(id, name, tags, client, status, description, images) {
+  document.getElementById('editMachineId').value = id;
   document.getElementById('editName').value = name;
   document.getElementById('editTags').value = tags;
   document.getElementById('editClient').value = client;
@@ -169,105 +170,26 @@ function editMachine(id, name, tags, client, status, description, images) {
 }
 
 
-/* $(document).ready(function () {
-  console.log("Documento pronto.");
-
-  $('.status-badge').click(function () {
-    const status = $(this).text().trim();
-    console.log("Status clicado:", status);
-
-    if (status === 'Em Manutenção') {
-      console.log("Status é 'Em Manutenção'. Abrindo o modal.");
-
-      const machineId = $(this).data('machine-id');
-      $('#machineId').val(machineId);
-
-      $('#additionalDetailsModal').modal('show');
-    } else if (status === 'Em Uso') {
-      console.log("Status é 'Em Uso'. Abrindo o modal para exportar documento de devolução.");
-
-      const machineId = $(this).data('machine-id');
-      $('#devolutionMachineId').val(machineId);
-
-      $('#exportDevolutionModal').modal('show');
-    } else {
-      console.log("Status não é 'Em Manutenção' ou 'Em Uso'. Nenhuma ação necessária.");
-    }
-  });
-
-  $('#additionalDetailsForm').submit(function (e) {
-    e.preventDefault();
-
-    const formData = new FormData(this);
-    for (let [key, value] of formData.entries()) {
-      if (value instanceof File) {
-        console.log(`${key}: ${value.name}`);
-      } else {
-        console.log(`${key}: ${value}`);
-      }
-    }
-
-    $.ajax({
-      url: '/machines/update-details',
-      type: 'POST',
-      data: formData,
-      contentType: false,
-      processData: false,
-      success: function (response) {
-        console.log('Detalhes adicionais atualizados com sucesso.', response);
-        $('#additionalDetailsModal').modal('hide');
-      },
-      error: function (xhr, status, error) {
-        console.error('Erro ao atualizar detalhes adicionais:', error);
-        alert('Erro ao atualizar detalhes adicionais.');
-      }
-    });
-  });
-
-  $('#exportDevolutionForm').submit(function (e) {
-    e.preventDefault();
-
-    const formData = new FormData(this);
-
-    $.ajax({
-      url: '/machines/export-devolution',
-      type: 'POST',
-      data: formData,
-      contentType: false,
-      processData: false,
-      success: function (response) {
-        console.log('Documento de devolução exportado com sucesso.', response);
-        $('#exportDevolutionModal').modal('hide');
-      },
-      error: function (xhr, status, error) {
-        console.error('Erro ao exportar documento de devolução:', error);
-        alert('Erro ao exportar documento de devolução.');
-      }
-    });
-  });
-}); */
-
 //MODAL DE "DOCUMENTO DE DEVOLUCAO "EM USO"
-
 $(document).ready(function () {
   console.log("Documento pronto.");
 
-  // Mostrar o modal de exportação de devolução quando o status é "Em Uso"
-  $('.status-badge').click(function () {
-    const status = $(this).text().trim();
-    console.log("Status clicado:", status);
+  // Evento de mudança no status do modal de edição
+  $('#editStatus').change(function () {
+    const selectedStatus = $(this).val();
+    console.log("Status selecionado:", selectedStatus);
 
-    if (status === 'Em Uso') {
+    if (selectedStatus === 'Em Uso') {
       console.log("Status é 'Em Uso'. Abrindo o modal para exportar documento de devolução.");
 
-      const machineId = $(this).data('machine-id');
+      const machineId = $('#editMachineId').val();
       $('#devolutionMachineId').val(machineId);
 
       $('#exportDevolutionModal').modal('show');
     }
   });
 
-  // Submeter o formulário de exportação de devolução
+  
   $('#exportDevolutionForm').submit(function (e) {
     e.preventDefault();
 
@@ -290,13 +212,6 @@ $(document).ready(function () {
     });
   });
 });
-
-
-
-
-
-
-
 
 
 //MODAL DE PEÇAS "EM MANUTENCAO"
