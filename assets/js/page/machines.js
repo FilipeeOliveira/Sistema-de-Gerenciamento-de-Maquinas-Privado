@@ -249,12 +249,17 @@ $(document).ready(function () {
 
 function calculateTotalValue() {
   let total = 0;
-  $('input[name="value[]"]').each(function () {
-    const value = parseFloat($(this).val()) || 0;
-    total += value;
+
+  $('#partsList .row').each(function () {
+    const quantity = parseFloat($(this).find('input[name="quantity[]"]').val()) || 0;
+    const value = parseFloat($(this).find('input[name="value[]"]').val()) || 0;
+
+    total += quantity * value;
   });
+
   $('#totalValue').val(total.toFixed(2));
 }
+
 
 $(document).on('click', '.add-part', function () {
   const partRow = 
@@ -317,7 +322,7 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 
-document.getElementById('editStatus').addEventListener('change', function () {
+/* document.getElementById('editStatus').addEventListener('change', function () {
   if (this.value === 'Em Uso') {
       $('#exportDevolutionModal').modal('show');
   }
@@ -345,4 +350,4 @@ $('#exportDevolutionModal').on('hidden.bs.modal', function () {
       // Se o modal foi fechado sem o envio do documento, revertendo o status
       statusSelect.value = 'Em Manutenção'; // Ou o valor anterior que você deseja
   }
-});
+}); */

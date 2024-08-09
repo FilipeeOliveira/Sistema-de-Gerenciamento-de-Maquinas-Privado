@@ -209,7 +209,6 @@ router.get('/generateDocument/:id', async (req, res) => {
     }
 });
 
-// Em Manutenção - Salva em public/evidence/ para imagens e public/documents/ para documentos
 router.post('/update-details', upload.fields([
     { name: 'evidence', maxCount: 10 },
     { name: 'document', maxCount: 1 }
@@ -236,7 +235,6 @@ router.post('/update-details', upload.fields([
     }
 });
 
-// Em Uso - Salva em public/documents/devolution/ para documentos
 router.post('/export-devolution', upload.single('document'), async (req, res) => {
     console.log('Arquivo de devolução recebido:', req.file);
     console.log('ID da máquina recebido:', req.body.id);

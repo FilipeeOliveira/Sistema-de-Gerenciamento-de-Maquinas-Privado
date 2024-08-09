@@ -21,7 +21,7 @@ const MachineDetail = sequelize.define('MachineDetail', {
         type: DataTypes.STRING,
     },
     docDevolution: {
-        type: DataTypes.STRING, 
+        type: DataTypes.STRING,
     },
     machineId: {
         type: DataTypes.INTEGER,
