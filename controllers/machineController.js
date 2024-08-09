@@ -142,11 +142,12 @@ exports.deleteMachine = async (id) => {
         }
 
         await Machine.destroy({ where: { id } });
-
     } catch (err) {
         console.error('Erro ao deletar a máquina:', err);
         throw err;
     }
+
+
 };
 
 
