@@ -85,28 +85,71 @@ exports.deleteMachine = async (id) => {
             throw new Error('Máquina não encontrada');
         }
 
-        // Deletar logs associados à máquina
         await MachineLog.destroy({ where: { machineId: id } });
 
-        // Deletar imagens associadas à máquina
-        if (machine.images && machine.images.length > 0) {
-            machine.images.forEach(imagePath => {
+        const machineDetail = await MachineDetail.findOne({ where: { machineId: id } });
+
+        if (machine.images) {
+            const images = Array.isArray(machine.images) ? machine.images : (typeof machine.images === 'string' ? machine.images.split(',') : []);
+            images.forEach(imagePath => {
                 const filePath = path.join(__dirname, '../public', imagePath);
                 if (fs.existsSync(filePath)) {
                     fs.unlinkSync(filePath);
                 } else {
-                    console.warn(`Arquivo não encontrado para remoção: ${filePath}`);
+                    console.warn(`Imagem não encontrada para remoção: ${filePath}`);
                 }
             });
         }
 
-        // Deletar a máquina
+        if (machineDetail) {
+            if (machineDetail.documents) {
+                const documents = typeof machineDetail.documents === 'string' ? machineDetail.documents.split(',') : [];
+                documents.forEach(docPath => {
+                    const fullPath = path.join(__dirname, '../public', docPath.trim());
+                    if (fs.existsSync(fullPath)) {
+                        fs.unlinkSync(fullPath);
+                    } else {
+                        console.warn(`Documento não encontrado para remoção: ${fullPath}`);
+                    }
+                });
+            }
+
+            if (machineDetail.docDevolution) {
+                const docDevolutionPaths = typeof machineDetail.docDevolution === 'string' ? machineDetail.docDevolution.split(',') : [];
+                docDevolutionPaths.forEach(docPath => {
+                    const fullPath = path.join(__dirname, '../public', docPath.trim());
+                    if (fs.existsSync(fullPath)) {
+                        fs.unlinkSync(fullPath);
+                    } else {
+                        console.warn(`Documento de devolução não encontrado para remoção: ${fullPath}`);
+                    }
+                });
+            }
+
+            if (machineDetail && machineDetail.images) {
+                const evidences = Array.isArray(machineDetail.images) ? machineDetail.images : (typeof machineDetail.images === 'string' ? machineDetail.images.split(',') : []);
+                evidences.forEach(evidencePath => {
+                    const fullPath = path.join(__dirname, '../public/evidence', path.basename(evidencePath.trim()));
+                    if (fs.existsSync(fullPath)) {
+                        fs.unlinkSync(fullPath);
+                    } else {
+                        console.warn(`Evidência não encontrada para remoção: ${fullPath}`);
+                    }
+                });
+            }
+
+            await MachineDetail.destroy({ where: { machineId: id } });
+        }
+
         await Machine.destroy({ where: { id } });
+
     } catch (err) {
         console.error('Erro ao deletar a máquina:', err);
         throw err;
     }
 };
+
+
 
 exports.getMachineById = async (id) => {
     try {
@@ -151,6 +194,15 @@ exports.updateMachine = async (id, updatedData, files, imagesToRemove) => {
         console.log('Imagens atuais:', currentImages);
 
         if (imagesToRemove && imagesToRemove.length > 0) {
+            imagesToRemove.forEach(imagePath => {
+                const fullImagePath = path.join(__dirname, '..', 'public', imagePath);
+
+                if (fs.existsSync(fullImagePath)) {
+                    fs.unlinkSync(fullImagePath);
+                    console.log(`Imagem removida do servidor: ${fullImagePath}`);
+                }
+            });
+
             currentImages = currentImages.filter(image => !imagesToRemove.includes(image));
             console.log('Imagens após remoção:', currentImages);
         }
