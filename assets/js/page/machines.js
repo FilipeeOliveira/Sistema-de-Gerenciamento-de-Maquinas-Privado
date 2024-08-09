@@ -169,7 +169,7 @@ function editMachine(id, name, tags, client, status, description, images) {
 }
 
 
-$(document).ready(function () {
+/* $(document).ready(function () {
   console.log("Documento pronto.");
 
   $('.status-badge').click(function () {
@@ -245,7 +245,114 @@ $(document).ready(function () {
       }
     });
   });
+}); */
+
+//MODAL DE "DOCUMENTO DE DEVOLUCAO "EM USO"
+
+$(document).ready(function () {
+  console.log("Documento pronto.");
+
+  // Mostrar o modal de exportação de devolução quando o status é "Em Uso"
+  $('.status-badge').click(function () {
+    const status = $(this).text().trim();
+    console.log("Status clicado:", status);
+
+    if (status === 'Em Uso') {
+      console.log("Status é 'Em Uso'. Abrindo o modal para exportar documento de devolução.");
+
+      const machineId = $(this).data('machine-id');
+      $('#devolutionMachineId').val(machineId);
+
+      $('#exportDevolutionModal').modal('show');
+    }
+  });
+
+  // Submeter o formulário de exportação de devolução
+  $('#exportDevolutionForm').submit(function (e) {
+    e.preventDefault();
+
+    const formData = new FormData(this);
+
+    $.ajax({
+      url: '/machines/export-devolution',
+      type: 'POST',
+      data: formData,
+      contentType: false,
+      processData: false,
+      success: function (response) {
+        console.log('Documento de devolução exportado com sucesso.', response);
+        $('#exportDevolutionModal').modal('hide');
+      },
+      error: function (xhr, status, error) {
+        console.error('Erro ao exportar documento de devolução:', error);
+        alert('Erro ao exportar documento de devolução.');
+      }
+    });
+  });
 });
+
+
+
+
+
+
+
+
+
+//MODAL DE PEÇAS "EM MANUTENCAO"
+$(document).ready(function () {
+  console.log("Documento pronto.");
+
+  // Mostrar o modal de detalhes adicionais quando o status é "Em Manutenção"
+  $('.status-badge').click(function () {
+    const status = $(this).text().trim();
+    console.log("Status clicado:", status);
+
+    if (status === 'Em Manutenção') {
+      console.log("Status é 'Em Manutenção'. Abrindo o modal.");
+
+      const machineId = $(this).data('machine-id');
+      $('#machineId').val(machineId);
+
+      $('#additionalDetailsModal').modal('show');
+    }
+  });
+
+  // Submeter o formulário de detalhes adicionais
+  $('#additionalDetailsForm').submit(function (e) {
+    e.preventDefault();
+
+    const formData = new FormData(this);
+    for (let [key, value] of formData.entries()) {
+      if (value instanceof File) {
+        console.log(`${key}: ${value.name}`);
+      } else {
+        console.log(`${key}: ${value}`);
+      }
+    }
+
+    $.ajax({
+      url: '/machines/update-details',
+      type: 'POST',
+      data: formData,
+      contentType: false,
+      processData: false,
+      success: function (response) {
+        console.log('Detalhes adicionais atualizados com sucesso.', response);
+        $('#additionalDetailsModal').modal('hide');
+      },
+      error: function (xhr, status, error) {
+        console.error('Erro ao atualizar detalhes adicionais:', error);
+        alert('Erro ao atualizar detalhes adicionais.');
+      }
+    });
+  });
+});
+
+
+
+
+
 
 function calculateTotalValue() {
   let total = 0;
