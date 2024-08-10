@@ -169,10 +169,10 @@ function editMachine(id, name, tags, client, status, description, images) {
   }
 }
 
-
-//MODAL DE "DOCUMENTO DE DEVOLUCAO "EM USO"
 $(document).ready(function () {
   console.log("Documento pronto.");
+
+  let previousStatus = $('#editStatus').val(); // Salva o status anterior
 
   // Evento de mudança no status do modal de edição
   $('#editStatus').change(function () {
@@ -189,7 +189,16 @@ $(document).ready(function () {
     }
   });
 
-  
+  // Evento para quando o modal de exportação de documento for fechado
+  $('#exportDevolutionModal').on('hidden.bs.modal', function () {
+    // Verificar se o documento foi exportado
+    if (!$('#devolutionDocument').val()) {
+      console.log('Documento não exportado. Revertendo para o status anterior:', previousStatus);
+      $('#editStatus').val(previousStatus); // Reverter para o status anterior
+    }
+  });
+
+  // Evento de submissão do formulário de exportação de documento
   $('#exportDevolutionForm').submit(function (e) {
     e.preventDefault();
 
@@ -203,7 +212,15 @@ $(document).ready(function () {
       processData: false,
       success: function (response) {
         console.log('Documento de devolução exportado com sucesso.', response);
+
+        // Fechar o modal de exportação
         $('#exportDevolutionModal').modal('hide');
+
+        // Atualizar o status anterior para "Em Uso"
+        previousStatus = 'Em Uso';
+
+        // Prosseguir com a submissão do formulário de edição
+        $('#editMachineForm').submit();
       },
       error: function (xhr, status, error) {
         console.error('Erro ao exportar documento de devolução:', error);
@@ -211,8 +228,21 @@ $(document).ready(function () {
       }
     });
   });
-});
 
+  // Salvar o status anterior sempre que o modal de edição for aberto
+  $('#editMachineModal').on('show.bs.modal', function () {
+    previousStatus = $('#editStatus').val();
+  });
+
+  $('#editMachineForm').submit(function (e) {
+    const selectedStatus = $('#editStatus').val();
+    if (selectedStatus === 'Em Uso' && !$('#devolutionDocument').val()) {
+      e.preventDefault();
+      console.log('A exportação do documento é necessária antes de salvar as alterações.');
+      $('#editStatus').val(previousStatus);
+    }
+  });
+});
 
 //MODAL DE PEÇAS "EM MANUTENCAO"
 $(document).ready(function () {
