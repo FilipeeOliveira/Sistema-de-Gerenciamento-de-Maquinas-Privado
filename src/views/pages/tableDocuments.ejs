@@ -25,44 +25,44 @@
             </div>
 
             <div class="card-body">
-                <div class="table-responsive">
-                    <table class="table table-striped">
-                        <thead>
-                            <tr>
-                                <th>Data</th>
-                                <th>Doc. Retirada</th>
-                                <th>Ordem de Serviço</th>
-                                <th>Imagens Máquina</th>
-                                <th>Doc. Devolução</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            ${documents.length > 0 ? documents.map(document => `
-                            <tr>
-                                <td>${new Date(document.createdAt).toLocaleDateString()}</td>
-                                <td>
-                                    ${document.documents ?
-                                    `<a href="/machines/documents/${document.documents}" download>Download</a>` :
-                                    'Nenhum documento'}
-                                </td>
-                                <td class="text-truncate" style="max-width: 150px;">
-                                    ${document.ordemDeServico || 'Não especificado'}
-                                </td>
-                                <td class="text-center" style="max-width: 200px;">
-                                    ${document.images && document.images.length > 0 ? 
-                                        `<a href="javascript:void(0);" class="view-image" data-images="${document.images.join(',')}">Ver Imagem</a>` : 'Nenhuma imagem'}
-                                </td>
-                                <td>
-                                    ${document.doc2 ? `<a href="/machines/documents/${document.doc2}" download>Download</a>` : 'Nenhum documento'}
-                                </td>
-                            </tr>
-                            `).join('') : `<tr>
-                                <td colspan="5">Nenhum documento encontrado</td>
-                            </tr>`}
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+              <div class="table-responsive">
+                  <table class="table table-striped">
+                      <thead>
+                          <tr>
+                              <th>Data</th>
+                              <th>Doc. Retirada</th>
+                              <th>Ordem de Serviço</th>
+                              <th>Imagens Máquina</th>
+                              <th>Doc. Devolução</th>
+                          </tr>
+                      </thead>
+                      <tbody>
+                          ${documents.length > 0 ? documents.map(document => `
+                          <tr>
+                              <td>${new Date(document.createdAt).toLocaleDateString()}</td>
+                              <td>
+                                  ${document.documents ?
+                                  `<a href="/machines/documents/${document.documents}" download>Download</a>` :
+                                  'Nenhum documento'}
+                              </td>
+                              <td class="text-truncate" style="max-width: 150px;">
+                                  ${document.ordemDeServico || 'Não especificado'}
+                              </td>
+                              <td style="max-width: 200px;">
+                                  ${document.images && document.images.length > 0 ? 
+                                      `<a href="javascript:void(0);" class="view-image" data-images="${document.images.join(',')}">Ver Imagem</a>` : 'Nenhuma imagem'}
+                              </td>
+                              <td>
+                                  ${document.doc2 ? `<a href="/machines/documents/${document.doc2}" download>Download</a>` : 'Nenhum documento'}
+                              </td>
+                          </tr>
+                          `).join('') : `<tr>
+                              <td colspan="5">Nenhum documento encontrado</td>
+                          </tr>`}
+                      </tbody>
+                  </table>
+              </div>
+          </div>
         </div>
     </div>
 </section>
