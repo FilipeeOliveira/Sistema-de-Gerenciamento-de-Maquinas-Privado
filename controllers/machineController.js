@@ -33,7 +33,9 @@ exports.getDocumentsTable = async (req, res) => {
             if (document.doc2) {
                 document.doc2 = document.doc2.replace(/^\/documents\//, '');
             }
-            console.log('Caminho para download:', `/machines/documents/${document.documents}`);
+            if (document.images) {
+                document.images = document.images.map(imagem => imagem.replace(/^\/evidence\//, ''));
+            }
         });
 
         res.render('pages/tableDocuments', {

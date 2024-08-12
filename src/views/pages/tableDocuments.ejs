@@ -49,10 +49,10 @@
                                     ${document.ordemDeServico || 'Não especificado'}
                                 </td>
                                 <td class="text-center" style="max-width: 200px;">
-                                    ${document.imagens && document.imagens.length > 0 ? document.imagens.map(imagem => `
-                                    <img src="/evidence/${imagem}" alt="${imagem}" class="img-thumbnail"
-                                        style="max-width: 100px; margin: 2px;">
-                                    `).join('') : 'Nenhuma imagem'}
+                                    ${document.images && document.images.length > 0 ? 
+                                        document.images.map(imagem => `
+                                            <a href="/evidence/${imagem}" target="_blank">Ver Imagem</a>
+                                        `).join(' ') : 'Nenhuma imagem'}
                                 </td>
                                 <td>
                                     ${document.doc2 ? `<a href="/machines/documents/${document.doc2}"
