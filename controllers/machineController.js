@@ -278,9 +278,60 @@ exports.generateOtherDocument = async (machine) => {
     }
 };
 
-//para exportar
-exports.updateAdditionalDetails = async (id, description, parts, quantity, value, images, document) => {
+// No controlador `machineController.js`
+exports.generateOrderDocument = async (id, description, parts, quantity, value, totalValue) => {
     try {
+        const machine = await Machine.findByPk(id);
+        if (!machine) {
+            throw new Error('Máquina não encontrada');
+        }
+
+        const date = new Date();
+        const data = {
+            client: machine.client,
+            date: date.toLocaleDateString(),
+            name: machine.name,
+            tag: machine.tags,
+            description: description,
+            parts: parts,
+            quantity: quantity,
+            value: value,
+            totalValue: totalValue
+        };
+
+        const templatePath = path.join(__dirname, '../docs/OrdemDeServiço.docx');
+        if (!fs.existsSync(templatePath)) {
+            throw new Error('Template de documento não encontrado');
+        }
+
+        const content = fs.readFileSync(templatePath, 'binary');
+        const zip = new PizZip(content);
+        const doc = new Docxtemplater(zip);
+
+        doc.setData(data);
+        doc.render();
+
+        const outputFilePath = path.join(__dirname, '../public/documents/orders', `OrdemServico_${id}_${Date.now()}.docx`);
+        const buffer = doc.getZip().generate({ type: 'nodebuffer' });
+        fs.writeFileSync(outputFilePath, buffer);
+
+        await MachineDetail.update(
+            { ordemDeServico: outputFilePath },
+            { where: { machineId: id } }
+        );
+
+        return outputFilePath;
+    } catch (error) {
+        console.error('Erro ao gerar documento de ordem de serviço:', error);
+        throw error;
+    }
+};
+
+
+
+exports.updateAdditionalDetails = async (id, description, parts, quantity, value, images, document, totalValue) => {
+    try {
+        // Verificar se partes, quantidades e valores são arrays e têm o mesmo comprimento
         if (!Array.isArray(parts) || !Array.isArray(quantity) || !Array.isArray(value)) {
             throw new Error('As partes, quantidades e valores devem ser arrays.');
         }
@@ -289,14 +340,24 @@ exports.updateAdditionalDetails = async (id, description, parts, quantity, value
             throw new Error('As arrays de partes, quantidades e valores devem ter o mesmo comprimento.');
         }
 
-        const adjustedImages = images.map(image => image.startsWith('/evidence/') ? image : `/evidence/${path.basename(image)}`);
-        const adjustedDocument = document ? (document.startsWith('/documents/') ? document : `/documents/${path.basename(document)}`) : null;
+        console.log('Dados recebidos no back-end:');
+        console.log('Partes:', parts);
+        console.log('Quantidades:', quantity);
+        console.log('Valores:', value);
+        console.log('Valor total recebido:', totalValue);
+
+        // Ajustar caminhos das imagens e do documento
+        const adjustedImages = images.map(image =>
+            image.startsWith('/evidence/') ? image : `/evidence/${path.basename(image)}`
+        );
+        const adjustedDocument = document
+            ? (document.startsWith('/documents/') ? document : `/documents/${path.basename(document)}`)
+            : null;
 
         console.log('Caminhos ajustados das imagens:', adjustedImages);
         console.log('Caminho ajustado do documento:', adjustedDocument);
 
-        const totalValue = value.reduce((acc, curr) => acc + parseFloat(curr), 0);
-
+        // Criar o registro de detalhes adicionais
         const machineDetail = await MachineDetail.create({
             description,
             parts: parts.map((part, index) => ({
@@ -306,8 +367,8 @@ exports.updateAdditionalDetails = async (id, description, parts, quantity, value
             })),
             images: adjustedImages,
             documents: adjustedDocument,
-            totalValue,
-            machineId: id,
+            totalValue: parseFloat(totalValue) || 0, // Garantir que o valor seja numérico
+            machineId: id
         });
 
         return machineDetail;
@@ -316,6 +377,8 @@ exports.updateAdditionalDetails = async (id, description, parts, quantity, value
         throw error;
     }
 };
+
+
 
 exports.updateDevolutionDocument = async (id, document) => {
     try {

@@ -46,7 +46,9 @@
                                     'Nenhum documento'}
                                 </td>
                                 <td class="text-truncate" style="max-width: 150px;">
-                                    ${document.ordemDeServico || 'Não especificado'}
+                                    ${document.ordemDeServico ?
+                                    `<a href="/documents/orders/${document.ordemDeServico}" download>Download</a>` :
+                                    'Nenhum documento disponível'}
                                 </td>
                                 <td class="text-center" style="max-width: 200px;">
                                     ${document.imagens && document.imagens.length > 0 ? document.imagens.map(imagem => `
@@ -69,6 +71,7 @@
         </div>
     </div>
     </section>
+
 
 
     `;

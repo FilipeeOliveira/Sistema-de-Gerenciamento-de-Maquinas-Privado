@@ -199,6 +199,9 @@ $(document).ready(function () {
     e.preventDefault();
 
     const formData = new FormData(this);
+
+    // Verifique os valores no console
+    console.log('Dados do formulário:');
     for (let [key, value] of formData.entries()) {
       if (value instanceof File) {
         console.log(`${key}: ${value.name}`);
@@ -206,6 +209,15 @@ $(document).ready(function () {
         console.log(`${key}: ${value}`);
       }
     }
+
+    // Verifique o valor total calculado
+    const quantities = formData.getAll('quantity[]');
+    const values = formData.getAll('value[]');
+    const totalValue = values.reduce((acc, curr) => acc + parseFloat(curr) || 0, 0);
+    console.log('Valor total calculado:', totalValue);
+
+    // Adicionar o valor total ao FormData
+    formData.append('totalValue', totalValue);
 
     $.ajax({
       url: '/machines/update-details',
@@ -223,6 +235,10 @@ $(document).ready(function () {
       }
     });
   });
+
+
+
+
 
   $('#exportDevolutionForm').submit(function (e) {
     e.preventDefault();
@@ -262,7 +278,7 @@ function calculateTotalValue() {
 
 
 $(document).on('click', '.add-part', function () {
-  const partRow = 
+  const partRow =
     `<div class="row mb-2">
       <div class="col-md-5">
         <input type="text" class="form-control" name="parts[]" placeholder="Peça" required>
