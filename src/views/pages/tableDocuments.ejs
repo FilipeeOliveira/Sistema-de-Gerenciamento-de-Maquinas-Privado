@@ -8,63 +8,64 @@
         </div>
     </div>
     <div class="section-body">
-        <div class="card">
-            <div class="card-header">
-                <h4>Documentos - Máquina ${machineId}</h4>
-                <form id="dateFilterForm" class="form-inline" method="get" action="/machines/${machineId}">
-                    <div class="form-group">
-                        <label for="startDate" class="mr-2">De:</label>
-                        <input type="date" id="startDate" name="startDate" class="form-control mr-2" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="endDate" class="mr-2">Até:</label>
-                        <input type="date" id="endDate" name="endDate" class="form-control mr-2" required>
-                    </div>
-                    <button type="submit" class="btn btn-primary">Filtrar</button>
-                </form>
-            </div>
-
-            <div class="card-body">
+      <div class="card">
+          <div class="card-header">
+              <h4>Documentos - Máquina ${machineId}</h4>
+              <form id="dateFilterForm" class="form-inline" method="get" action="/machines/${machineId}">
+                  <div class="form-group">
+                      <label for="startDate" class="mr-2">De:</label>
+                      <input type="date" id="startDate" name="startDate" class="form-control mr-2" required>
+                  </div>
+                  <div class="form-group">
+                      <label for="endDate" class="mr-2">Até:</label>
+                      <input type="date" id="endDate" name="endDate" class="form-control mr-2" required>
+                  </div>
+                  <button type="submit" class="btn btn-primary">Filtrar</button>
+              </form>
+          </div>
+  
+          <div class="card-body">
               <div class="table-responsive">
                   <table class="table table-striped">
                       <thead>
                           <tr>
-                              <th>Data</th>
-                              <th>Doc. Retirada</th>
-                              <th>Ordem de Serviço</th>
-                              <th>Imagens Máquina</th>
-                              <th>Doc. Devolução</th>
+                              <th class="text-center" style="width: 15%;">Data</th>
+                              <th class="text-center" style="width: 20%;">Doc. Retirada</th>
+                              <th class="text-center" style="width: 20%;">Ordem de Serviço</th>
+                              <th class="text-center" style="width: 25%;">Imagens Máquina</th>
+                              <th class="text-center" style="width: 20%;">Doc. Devolução</th>
                           </tr>
                       </thead>
                       <tbody>
                           ${documents.length > 0 ? documents.map(document => `
                           <tr>
-                              <td>${new Date(document.createdAt).toLocaleDateString()}</td>
-                              <td>
+                              <td class="text-center">${new Date(document.createdAt).toLocaleDateString()}</td>
+                              <td class="text-center">
                                   ${document.documents ?
                                   `<a href="/machines/documents/${document.documents}" download>Download</a>` :
                                   'Nenhum documento'}
                               </td>
-                              <td class="text-truncate" style="max-width: 150px;">
+                              <td class="text-center text-truncate" style="max-width: 150px;">
                                   ${document.ordemDeServico || 'Não especificado'}
                               </td>
-                              <td style="max-width: 200px;">
+                              <td class="text-center" style="max-width: 200px;">
                                   ${document.images && document.images.length > 0 ? 
                                       `<a href="javascript:void(0);" class="view-image" data-images="${document.images.join(',')}">Ver Imagem</a>` : 'Nenhuma imagem'}
                               </td>
-                              <td>
+                              <td class="text-center">
                                   ${document.doc2 ? `<a href="/machines/documents/${document.doc2}" download>Download</a>` : 'Nenhum documento'}
                               </td>
                           </tr>
                           `).join('') : `<tr>
-                              <td colspan="5">Nenhum documento encontrado</td>
+                              <td colspan="5" class="text-center">Nenhum documento encontrado</td>
                           </tr>`}
                       </tbody>
                   </table>
               </div>
           </div>
-        </div>
-    </div>
+      </div>
+  </div>
+  
 </section>
 
 <!-- Modal para Exibição de Imagens -->
