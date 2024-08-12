@@ -51,7 +51,7 @@
                                 <td class="text-center" style="max-width: 200px;">
                                     ${document.images && document.images.length > 0 ? 
                                         document.images.map(imagem => `
-                                            <a href="/evidence/${imagem}" target="_blank">Ver Imagem</a>
+                                            <a href="javascript:void(0);" class="view-image" data-images="${document.images.join(',')}">Ver Imagem</a>
                                         `).join(' ') : 'Nenhuma imagem'}
                                 </td>
                                 <td>
@@ -68,8 +68,39 @@
             </div>
         </div>
     </div>
-    </section>
+</section>
 
+<!-- Modal para Exibição de Imagens -->
+<div class="modal fade" id="imageModal" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="imageModalLabel">Imagens da Máquina</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+      </div>
+      <div class="modal-body">
+        <div id="imageCarousel" class="carousel slide" data-ride="carousel">
+          <div class="carousel-inner" id="carouselImages">
+            <!-- Imagens serão inseridas aqui dinamicamente -->
+          </div>
+          <a class="carousel-control-prev" href="#imageCarousel" role="button" data-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="sr-only">Anterior</span>
+          </a>
+          <a class="carousel-control-next" href="#imageCarousel" role="button" data-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="sr-only">Próximo</span>
+          </a>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+      </div>
+    </div>
+  </div>
+</div>
 
     `;
 
