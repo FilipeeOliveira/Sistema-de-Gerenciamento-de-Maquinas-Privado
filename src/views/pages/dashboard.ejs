@@ -1,28 +1,10 @@
 <% const bodyContent=` <section class="section">
   <div class="section-body">
     <div class="row">
-      <div class="col-lg-4 col-md-4 col-sm-12">
+      <div class="col-lg-6 col-md-12 col-sm-12">
         <div class="card card-statistic-2">
           <div class="card-stats">
             <div class="card-stats-title">Estatísticas
-              <div class="dropdown d-inline">
-                <a class="font-weight-600 dropdown-toggle" data-toggle="dropdown" href="#" id="orders-month">Janeiro</a>
-                <ul class="dropdown-menu dropdown-menu-sm">
-                  <li class="dropdown-title">Selecione o Mês</li>
-                  <li><a href="#" class="dropdown-item active">Janeiro</a></li>
-                  <li><a href="#" class="dropdown-item">Fevereiro</a></li>
-                  <li><a href="#" class="dropdown-item">Março</a></li>
-                  <li><a href="#" class="dropdown-item">Abril</a></li>
-                  <li><a href="#" class="dropdown-item">Maio</a></li>
-                  <li><a href="#" class="dropdown-item">Junho</a></li>
-                  <li><a href="#" class="dropdown-item">Julho</a></li>
-                  <li><a href="#" class="dropdown-item ">Agosto</a></li>
-                  <li><a href="#" class="dropdown-item">Setembro</a></li>
-                  <li><a href="#" class="dropdown-item">Outubro</a></li>
-                  <li><a href="#" class="dropdown-item">Novembro</a></li>
-                  <li><a href="#" class="dropdown-item">Dezembro</a></li>
-                </ul>
-              </div>
             </div>
             <div class="card-stats-items">
               <div class="card-stats-item">
@@ -41,6 +23,10 @@
                 <div class="card-stats-item-count">${stats.inStockCount}</div>
                 <div class="card-stats-item-label">Em estoque</div>
               </div>
+              <div class="card-stats-item">
+                <div class="card-stats-item-count">${stats.onHoldCount}</div>
+                <div class="card-stats-item-label">Em espera</div>
+              </div>
             </div>
           </div>
           <div class="card-icon shadow-primary bg-primary">
@@ -54,7 +40,7 @@
           </div>
         </div>
       </div>
-    <div class="col-lg-4 col-md-4 col-sm-12">
+    <div class="col-lg-6 col-md-12 col-sm-12">
       <div class="card card-statistic-2">
         <div class="card-chart">
           <canvas id="balance-chart" height="80"></canvas>
@@ -72,7 +58,7 @@
         </div>
       </div>
     </div>
-    <div class="col-lg-4 col-md-4 col-sm-12">
+    <!-- <div class="col-lg-4 col-md-4 col-sm-12">
       <div class="card card-statistic-2">
         <div class="card-chart">
           <canvas id="sales-chart" height="80"></canvas>
@@ -89,7 +75,7 @@
           </div>
         </div>
       </div>
-    </div>
+    </div> -->
   </div>
   <div class="row">
     <div class="col-lg-8">
