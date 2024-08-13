@@ -31,6 +31,7 @@ $("[data-checkboxes]").each(function () {
 let imagesToRemove = [];
 
 function editMachine(id, name, tags, client, status, description, images) {
+  document.getElementById('editMachineId').value = id;
   document.getElementById('editName').value = name;
   document.getElementById('editTags').value = tags;
   document.getElementById('editClient').value = client;
@@ -168,10 +169,86 @@ function editMachine(id, name, tags, client, status, description, images) {
   }
 }
 
-
 $(document).ready(function () {
   console.log("Documento pronto.");
 
+  let previousStatus = $('#editStatus').val(); // Salva o status anterior
+
+  // Evento de mudança no status do modal de edição
+  $('#editStatus').change(function () {
+    const selectedStatus = $(this).val();
+    console.log("Status selecionado:", selectedStatus);
+
+    if (selectedStatus === 'Em Uso') {
+      console.log("Status é 'Em Uso'. Abrindo o modal para exportar documento de devolução.");
+
+      const machineId = $('#editMachineId').val();
+      $('#devolutionMachineId').val(machineId);
+
+      $('#exportDevolutionModal').modal('show');
+    }
+  });
+
+  // Evento para quando o modal de exportação de documento for fechado
+  $('#exportDevolutionModal').on('hidden.bs.modal', function () {
+    // Verificar se o documento foi exportado
+    if (!$('#devolutionDocument').val()) {
+      console.log('Documento não exportado. Revertendo para o status anterior:', previousStatus);
+      $('#editStatus').val(previousStatus); // Reverter para o status anterior
+    }
+  });
+
+  // Evento de submissão do formulário de exportação de documento
+  $('#exportDevolutionForm').submit(function (e) {
+    e.preventDefault();
+
+    const formData = new FormData(this);
+
+    $.ajax({
+      url: '/machines/export-devolution',
+      type: 'POST',
+      data: formData,
+      contentType: false,
+      processData: false,
+      success: function (response) {
+        console.log('Documento de devolução exportado com sucesso.', response);
+
+        // Fechar o modal de exportação
+        $('#exportDevolutionModal').modal('hide');
+
+        // Atualizar o status anterior para "Em Uso"
+        previousStatus = 'Em Uso';
+
+        // Prosseguir com a submissão do formulário de edição
+        $('#editMachineForm').submit();
+      },
+      error: function (xhr, status, error) {
+        console.error('Erro ao exportar documento de devolução:', error);
+        alert('Erro ao exportar documento de devolução.');
+      }
+    });
+  });
+
+  // Salvar o status anterior sempre que o modal de edição for aberto
+  $('#editMachineModal').on('show.bs.modal', function () {
+    previousStatus = $('#editStatus').val();
+  });
+
+  $('#editMachineForm').submit(function (e) {
+    const selectedStatus = $('#editStatus').val();
+    if (selectedStatus === 'Em Uso' && !$('#devolutionDocument').val()) {
+      e.preventDefault();
+      console.log('A exportação do documento é necessária antes de salvar as alterações.');
+      $('#editStatus').val(previousStatus);
+    }
+  });
+});
+
+//MODAL DE PEÇAS "EM MANUTENCAO"
+$(document).ready(function () {
+  console.log("Documento pronto.");
+
+  // Mostrar o modal de detalhes adicionais quando o status é "Em Manutenção"
   $('.status-badge').click(function () {
     const status = $(this).text().trim();
     console.log("Status clicado:", status);
@@ -183,15 +260,6 @@ $(document).ready(function () {
       $('#machineId').val(machineId);
 
       $('#additionalDetailsModal').modal('show');
-    } else if (status === 'Em Uso') {
-      console.log("Status é 'Em Uso'. Abrindo o modal para exportar documento de devolução.");
-
-      const machineId = $(this).data('machine-id');
-      $('#devolutionMachineId').val(machineId);
-
-      $('#exportDevolutionModal').modal('show');
-    } else {
-      console.log("Status não é 'Em Manutenção' ou 'Em Uso'. Nenhuma ação necessária.");
     }
   });
 
@@ -238,6 +306,7 @@ $(document).ready(function () {
     calculateTotalValue();
   });
 
+  // Submeter o formulário de detalhes adicionais
   $('#additionalDetailsForm').submit(function (e) {
     e.preventDefault();
 
@@ -302,6 +371,57 @@ $(document).ready(function () {
     });
   });
 });
+});
+
+
+
+
+
+
+function calculateTotalValue() {
+  let total = 0;
+
+  $('#partsList .row').each(function () {
+    const quantity = parseFloat($(this).find('input[name="quantity[]"]').val()) || 0;
+    const value = parseFloat($(this).find('input[name="value[]"]').val()) || 0;
+
+    total += quantity * value;
+  });
+
+  $('#totalValue').val(total.toFixed(2));
+}
+
+
+$(document).on('click', '.add-part', function () {
+  const partRow =
+    `<div class="row mb-2">
+      <div class="col-md-5">
+        <input type="text" class="form-control" name="parts[]" placeholder="Peça" required>
+      </div>
+      <div class="col-md-3">
+        <input type="number" class="form-control" name="quantity[]" placeholder="Quantidade" required>
+      </div>
+      <div class="col-md-3">
+        <input type="number" class="form-control" name="value[]" placeholder="Valor" required>
+      </div>
+      <div class="col-md-1">
+        <button type="button" class="btn btn-danger btn-sm remove-part"><i class="fas fa-minus"></i></button>
+      </div>
+    </div>`;
+  $('#partsList').append(partRow);
+});
+
+$(document).on('click', '.remove-part', function () {
+  $(this).closest('.row').remove();
+  calculateTotalValue();
+});
+
+$(document).on('input', 'input[name="value[]"]', calculateTotalValue);
+
+$(document).ready(function () {
+  calculateTotalValue();
+});
+
 
 document.addEventListener('DOMContentLoaded', function () {
   const badges = document.querySelectorAll('.status-badge');
@@ -333,3 +453,32 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 
+/* document.getElementById('editStatus').addEventListener('change', function () {
+  if (this.value === 'Em Uso') {
+      $('#exportDevolutionModal').modal('show');
+  }
+});
+
+
+
+document.getElementById('exportDevolutionForm').addEventListener('submit', function (e) {
+  e.preventDefault(); // Impede o envio do formulário original
+
+  const documentInput = document.getElementById('devolutionDocument');
+
+  if (documentInput.files.length > 0) {
+      $('#exportDevolutionModal').modal('hide'); // Fecha o modal de exportação
+      // Aqui você pode prosseguir com a alteração do status para "Em Uso"
+      document.getElementById('editMachineForm').submit(); // Envia o formulário de edição da máquina
+  } else {
+      alert('Por favor, envie o documento antes de continuar.');
+  }
+});
+
+$('#exportDevolutionModal').on('hidden.bs.modal', function () {
+  const statusSelect = document.getElementById('editStatus');
+  if (statusSelect.value === 'Em Uso' && !document.getElementById('devolutionDocument').files.length) {
+      // Se o modal foi fechado sem o envio do documento, revertendo o status
+      statusSelect.value = 'Em Manutenção'; // Ou o valor anterior que você deseja
+  }
+}); */
