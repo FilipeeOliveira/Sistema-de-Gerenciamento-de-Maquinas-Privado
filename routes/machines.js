@@ -7,7 +7,7 @@ const MachineLog = require('../models/MachineLog');
 const { Op } = require('sequelize');
 const MachineDetail = require('../models/machineDetails');
 
-//const uploadDir = path.join(__dirname, '../public/uploads');
+const uploadDir = path.join(__dirname, '../public/uploads');
 const evidenceDir = path.join(__dirname, '../public/evidence');
 const documentsDir = path.join(__dirname, '../public/documents');
 const devolutionDir = path.join(__dirname, '../public/documents/devolution');
@@ -19,6 +19,8 @@ const storage = multer.diskStorage({
             targetDir = evidenceDir;
         } else if (file.fieldname === 'document' && req.url.includes('export-devolution')) {
             targetDir = devolutionDir;
+        } else if (file.fieldname === 'images') { // Adiciona esta condição para imagens
+            targetDir = uploadDir;
         } else {
             targetDir = documentsDir;
         }
@@ -28,7 +30,6 @@ const storage = multer.diskStorage({
         cb(null, `${Date.now()} - ${file.originalname}`);
     }
 });
-
 const upload = multer({
     storage,
     fileFilter: (req, file, cb) => {
