@@ -20,6 +20,7 @@ app.use(bodyParser.json());
 app.use('/assets', express.static(path.join(__dirname, 'assets')));
 app.use('/evidence', express.static(path.join(__dirname, 'public/evidence')));
 app.use('/machines/documents', express.static(path.join(__dirname, 'public/documents')));
+app.use('/documents', express.static(path.join(__dirname, 'public/documents')));
 app.use('/node_modules', express.static(path.join(__dirname, 'node_modules')));
 app.set('views', path.join(__dirname, 'src/views'));
 app.use('/uploads', express.static(path.join(__dirname, 'public/uploads')));

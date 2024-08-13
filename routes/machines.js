@@ -1,7 +1,9 @@
 const express = require('express');
 const router = express.Router();
 const machineController = require('../controllers/machineController');
+const Machine = require('../models/machine');
 const multer = require('multer');
+const fs = require('fs');
 const path = require('path');
 const MachineLog = require('../models/MachineLog');
 const { Op } = require('sequelize');
@@ -11,6 +13,7 @@ const uploadDir = path.join(__dirname, '../public/uploads');
 const evidenceDir = path.join(__dirname, '../public/evidence');
 const documentsDir = path.join(__dirname, '../public/documents');
 const devolutionDir = path.join(__dirname, '../public/documents/devolution');
+const ordersDir = path.join(__dirname, '../public/documents/orders');
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
@@ -19,6 +22,8 @@ const storage = multer.diskStorage({
             targetDir = evidenceDir;
         } else if (file.fieldname === 'document' && req.url.includes('export-devolution')) {
             targetDir = devolutionDir;
+        } else if (file.fieldname === 'document' && req.url.includes('orders')) {
+            targetDir = ordersDir;
         } else if (file.fieldname === 'images') { // Adiciona esta condição para imagens
             targetDir = uploadDir;
         } else {
@@ -214,25 +219,39 @@ router.post('/update-details', upload.fields([
     { name: 'evidence', maxCount: 10 },
     { name: 'document', maxCount: 1 }
 ]), async (req, res) => {
-    console.log('Arquivos recebidos (Em Manutenção):', req.files);
+    console.log('Arquivos recebidos:', req.files);
 
     try {
-        const { id, description, parts, quantity, value } = req.body;
+        const { id, description, parts, quantity, value, totalValue } = req.body;
         const files = req.files;
 
         const images = files['evidence'] ? files['evidence'].map(file => `/evidence/${file.filename}`) : [];
         const document = files['document'] ? `/documents/${files['document'][0].filename}` : null;
 
-        console.log('Caminhos das imagens (Em Manutenção):', images);
-        console.log('Caminho do documento (Em Manutenção):', document);
+        console.log('Caminhos das imagens:', images);
+        console.log('Caminho do documento:', document);
 
-        const totalValue = value.reduce((acc, curr) => acc + parseFloat(curr), 0);
+        const calculatedTotalValue = parseFloat(totalValue) || 0;
+        console.log('Valor total calculado:', calculatedTotalValue);
 
-        const machineDetail = await machineController.updateAdditionalDetails(id, description, parts, quantity, value, images, document);
-        res.status(200).json({ message: 'Detalhes adicionais atualizados com sucesso.', machineDetail });
+        const ordemDeServicoPath = await machineController.generateOrderDocument(
+            id, description, parts, quantity, value, calculatedTotalValue
+        );
+
+        console.log('Caminho do documento de ordem de serviço gerado:', ordemDeServicoPath);
+
+        const updatedMachineDetail = await machineController.updateAdditionalDetails(
+            id, description, parts, quantity, value, images, document, calculatedTotalValue, ordemDeServicoPath
+        );
+
+        res.status(200).json({
+            message: 'Detalhes adicionais atualizados e documento gerado com sucesso.',
+            machineDetail: updatedMachineDetail,
+            ordemDeServicoPath: `/documents/orders/${ordemDeServicoPath}`
+        });
     } catch (error) {
-        console.error('Erro ao salvar os detalhes adicionais (Em Manutenção):', error);
-        res.status(500).json({ message: 'Erro ao salvar os detalhes adicionais.', error: error.message });
+        console.error('Erro ao salvar os detalhes adicionais e gerar o documento:', error);
+        res.status(500).json({ message: 'Erro ao salvar os detalhes adicionais e gerar o documento.', error: error.message });
     }
 });
 
@@ -302,3 +321,4 @@ router.get('/logs/:id', async (req, res) => {
 });
 
 module.exports = router;
+

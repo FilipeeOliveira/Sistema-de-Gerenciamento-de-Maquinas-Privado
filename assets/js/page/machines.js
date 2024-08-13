@@ -263,11 +263,56 @@ $(document).ready(function () {
     }
   });
 
+  function calculateTotalValue() {
+    let total = 0;
+
+    $('#partsList .row').each(function () {
+      const quantity = parseFloat($(this).find('input[name="quantity[]"]').val()) || 0;
+      const value = parseFloat($(this).find('input[name="value[]"]').val()) || 0;
+
+      total += quantity * value;
+    });
+
+    $('#totalValue').val(total.toFixed(2));
+  }
+
+  $(document).on('click', '.add-part', function () {
+    const partRow =
+      `<div class="row mb-2">
+        <div class="col-md-5">
+          <input type="text" class="form-control" name="parts[]" placeholder="Peça" required>
+        </div>
+        <div class="col-md-3">
+          <input type="number" class="form-control" name="quantity[]" placeholder="Quantidade" required>
+        </div>
+        <div class="col-md-3">
+          <input type="number" class="form-control" name="value[]" placeholder="Valor" required>
+        </div>
+        <div class="col-md-1">
+          <button type="button" class="btn btn-danger btn-sm remove-part"><i class="fas fa-minus"></i></button>
+        </div>
+      </div>`;
+    $('#partsList').append(partRow);
+  });
+
+  $(document).on('click', '.remove-part', function () {
+    $(this).closest('.row').remove();
+    calculateTotalValue();
+  });
+
+  $(document).on('input', 'input[name="value[]"], input[name="quantity[]"]', calculateTotalValue);
+
+  $(document).ready(function () {
+    calculateTotalValue();
+  });
+
   // Submeter o formulário de detalhes adicionais
   $('#additionalDetailsForm').submit(function (e) {
     e.preventDefault();
 
     const formData = new FormData(this);
+
+    console.log('Dados do formulário:');
     for (let [key, value] of formData.entries()) {
       if (value instanceof File) {
         console.log(`${key}: ${value.name}`);
@@ -275,6 +320,13 @@ $(document).ready(function () {
         console.log(`${key}: ${value}`);
       }
     }
+
+    const quantities = formData.getAll('quantity[]');
+    const values = formData.getAll('value[]');
+    const totalValue = quantities.reduce((acc, qty, index) => acc + parseFloat(qty) * parseFloat(values[index]), 0);
+    console.log('Valor total calculado:', totalValue);
+
+    formData.append('totalValue', totalValue.toFixed(2));
 
     $.ajax({
       url: '/machines/update-details',
@@ -292,12 +344,33 @@ $(document).ready(function () {
       }
     });
   });
+
+
+
+
+
+  $('#exportDevolutionForm').submit(function (e) {
+    e.preventDefault();
+
+    const formData = new FormData(this);
+
+    $.ajax({
+      url: '/machines/export-devolution',
+      type: 'POST',
+      data: formData,
+      contentType: false,
+      processData: false,
+      success: function (response) {
+        console.log('Documento de devolução exportado com sucesso.', response);
+        $('#exportDevolutionModal').modal('hide');
+      },
+      error: function (xhr, status, error) {
+        console.error('Erro ao exportar documento de devolução:', error);
+        alert('Erro ao exportar documento de devolução.');
+      }
+    });
+  });
 });
-
-
-
-
-
 
 function calculateTotalValue() {
   let total = 0;
@@ -314,7 +387,7 @@ function calculateTotalValue() {
 
 
 $(document).on('click', '.add-part', function () {
-  const partRow = 
+  const partRow =
     `<div class="row mb-2">
       <div class="col-md-5">
         <input type="text" class="form-control" name="parts[]" placeholder="Peça" required>
@@ -372,34 +445,3 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   });
 });
-
-
-/* document.getElementById('editStatus').addEventListener('change', function () {
-  if (this.value === 'Em Uso') {
-      $('#exportDevolutionModal').modal('show');
-  }
-});
-
-
-
-document.getElementById('exportDevolutionForm').addEventListener('submit', function (e) {
-  e.preventDefault(); // Impede o envio do formulário original
-
-  const documentInput = document.getElementById('devolutionDocument');
-
-  if (documentInput.files.length > 0) {
-      $('#exportDevolutionModal').modal('hide'); // Fecha o modal de exportação
-      // Aqui você pode prosseguir com a alteração do status para "Em Uso"
-      document.getElementById('editMachineForm').submit(); // Envia o formulário de edição da máquina
-  } else {
-      alert('Por favor, envie o documento antes de continuar.');
-  }
-});
-
-$('#exportDevolutionModal').on('hidden.bs.modal', function () {
-  const statusSelect = document.getElementById('editStatus');
-  if (statusSelect.value === 'Em Uso' && !document.getElementById('devolutionDocument').files.length) {
-      // Se o modal foi fechado sem o envio do documento, revertendo o status
-      statusSelect.value = 'Em Manutenção'; // Ou o valor anterior que você deseja
-  }
-}); */

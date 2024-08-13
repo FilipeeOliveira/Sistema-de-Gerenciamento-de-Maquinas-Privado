@@ -8,100 +8,105 @@
         </div>
     </div>
     <div class="section-body">
-      <div class="card">
-          <div class="card-header">
-              <h4>Documentos - Máquina ${machineId}</h4>
-              <form id="dateFilterForm" class="form-inline" method="get" action="/machines/${machineId}">
-                  <div class="form-group">
-                      <label for="startDate" class="mr-2">De:</label>
-                      <input type="date" id="startDate" name="startDate" class="form-control mr-2" required>
-                  </div>
-                  <div class="form-group">
-                      <label for="endDate" class="mr-2">Até:</label>
-                      <input type="date" id="endDate" name="endDate" class="form-control mr-2" required>
-                  </div>
-                  <button type="submit" class="btn btn-primary">Filtrar</button>
-              </form>
-          </div>
-  
-          <div class="card-body">
-              <div class="table-responsive">
-                  <table class="table table-striped">
-                      <thead>
-                          <tr>
-                              <th class="text-center" style="width: 15%;">Data</th>
-                              <th class="text-center" style="width: 20%;">Doc. Retirada</th>
-                              <th class="text-center" style="width: 20%;">Ordem de Serviço</th>
-                              <th class="text-center" style="width: 25%;">Imagens Máquina</th>
-                              <th class="text-center" style="width: 20%;">Doc. Devolução</th>
-                          </tr>
-                      </thead>
-                      <tbody>
-                          ${documents.length > 0 ? documents.map(document => `
-                          <tr>
-                              <td class="text-center">${new Date(document.createdAt).toLocaleDateString()}</td>
-                              <td class="text-center">
-                                  ${document.documents ?
-                                  `<a href="/machines/documents/${document.documents}" download>Download</a>` :
-                                  'Nenhum documento'}
-                              </td>
-                              <td class="text-center text-truncate" style="max-width: 150px;">
-                                  ${document.ordemDeServico || 'Não especificado'}
-                              </td>
-                              <td class="text-center" style="max-width: 200px;">
-                                  ${document.images && document.images.length > 0 ? 
-                                      `<a href="javascript:void(0);" class="view-image" data-images="${document.images.join(',')}">Ver Imagem</a>` : 'Nenhuma imagem'}
-                              </td>
-                              <td class="text-center">
-                                  ${document.doc2 ? `<a href="/machines/documents/${document.doc2}" download>Download</a>` : 'Nenhum documento'}
-                              </td>
-                          </tr>
-                          `).join('') : `<tr>
-                              <td colspan="5" class="text-center">Nenhum documento encontrado</td>
-                          </tr>`}
-                      </tbody>
-                  </table>
-              </div>
-          </div>
-      </div>
-  </div>
-  
-</section>
+        <div class="card">
+            <div class="card-header">
+                <h4>Documentos - Máquina ${machineId}</h4>
+                <form id="dateFilterForm" class="form-inline" method="get" action="/machines/${machineId}">
+                    <div class="form-group">
+                        <label for="startDate" class="mr-2">De:</label>
+                        <input type="date" id="startDate" name="startDate" class="form-control mr-2" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="endDate" class="mr-2">Até:</label>
+                        <input type="date" id="endDate" name="endDate" class="form-control mr-2" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Filtrar</button>
+                </form>
+            </div>
 
-<!-- Modal para Exibição de Imagens -->
-<div class="modal fade" id="imageModal" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered modal-lg">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="imageModalLabel">Imagens da Máquina</h5>
-      </div>
-      <div class="modal-body">
-        <div class="row" id="imageGallery">
-          <!-- Miniaturas das imagens serão inseridas aqui dinamicamente -->
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th class="text-center" style="width: 15%;">Data</th>
+                                <th class="text-center" style="width: 20%;">Doc. Retirada</th>
+                                <th class="text-center" style="width: 20%;">Ordem de Serviço</th>
+                                <th class="text-center" style="width: 25%;">Imagens Máquina</th>
+                                <th class="text-center" style="width: 20%;">Doc. Devolução</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${documents.length > 0 ? documents.map(document => `
+                            <tr>
+                                <td class="text-center">${new Date(document.createdAt).toLocaleDateString()}</td>
+                                <td class="text-center">
+                                    ${document.documents ?
+                                    `<a href="/machines/documents/${document.documents}" download>Download</a>` :
+                                    'Nenhum documento'}
+                                </td>
+                                <td class="text-center text-truncate" style="max-width: 150px;">
+                                    ${document.docOrder ?
+                                    `<a href="/${document.docOrder}" download>Download</a>` :
+                                    'Nenhum documento disponível'}
+                                </td>
+                                <td class="text-center" style="max-width: 200px;">
+                                    ${document.images && document.images.length > 0 ?
+                                    `<a href="javascript:void(0);" class="view-image"
+                                        data-images="${document.images.join(',')}">Ver Imagem</a>` : 'Nenhuma imagem'}
+                                </td>
+                                <td class="text-center">
+                                    ${document.doc2 ? `<a href="/machines/documents/${document.doc2}"
+                                        download>Download</a>` : 'Nenhum documento'}
+                                </td>
+                            </tr>
+                            `).join('') : `<tr>
+                                <td colspan="5" class="text-center">Nenhum documento encontrado</td>
+                            </tr>`}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
-      </div>
     </div>
-  </div>
-</div>
 
-<!-- Modal para Visualização de Imagem -->
-<div class="modal fade" id="largeImageModal" tabindex="-1" aria-labelledby="largeImageModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-      </div>
-      <div class="modal-body text-center">
-        <img id="largeImage" src="" class="img-fluid" alt="Imagem Ampliada">
-      </div>
+    </section>
+
+    <!-- Modal para Exibição de Imagens -->
+    <div class="modal fade" id="imageModal" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="imageModalLabel">Imagens da Máquina</h5>
+                </div>
+                <div class="modal-body">
+                    <div class="row" id="imageGallery">
+                        <!-- Miniaturas das imagens serão inseridas aqui dinamicamente -->
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                </div>
+            </div>
+        </div>
     </div>
-  </div>
-</div>
+
+    <!-- Modal para Visualização de Imagem -->
+    <div class="modal fade" id="largeImageModal" tabindex="-1" aria-labelledby="largeImageModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body text-center">
+                    <img id="largeImage" src="" class="img-fluid" alt="Imagem Ampliada">
+                </div>
+            </div>
+        </div>
+    </div>
 
     `;
 
