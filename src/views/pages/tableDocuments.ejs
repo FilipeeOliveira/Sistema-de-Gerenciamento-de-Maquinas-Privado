@@ -46,7 +46,9 @@
                                     'Nenhum documento'}
                                 </td>
                                 <td class="text-center text-truncate" style="max-width: 150px;">
-                                    ${document.ordemDeServico || 'Não especificado'}
+                                    ${document.docOrder ?
+                                    `<a href="/${document.docOrder}" download>Download</a>` :
+                                    'Nenhum documento disponível'}
                                 </td>
                                 <td class="text-center" style="max-width: 200px;">
                                     ${document.images && document.images.length > 0 ?

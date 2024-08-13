@@ -445,34 +445,3 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   });
 });
-
-
-/* document.getElementById('editStatus').addEventListener('change', function () {
-  if (this.value === 'Em Uso') {
-      $('#exportDevolutionModal').modal('show');
-  }
-});
-
-
-
-document.getElementById('exportDevolutionForm').addEventListener('submit', function (e) {
-  e.preventDefault(); // Impede o envio do formulário original
-
-  const documentInput = document.getElementById('devolutionDocument');
-
-  if (documentInput.files.length > 0) {
-      $('#exportDevolutionModal').modal('hide'); // Fecha o modal de exportação
-      // Aqui você pode prosseguir com a alteração do status para "Em Uso"
-      document.getElementById('editMachineForm').submit(); // Envia o formulário de edição da máquina
-  } else {
-      alert('Por favor, envie o documento antes de continuar.');
-  }
-});
-
-$('#exportDevolutionModal').on('hidden.bs.modal', function () {
-  const statusSelect = document.getElementById('editStatus');
-  if (statusSelect.value === 'Em Uso' && !document.getElementById('devolutionDocument').files.length) {
-      // Se o modal foi fechado sem o envio do documento, revertendo o status
-      statusSelect.value = 'Em Manutenção'; // Ou o valor anterior que você deseja
-  }
-}); */

@@ -379,11 +379,6 @@ exports.updateAdditionalDetails = async (id, description, parts, quantity, value
     }
 };
 
-
-
-
-
-
 exports.updateDevolutionDocument = async (id, document) => {
     try {
         const machineDetail = await MachineDetail.findOne({ where: { machineId: id } });
