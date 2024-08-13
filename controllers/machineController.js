@@ -152,8 +152,6 @@ exports.deleteMachine = async (id) => {
 
 };
 
-
-
 exports.getMachineById = async (id) => {
     try {
         const machine = await Machine.findByPk(id);
@@ -286,7 +284,6 @@ exports.generateOrderDocument = async (id, description, parts, quantity, value, 
         if (!machine) {
             throw new Error('Máquina não encontrada');
         }
-
         const date = new Date();
         const data = {
             client: machine.client,
@@ -294,36 +291,35 @@ exports.generateOrderDocument = async (id, description, parts, quantity, value, 
             name: machine.name,
             tag: machine.tags,
             description: description,
-            parts: parts,
-            quantity: quantity,
-            value: value,
-            totalValue: totalValue
+            parts: parts.map((part, index) => ({
+                part: part.trim(),
+                quantity: parseInt(quantity[index], 10),
+                value: parseFloat(value[index]).toFixed(2)
+            })),
+            totalValue: parseFloat(totalValue).toFixed(2)
         };
-
         const templatePath = path.join(__dirname, '../docs/OrdemDeServiço.docx');
         if (!fs.existsSync(templatePath)) {
             throw new Error('Template de documento não encontrado');
         }
-
-        console.log('Template encontrado em:', templatePath);
-
         const content = fs.readFileSync(templatePath, 'binary');
         const zip = new PizZip(content);
         const doc = new Docxtemplater(zip);
-
         doc.setData(data);
-        doc.render();
+
+        try {
+            doc.render();
+        } catch (renderError) {
+            console.error('Erro ao renderizar documento:', renderError);
+            throw renderError;
+        }
 
         const fileName = `OrdemServico_${id}_${Date.now()}.docx`;
         const outputFilePath = path.join(__dirname, '../public/documents/orders', fileName);
         const buffer = doc.getZip().generate({ type: 'nodebuffer' });
         fs.writeFileSync(outputFilePath, buffer);
 
-        console.log('Documento gerado em:', outputFilePath);
-
         const relativePath = path.relative(path.join(__dirname, '../public'), outputFilePath).replace(/\\/g, '/');
-        console.log('Caminho relativo salvo no banco de dados:', relativePath);
-
         return relativePath;
     } catch (error) {
         console.error('Erro ao gerar documento de ordem de serviço:', error);

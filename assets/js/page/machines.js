@@ -372,49 +372,6 @@ $(document).ready(function () {
   });
 });
 
-function calculateTotalValue() {
-  let total = 0;
-
-  $('#partsList .row').each(function () {
-    const quantity = parseFloat($(this).find('input[name="quantity[]"]').val()) || 0;
-    const value = parseFloat($(this).find('input[name="value[]"]').val()) || 0;
-
-    total += quantity * value;
-  });
-
-  $('#totalValue').val(total.toFixed(2));
-}
-
-
-$(document).on('click', '.add-part', function () {
-  const partRow =
-    `<div class="row mb-2">
-      <div class="col-md-5">
-        <input type="text" class="form-control" name="parts[]" placeholder="Peça" required>
-      </div>
-      <div class="col-md-3">
-        <input type="number" class="form-control" name="quantity[]" placeholder="Quantidade" required>
-      </div>
-      <div class="col-md-3">
-        <input type="number" class="form-control" name="value[]" placeholder="Valor" required>
-      </div>
-      <div class="col-md-1">
-        <button type="button" class="btn btn-danger btn-sm remove-part"><i class="fas fa-minus"></i></button>
-      </div>
-    </div>`;
-  $('#partsList').append(partRow);
-});
-
-$(document).on('click', '.remove-part', function () {
-  $(this).closest('.row').remove();
-  calculateTotalValue();
-});
-
-$(document).on('input', 'input[name="value[]"]', calculateTotalValue);
-
-$(document).ready(function () {
-  calculateTotalValue();
-});
 
 
 document.addEventListener('DOMContentLoaded', function () {
