@@ -278,7 +278,6 @@ exports.generateOtherDocument = async (machine) => {
     }
 };
 
-// No controlador `machineController.js`
 exports.generateOrderDocument = async (id, description, parts, quantity, value, totalValue) => {
     try {
         const machine = await Machine.findByPk(id);
@@ -304,6 +303,8 @@ exports.generateOrderDocument = async (id, description, parts, quantity, value, 
             throw new Error('Template de documento não encontrado');
         }
 
+        console.log('Template encontrado em:', templatePath);
+
         const content = fs.readFileSync(templatePath, 'binary');
         const zip = new PizZip(content);
         const doc = new Docxtemplater(zip);
@@ -311,27 +312,25 @@ exports.generateOrderDocument = async (id, description, parts, quantity, value, 
         doc.setData(data);
         doc.render();
 
-        const outputFilePath = path.join(__dirname, '../public/documents/orders', `OrdemServico_${id}_${Date.now()}.docx`);
+        const fileName = `OrdemServico_${id}_${Date.now()}.docx`;
+        const outputFilePath = path.join(__dirname, '../public/documents/orders', fileName);
         const buffer = doc.getZip().generate({ type: 'nodebuffer' });
         fs.writeFileSync(outputFilePath, buffer);
 
-        await MachineDetail.update(
-            { ordemDeServico: outputFilePath },
-            { where: { machineId: id } }
-        );
+        console.log('Documento gerado em:', outputFilePath);
 
-        return outputFilePath;
+        const relativePath = path.relative(path.join(__dirname, '../public'), outputFilePath).replace(/\\/g, '/');
+        console.log('Caminho relativo salvo no banco de dados:', relativePath);
+
+        return relativePath;
     } catch (error) {
         console.error('Erro ao gerar documento de ordem de serviço:', error);
         throw error;
     }
 };
 
-
-
-exports.updateAdditionalDetails = async (id, description, parts, quantity, value, images, document, totalValue) => {
+exports.updateAdditionalDetails = async (id, description, parts, quantity, value, images, document, totalValue, docOrder) => {
     try {
-        // Verificar se partes, quantidades e valores são arrays e têm o mesmo comprimento
         if (!Array.isArray(parts) || !Array.isArray(quantity) || !Array.isArray(value)) {
             throw new Error('As partes, quantidades e valores devem ser arrays.');
         }
@@ -346,7 +345,6 @@ exports.updateAdditionalDetails = async (id, description, parts, quantity, value
         console.log('Valores:', value);
         console.log('Valor total recebido:', totalValue);
 
-        // Ajustar caminhos das imagens e do documento
         const adjustedImages = images.map(image =>
             image.startsWith('/evidence/') ? image : `/evidence/${path.basename(image)}`
         );
@@ -356,9 +354,9 @@ exports.updateAdditionalDetails = async (id, description, parts, quantity, value
 
         console.log('Caminhos ajustados das imagens:', adjustedImages);
         console.log('Caminho ajustado do documento:', adjustedDocument);
+        console.log('Caminho do documento de ordem de serviço:', docOrder);
 
-        // Criar o registro de detalhes adicionais
-        const machineDetail = await MachineDetail.create({
+        const [machineDetail, created] = await MachineDetail.upsert({
             description,
             parts: parts.map((part, index) => ({
                 name: part,
@@ -367,8 +365,9 @@ exports.updateAdditionalDetails = async (id, description, parts, quantity, value
             })),
             images: adjustedImages,
             documents: adjustedDocument,
-            totalValue: parseFloat(totalValue) || 0, // Garantir que o valor seja numérico
-            machineId: id
+            totalValue: parseFloat(totalValue) || 0,
+            machineId: id,
+            docOrder
         });
 
         return machineDetail;
@@ -380,17 +379,17 @@ exports.updateAdditionalDetails = async (id, description, parts, quantity, value
 
 
 
+
+
+
 exports.updateDevolutionDocument = async (id, document) => {
     try {
-        // Encontra os detalhes existentes da máquina
         const machineDetail = await MachineDetail.findOne({ where: { machineId: id } });
 
         if (!machineDetail) {
-            // Se não encontrar, retorne um erro
             throw new Error('Detalhes da máquina não encontrados.');
         }
 
-        // Atualiza o campo docDevolution
         machineDetail.docDevolution = document;
         await machineDetail.save();
 

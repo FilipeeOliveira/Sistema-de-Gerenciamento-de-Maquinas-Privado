@@ -23,6 +23,9 @@ const MachineDetail = sequelize.define('MachineDetail', {
     docDevolution: {
         type: DataTypes.STRING,
     },
+    docOrder: {
+        type: DataTypes.STRING,
+    },
     machineId: {
         type: DataTypes.INTEGER,
         references: {
@@ -31,6 +34,7 @@ const MachineDetail = sequelize.define('MachineDetail', {
         },
         onUpdate: 'CASCADE',
         onDelete: 'CASCADE',
+        primaryKey: true,
     }
 }, {
     tableName: 'MachineDetails'

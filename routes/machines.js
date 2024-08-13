@@ -216,8 +216,7 @@ router.get('/generateDocument/:id', async (req, res) => {
 
 router.post('/update-details', upload.fields([
     { name: 'evidence', maxCount: 10 },
-    { name: 'document', maxCount: 1 },
-    { name: 'orderDocument', maxCount: 1 }
+    { name: 'document', maxCount: 1 }
 ]), async (req, res) => {
     console.log('Arquivos recebidos:', req.files);
 
@@ -227,38 +226,33 @@ router.post('/update-details', upload.fields([
 
         const images = files['evidence'] ? files['evidence'].map(file => `/evidence/${file.filename}`) : [];
         const document = files['document'] ? `/documents/${files['document'][0].filename}` : null;
-        const orderDocument = files['orderDocument'] ? `/documents/orders/${files['orderDocument'][0].filename}` : null;
 
         console.log('Caminhos das imagens:', images);
         console.log('Caminho do documento:', document);
-        console.log('Caminho do documento de ordem de serviço:', orderDocument);
 
-        console.log('Partes:', parts);
-        console.log('Quantidades:', quantity);
-        console.log('Valores:', value);
-
-        // Certifique-se de calcular o totalValue a partir dos valores recebidos
-        const calculatedTotalValue = value.reduce((acc, curr) => acc + parseFloat(curr), 0);
+        const calculatedTotalValue = parseFloat(totalValue) || 0;
         console.log('Valor total calculado:', calculatedTotalValue);
 
-        // Atualizar detalhes adicionais
-        const machineDetail = await machineController.updateAdditionalDetails(id, description, parts, quantity, value, images, document, calculatedTotalValue);
+        const ordemDeServicoPath = await machineController.generateOrderDocument(
+            id, description, parts, quantity, value, calculatedTotalValue
+        );
 
-        // Gerar documento de ordem de serviço
-        const ordemDeServicoPath = await machineController.generateOrderDocument(id, description, parts, quantity, value, calculatedTotalValue);
+        console.log('Caminho do documento de ordem de serviço gerado:', ordemDeServicoPath);
+
+        const updatedMachineDetail = await machineController.updateAdditionalDetails(
+            id, description, parts, quantity, value, images, document, calculatedTotalValue, ordemDeServicoPath
+        );
 
         res.status(200).json({
             message: 'Detalhes adicionais atualizados e documento gerado com sucesso.',
-            machineDetail,
-            ordemDeServicoPath
+            machineDetail: updatedMachineDetail,
+            ordemDeServicoPath: `/documents/orders/${ordemDeServicoPath}`
         });
     } catch (error) {
         console.error('Erro ao salvar os detalhes adicionais e gerar o documento:', error);
         res.status(500).json({ message: 'Erro ao salvar os detalhes adicionais e gerar o documento.', error: error.message });
     }
 });
-
-
 
 router.post('/export-devolution', upload.single('document'), async (req, res) => {
     console.log('Arquivo de devolução recebido:', req.file);

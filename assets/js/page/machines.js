@@ -195,12 +195,54 @@ $(document).ready(function () {
     }
   });
 
+  function calculateTotalValue() {
+    let total = 0;
+
+    $('#partsList .row').each(function () {
+      const quantity = parseFloat($(this).find('input[name="quantity[]"]').val()) || 0;
+      const value = parseFloat($(this).find('input[name="value[]"]').val()) || 0;
+
+      total += quantity * value;
+    });
+
+    $('#totalValue').val(total.toFixed(2));
+  }
+
+  $(document).on('click', '.add-part', function () {
+    const partRow =
+      `<div class="row mb-2">
+        <div class="col-md-5">
+          <input type="text" class="form-control" name="parts[]" placeholder="Peça" required>
+        </div>
+        <div class="col-md-3">
+          <input type="number" class="form-control" name="quantity[]" placeholder="Quantidade" required>
+        </div>
+        <div class="col-md-3">
+          <input type="number" class="form-control" name="value[]" placeholder="Valor" required>
+        </div>
+        <div class="col-md-1">
+          <button type="button" class="btn btn-danger btn-sm remove-part"><i class="fas fa-minus"></i></button>
+        </div>
+      </div>`;
+    $('#partsList').append(partRow);
+  });
+
+  $(document).on('click', '.remove-part', function () {
+    $(this).closest('.row').remove();
+    calculateTotalValue();
+  });
+
+  $(document).on('input', 'input[name="value[]"], input[name="quantity[]"]', calculateTotalValue);
+
+  $(document).ready(function () {
+    calculateTotalValue();
+  });
+
   $('#additionalDetailsForm').submit(function (e) {
     e.preventDefault();
 
     const formData = new FormData(this);
 
-    // Verifique os valores no console
     console.log('Dados do formulário:');
     for (let [key, value] of formData.entries()) {
       if (value instanceof File) {
@@ -210,14 +252,12 @@ $(document).ready(function () {
       }
     }
 
-    // Verifique o valor total calculado
     const quantities = formData.getAll('quantity[]');
     const values = formData.getAll('value[]');
-    const totalValue = values.reduce((acc, curr) => acc + parseFloat(curr) || 0, 0);
+    const totalValue = quantities.reduce((acc, qty, index) => acc + parseFloat(qty) * parseFloat(values[index]), 0);
     console.log('Valor total calculado:', totalValue);
 
-    // Adicionar o valor total ao FormData
-    formData.append('totalValue', totalValue);
+    formData.append('totalValue', totalValue.toFixed(2));
 
     $.ajax({
       url: '/machines/update-details',
@@ -262,51 +302,6 @@ $(document).ready(function () {
     });
   });
 });
-
-function calculateTotalValue() {
-  let total = 0;
-
-  $('#partsList .row').each(function () {
-    const quantity = parseFloat($(this).find('input[name="quantity[]"]').val()) || 0;
-    const value = parseFloat($(this).find('input[name="value[]"]').val()) || 0;
-
-    total += quantity * value;
-  });
-
-  $('#totalValue').val(total.toFixed(2));
-}
-
-
-$(document).on('click', '.add-part', function () {
-  const partRow =
-    `<div class="row mb-2">
-      <div class="col-md-5">
-        <input type="text" class="form-control" name="parts[]" placeholder="Peça" required>
-      </div>
-      <div class="col-md-3">
-        <input type="number" class="form-control" name="quantity[]" placeholder="Quantidade" required>
-      </div>
-      <div class="col-md-3">
-        <input type="number" class="form-control" name="value[]" placeholder="Valor" required>
-      </div>
-      <div class="col-md-1">
-        <button type="button" class="btn btn-danger btn-sm remove-part"><i class="fas fa-minus"></i></button>
-      </div>
-    </div>`;
-  $('#partsList').append(partRow);
-});
-
-$(document).on('click', '.remove-part', function () {
-  $(this).closest('.row').remove();
-  calculateTotalValue();
-});
-
-$(document).on('input', 'input[name="value[]"]', calculateTotalValue);
-
-$(document).ready(function () {
-  calculateTotalValue();
-});
-
 
 document.addEventListener('DOMContentLoaded', function () {
   const badges = document.querySelectorAll('.status-badge');

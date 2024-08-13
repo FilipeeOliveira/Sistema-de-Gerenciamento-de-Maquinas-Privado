@@ -46,8 +46,8 @@
                                     'Nenhum documento'}
                                 </td>
                                 <td class="text-truncate" style="max-width: 150px;">
-                                    ${document.ordemDeServico ?
-                                    `<a href="/documents/orders/${document.ordemDeServico}" download>Download</a>` :
+                                    ${document.docOrder ?
+                                    `<a href="/${document.docOrder}" download>Download</a>` :
                                     'Nenhum documento disponível'}
                                 </td>
                                 <td class="text-center" style="max-width: 200px;">
@@ -71,9 +71,6 @@
         </div>
     </div>
     </section>
-
-
-
     `;
 
     const additionalStyles = `
