@@ -262,49 +262,6 @@ $(document).ready(function () {
     }
   });
 
-  function calculateTotalValue() {
-    let total = 0;
-
-    $('#partsList .row').each(function () {
-      const quantity = parseFloat($(this).find('input[name="quantity[]"]').val()) || 0;
-      const value = parseFloat($(this).find('input[name="value[]"]').val()) || 0;
-
-      total += quantity * value;
-    });
-
-    $('#totalValue').val(total.toFixed(2));
-  }
-
-  $(document).on('click', '.add-part', function () {
-    const partRow =
-      `<div class="row mb-2">
-        <div class="col-md-5">
-          <input type="text" class="form-control" name="parts[]" placeholder="Peça" required>
-        </div>
-        <div class="col-md-3">
-          <input type="number" class="form-control" name="quantity[]" placeholder="Quantidade" required>
-        </div>
-        <div class="col-md-3">
-          <input type="number" class="form-control" name="value[]" placeholder="Valor" required>
-        </div>
-        <div class="col-md-1">
-          <button type="button" class="btn btn-danger btn-sm remove-part"><i class="fas fa-minus"></i></button>
-        </div>
-      </div>`;
-    $('#partsList').append(partRow);
-  });
-
-  $(document).on('click', '.remove-part', function () {
-    $(this).closest('.row').remove();
-    calculateTotalValue();
-  });
-
-  $(document).on('input', 'input[name="value[]"], input[name="quantity[]"]', calculateTotalValue);
-
-  $(document).ready(function () {
-    calculateTotalValue();
-  });
-
   // Submeter o formulário de detalhes adicionais
   $('#additionalDetailsForm').submit(function (e) {
     e.preventDefault();
@@ -343,28 +300,51 @@ $(document).ready(function () {
       }
     });
   });
+});
 
-  $('#exportDevolutionForm').submit(function (e) {
-    e.preventDefault();
 
-    const formData = new FormData(this);
 
-    $.ajax({
-      url: '/machines/export-devolution',
-      type: 'POST',
-      data: formData,
-      contentType: false,
-      processData: false,
-      success: function (response) {
-        console.log('Documento de devolução exportado com sucesso.', response);
-        $('#exportDevolutionModal').modal('hide');
-      },
-      error: function (xhr, status, error) {
-        console.error('Erro ao exportar documento de devolução:', error);
-        alert('Erro ao exportar documento de devolução.');
-      }
-    });
+function calculateTotalValue() {
+  let total = 0;
+
+  $('#partsList .row').each(function () {
+    const quantity = parseFloat($(this).find('input[name="quantity[]"]').val()) || 0;
+    const value = parseFloat($(this).find('input[name="value[]"]').val()) || 0;
+
+    total += quantity * value;
   });
+
+  $('#totalValue').val(total.toFixed(2));
+}
+
+$(document).on('click', '.add-part', function () {
+  const partRow =
+    `<div class="row mb-2">
+        <div class="col-md-5">
+          <input type="text" class="form-control" name="parts[]" placeholder="Peça" required>
+        </div>
+        <div class="col-md-3">
+          <input type="number" class="form-control" name="quantity[]" placeholder="Quantidade" required>
+        </div>
+        <div class="col-md-3">
+          <input type="number" class="form-control" name="value[]" placeholder="Valor" required>
+        </div>
+        <div class="col-md-1">
+          <button type="button" class="btn btn-danger btn-sm remove-part"><i class="fas fa-minus"></i></button>
+        </div>
+      </div>`;
+  $('#partsList').append(partRow);
+});
+
+$(document).on('click', '.remove-part', function () {
+  $(this).closest('.row').remove();
+  calculateTotalValue();
+});
+
+$(document).on('input', 'input[name="value[]"], input[name="quantity[]"]', calculateTotalValue);
+
+$(document).ready(function () {
+  calculateTotalValue();
 });
 
 
