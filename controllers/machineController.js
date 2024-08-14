@@ -85,75 +85,106 @@ exports.searchAndFilterMachines = async (search, status, limit, offset) => {
 
 exports.deleteMachine = async (id) => {
     try {
+        console.log(`Iniciando a exclusão da máquina com ID: ${id}`);
+
+        // Verifica se a máquina existe
         const machine = await Machine.findByPk(id);
 
-        if (!machine) {
-            throw new Error('Máquina não encontrada');
-        }
+        if (machine) {
+            // Remove imagens associadas à máquina
+            if (machine.images) {
+                const images = Array.isArray(machine.images) ? machine.images : (typeof machine.images === 'string' ? machine.images.split(',') : []);
+                images.forEach(imagePath => {
+                    const filePath = path.join(__dirname, '../public/uploads', path.basename(imagePath.trim()));
+                    if (fs.existsSync(filePath)) {
+                        fs.unlinkSync(filePath);
+                        console.log(`Imagem removida: ${filePath}`);
+                    } else {
+                        console.warn(`Imagem não encontrada para remoção: ${filePath}`);
+                    }
+                });
+            }
 
-        await MachineLog.destroy({ where: { machineId: id } });
+            // Remove logs da máquina
+            await MachineLog.destroy({ where: { machineId: id } });
+            console.log(`Logs da máquina com ID ${id} removidos.`);
 
-        const machineDetail = await MachineDetail.findOne({ where: { machineId: id } });
+            // Verifica e remove detalhes da máquina
+            const machineDetail = await MachineDetail.findOne({ where: { machineId: id } });
 
-        if (machine.images) {
-            const images = Array.isArray(machine.images) ? machine.images : (typeof machine.images === 'string' ? machine.images.split(',') : []);
-            images.forEach(imagePath => {
-                const filePath = path.join(__dirname, '../public', imagePath);
-                if (fs.existsSync(filePath)) {
-                    fs.unlinkSync(filePath);
-                } else {
-                    console.warn(`Imagem não encontrada para remoção: ${filePath}`);
+            if (machineDetail) {
+                console.log(`Detalhes da máquina encontrados. Processando exclusão de arquivos.`);
+
+                // Remove imagens associadas aos detalhes da máquina
+                if (machineDetail.images) {
+                    const images = Array.isArray(machineDetail.images) ? machineDetail.images : JSON.parse(machineDetail.images);
+                    images.forEach(imagePath => {
+                        const fullPath = path.join(__dirname, '../public/evidence', path.basename(imagePath.trim()));
+                        if (fs.existsSync(fullPath)) {
+                            fs.unlinkSync(fullPath);
+                            console.log(`Imagem removida: ${fullPath}`);
+                        } else {
+                            console.warn(`Imagem não encontrada para remoção: ${fullPath}`);
+                        }
+                    });
                 }
-            });
+
+                // Remove documentos associados
+                if (machineDetail.documents) {
+                    const documents = typeof machineDetail.documents === 'string' ? machineDetail.documents.split(',') : [];
+                    documents.forEach(docPath => {
+                        const fullPath = path.join(__dirname, '../public/documents', path.basename(docPath.trim()));
+                        if (fs.existsSync(fullPath)) {
+                            fs.unlinkSync(fullPath);
+                            console.log(`Documento removido: ${fullPath}`);
+                        } else {
+                            console.warn(`Documento não encontrado para remoção: ${fullPath}`);
+                        }
+                    });
+                }
+
+                // Remove documentos de devolução
+                if (machineDetail.docDevolution) {
+                    const docDevolutionPaths = typeof machineDetail.docDevolution === 'string' ? machineDetail.docDevolution.split(',') : [];
+                    docDevolutionPaths.forEach(docPath => {
+                        const fullPath = path.join(__dirname, '../public/documents/devolution', path.basename(docPath.trim()));
+                        if (fs.existsSync(fullPath)) {
+                            fs.unlinkSync(fullPath);
+                            console.log(`Documento de devolução removido: ${fullPath}`);
+                        } else {
+                            console.warn(`Documento de devolução não encontrado para remoção: ${fullPath}`);
+                        }
+                    });
+                }
+
+                // Remove documentos de ordem
+                if (machineDetail.docOrder) {
+                    const docOrderPath = path.join(__dirname, '../public/documents/orders', path.basename(machineDetail.docOrder.trim()));
+                    if (fs.existsSync(docOrderPath)) {
+                        fs.unlinkSync(docOrderPath);
+                        console.log(`Documento de ordem removido: ${docOrderPath}`);
+                    } else {
+                        console.warn(`Documento de ordem não encontrado para remoção: ${docOrderPath}`);
+                    }
+                }
+
+                // Remove detalhes da máquina
+                await MachineDetail.destroy({ where: { machineId: id } });
+                console.log(`Detalhes da máquina com ID ${id} removidos.`);
+            } else {
+                console.log(`Nenhum detalhe encontrado para a máquina com ID ${id}.`);
+            }
+
+            // Remove a máquina
+            await Machine.destroy({ where: { id } });
+            console.log('Máquina removida com sucesso.');
+        } else {
+            console.warn(`Máquina com ID ${id} não encontrada.`);
         }
-
-        if (machineDetail) {
-            if (machineDetail.documents) {
-                const documents = typeof machineDetail.documents === 'string' ? machineDetail.documents.split(',') : [];
-                documents.forEach(docPath => {
-                    const fullPath = path.join(__dirname, '../public', docPath.trim());
-                    if (fs.existsSync(fullPath)) {
-                        fs.unlinkSync(fullPath);
-                    } else {
-                        console.warn(`Documento não encontrado para remoção: ${fullPath}`);
-                    }
-                });
-            }
-
-            if (machineDetail.docDevolution) {
-                const docDevolutionPaths = typeof machineDetail.docDevolution === 'string' ? machineDetail.docDevolution.split(',') : [];
-                docDevolutionPaths.forEach(docPath => {
-                    const fullPath = path.join(__dirname, '../public', docPath.trim());
-                    if (fs.existsSync(fullPath)) {
-                        fs.unlinkSync(fullPath);
-                    } else {
-                        console.warn(`Documento de devolução não encontrado para remoção: ${fullPath}`);
-                    }
-                });
-            }
-
-            if (machineDetail && machineDetail.images) {
-                const evidences = Array.isArray(machineDetail.images) ? machineDetail.images : (typeof machineDetail.images === 'string' ? machineDetail.images.split(',') : []);
-                evidences.forEach(evidencePath => {
-                    const fullPath = path.join(__dirname, '../public/evidence', path.basename(evidencePath.trim()));
-                    if (fs.existsSync(fullPath)) {
-                        fs.unlinkSync(fullPath);
-                    } else {
-                        console.warn(`Evidência não encontrada para remoção: ${fullPath}`);
-                    }
-                });
-            }
-
-            await MachineDetail.destroy({ where: { machineId: id } });
-        }
-
-        await Machine.destroy({ where: { id } });
     } catch (err) {
         console.error('Erro ao deletar a máquina:', err);
         throw err;
     }
-
-
 };
 
 exports.getMachineById = async (id) => {
