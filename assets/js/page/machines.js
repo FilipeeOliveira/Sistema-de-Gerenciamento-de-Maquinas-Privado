@@ -263,6 +263,48 @@ $(document).ready(function () {
     }
   });
 
+  // Submeter o formulário de detalhes adicionais
+  $('#additionalDetailsForm').submit(function (e) {
+    e.preventDefault();
+
+    const formData = new FormData(this);
+
+    console.log('Dados do formulário:');
+    for (let [key, value] of formData.entries()) {
+      if (value instanceof File) {
+        console.log(`${key}: ${value.name}`);
+      } else {
+        console.log(`${key}: ${value}`);
+      }
+    }
+
+    const quantities = formData.getAll('quantity[]');
+    const values = formData.getAll('value[]');
+    const totalValue = quantities.reduce((acc, qty, index) => acc + parseFloat(qty) * parseFloat(values[index]), 0);
+    console.log('Valor total calculado:', totalValue);
+
+    formData.append('totalValue', totalValue.toFixed(2));
+
+    $.ajax({
+      url: '/machines/update-details',
+      type: 'POST',
+      data: formData,
+      contentType: false,
+      processData: false,
+      success: function (response) {
+        console.log('Detalhes adicionais atualizados com sucesso.', response);
+        $('#additionalDetailsModal').modal('hide');
+      },
+      error: function (xhr, status, error) {
+        console.error('Erro ao atualizar detalhes adicionais:', error);
+        alert('Erro ao atualizar detalhes adicionais.');
+      }
+    });
+  });
+});
+
+
+  
   function calculateTotalValue() {
     let total = 0;
 
@@ -305,72 +347,6 @@ $(document).ready(function () {
   $(document).ready(function () {
     calculateTotalValue();
   });
-
-  // Submeter o formulário de detalhes adicionais
-  $('#additionalDetailsForm').submit(function (e) {
-    e.preventDefault();
-
-    const formData = new FormData(this);
-
-    console.log('Dados do formulário:');
-    for (let [key, value] of formData.entries()) {
-      if (value instanceof File) {
-        console.log(`${key}: ${value.name}`);
-      } else {
-        console.log(`${key}: ${value}`);
-      }
-    }
-
-    const quantities = formData.getAll('quantity[]');
-    const values = formData.getAll('value[]');
-    const totalValue = quantities.reduce((acc, qty, index) => acc + parseFloat(qty) * parseFloat(values[index]), 0);
-    console.log('Valor total calculado:', totalValue);
-
-    formData.append('totalValue', totalValue.toFixed(2));
-
-    $.ajax({
-      url: '/machines/update-details',
-      type: 'POST',
-      data: formData,
-      contentType: false,
-      processData: false,
-      success: function (response) {
-        console.log('Detalhes adicionais atualizados com sucesso.', response);
-        $('#additionalDetailsModal').modal('hide');
-      },
-      error: function (xhr, status, error) {
-        console.error('Erro ao atualizar detalhes adicionais:', error);
-        alert('Erro ao atualizar detalhes adicionais.');
-      }
-    });
-  });
-
-
-
-
-
-  $('#exportDevolutionForm').submit(function (e) {
-    e.preventDefault();
-
-    const formData = new FormData(this);
-
-    $.ajax({
-      url: '/machines/export-devolution',
-      type: 'POST',
-      data: formData,
-      contentType: false,
-      processData: false,
-      success: function (response) {
-        console.log('Documento de devolução exportado com sucesso.', response);
-        $('#exportDevolutionModal').modal('hide');
-      },
-      error: function (xhr, status, error) {
-        console.error('Erro ao exportar documento de devolução:', error);
-        alert('Erro ao exportar documento de devolução.');
-      }
-    });
-  });
-});
 
 
 
