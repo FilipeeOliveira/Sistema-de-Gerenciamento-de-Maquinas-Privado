@@ -248,7 +248,6 @@ $(document).ready(function () {
 $(document).ready(function () {
   console.log("Documento pronto.");
 
-  // Mostrar o modal de detalhes adicionais quando o status é "Em Manutenção"
   $('.status-badge').click(function () {
     const status = $(this).text().trim();
     console.log("Status clicado:", status);
@@ -344,10 +343,6 @@ $(document).ready(function () {
       }
     });
   });
-
-
-
-
 
   $('#exportDevolutionForm').submit(function (e) {
     e.preventDefault();

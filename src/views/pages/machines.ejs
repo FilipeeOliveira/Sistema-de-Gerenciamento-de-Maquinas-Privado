@@ -28,19 +28,19 @@
               </li>
               <li class="nav-item">
                 <a class="nav-link ${filterStatus === 'Em Manutenção' ? 'active' : ''}"
-                href="/machines/views?status=Em manutenção">Em
-                Manutenção <span class="badge badge-danger">${counts.maintenanceCount}</span></a>
+                  href="/machines/views?status=Em manutenção">Em
+                  Manutenção <span class="badge badge-danger">${counts.maintenanceCount}</span></a>
               </li>
-              
+
               <li class="nav-item">
                 <a class="nav-link ${filterStatus === 'Em estoque' ? 'active' : ''}"
-                href="/machines/views?status=Em estoque">Em estoque <span
-                class="badge badge-brown">${counts.inStockCount}</span></a>
+                  href="/machines/views?status=Em estoque">Em estoque <span
+                    class="badge badge-brown">${counts.inStockCount}</span></a>
               </li>
               <li class="nav-item">
                 <a class="nav-link ${filterStatus === 'Em espera' ? 'active' : ''}"
-                href="/machines/views?status=Em espera">Em espera <span
-                class="badge badge-primary">${counts.onHoldCount}</span></a>
+                  href="/machines/views?status=Em espera">Em espera <span
+                    class="badge badge-primary">${counts.onHoldCount}</span></a>
               </li>
               <li class="nav-item">
                 <a class="nav-link ${filterStatus === 'Em Uso' ? 'active' : ''}" href="/machines/views?status=Em Uso">Em
@@ -259,13 +259,13 @@
     </div>
   </div>
 
-  <!-- Modal para Exportar Documento de Devolução -->
+  <!-- Modal para Importar Documento de Devolução -->
   <div class="modal fade" id="exportDevolutionModal" tabindex="-1" aria-labelledby="exportDevolutionModalLabel"
     aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="exportDevolutionModalLabel">Exportar Documento de Devolução</h5>
+          <h5 class="modal-title" id="exportDevolutionModalLabel">Importar Documento de Devolução</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -283,6 +283,7 @@
       </div>
     </div>
   </div>
+
 
 
   <!-- Modal Das Peças -->

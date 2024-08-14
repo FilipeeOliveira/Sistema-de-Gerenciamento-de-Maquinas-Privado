@@ -10,7 +10,8 @@ const MachineLog = require('../models/MachineLog');
 exports.getDocumentsByMachineId = async (machineId) => {
     try {
         const documents = await MachineDetail.findAll({
-            where: { machineId: machineId }
+            where: { machineId: machineId },
+            order: [['createdAt', 'DESC']]
         });
         return documents;
     } catch (error) {
@@ -18,12 +19,14 @@ exports.getDocumentsByMachineId = async (machineId) => {
     }
 };
 
+
 exports.getDocumentsTable = async (req, res) => {
     const { machineId } = req.params;
 
     try {
         const documents = await MachineDetail.findAll({
-            where: { machineId }
+            where: { machineId },
+            order: [['createdAt', 'DESC']]
         });
 
         documents.forEach(document => {
@@ -51,6 +54,7 @@ exports.getDocumentsTable = async (req, res) => {
         res.status(500).send('Erro interno do servidor');
     }
 };
+
 
 exports.searchAndFilterMachines = async (search, status, limit, offset) => {
     try {
