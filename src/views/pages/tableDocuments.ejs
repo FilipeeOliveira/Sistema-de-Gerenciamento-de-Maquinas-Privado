@@ -29,41 +29,55 @@
                     <table class="table table-striped">
                         <thead>
                             <tr>
-                                <th class="text-center" style="width: 15%;">Data</th>
-                                <th class="text-center" style="width: 20%;">Doc. Retirada</th>
-                                <th class="text-center" style="width: 20%;">Ordem de Serviço</th>
-                                <th class="text-center" style="width: 25%;">Imagens Máquina</th>
-                                <th class="text-center" style="width: 20%;">Doc. Devolução</th>
+                                <th class="border-5 border-bottom text-center" style="width: 15%;">
+                                    Data</th>
+                                <th class=" border-5 border-bottom text-center" style="width: 20%;">
+                                    Doc. Retirada
+                                </th>
+                                <th class=" border-5 border-bottom text-center" style="width: 20%;">
+                                    Ordem de Serviço
+                                </th>
+                                <th class=" border-5 border-bottom text-center" style="width: 25%;">
+                                    Imagens Máquina
+                                </th>
+                                <th class=" border-5 border-bottom text-center" style="width: 20%;">
+                                    Doc. Devolução
+                                </th>
                             </tr>
                         </thead>
                         <tbody>
                             ${documents.length > 0 ? documents.map(document => `
                             <tr>
-                                <td class="text-center">${new Date(document.createdAt).toLocaleDateString()}</td>
-                                <td class="text-center">
+                                <td class="border-5 border-bottom text-center">${new
+                                    Date(document.createdAt).toLocaleDateString()}</td>
+                                <td class="border-5 border-bottom text-center">
                                     ${document.documents ?
                                     `<a href="/machines/documents/${document.documents}" download>Download</a>` :
                                     'Nenhum documento'}
                                 </td>
-                                <td class="text-center text-truncate" style="max-width: 150px;">
+                                <td class="border-5 border-bottom text-center text-truncate" style="max-width: 150px;">
                                     ${document.docOrder ?
                                     `<a href="/${document.docOrder}" download>Download</a>` :
                                     'Nenhum documento disponível'}
                                 </td>
-                                <td class="text-center" style="max-width: 200px;">
+                                <td class="border-5 border-bottom text-center" style="max-width: 200px;">
                                     ${document.images && document.images.length > 0 ?
                                     `<a href="javascript:void(0);" class="view-image"
                                         data-images="${document.images.join(',')}">Ver Imagem</a>` : 'Nenhuma imagem'}
                                 </td>
-                                <td class="text-center">
-                                    ${document.doc2 ? `<a href="/machines/documents/${document.doc2}"
-                                        download>Download</a>` : 'Nenhum documento'}
+                                <td class="border-5 border-bottom text-center">
+                                    ${document.docDevolution ?
+                                    `<a href="${document.docDevolution}" download>Download</a>` :
+                                    'Nenhum documento de devolução'}
                                 </td>
+
                             </tr>
                             `).join('') : `<tr>
-                                <td colspan="5" class="text-center">Nenhum documento encontrado</td>
+                                <td colspan="5" class="border-5 border-bottom text-center">Nenhum documento
+                                    encontrado</td>
                             </tr>`}
                         </tbody>
+
                     </table>
                 </div>
             </div>

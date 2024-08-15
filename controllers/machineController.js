@@ -10,7 +10,8 @@ const MachineLog = require('../models/MachineLog');
 exports.getDocumentsByMachineId = async (machineId) => {
     try {
         const documents = await MachineDetail.findAll({
-            where: { machineId: machineId }
+            where: { machineId: machineId },
+            order: [['createdAt', 'DESC']]
         });
         return documents;
     } catch (error) {
@@ -18,12 +19,14 @@ exports.getDocumentsByMachineId = async (machineId) => {
     }
 };
 
+
 exports.getDocumentsTable = async (req, res) => {
     const { machineId } = req.params;
 
     try {
         const documents = await MachineDetail.findAll({
-            where: { machineId }
+            where: { machineId },
+            order: [['createdAt', 'DESC']]
         });
 
         documents.forEach(document => {
@@ -51,6 +54,7 @@ exports.getDocumentsTable = async (req, res) => {
         res.status(500).send('Erro interno do servidor');
     }
 };
+
 
 exports.searchAndFilterMachines = async (search, status, limit, offset) => {
     try {
@@ -81,91 +85,87 @@ exports.searchAndFilterMachines = async (search, status, limit, offset) => {
 
 exports.deleteMachine = async (id) => {
     try {
+        console.log(`Iniciando a exclusão da máquina com ID: ${id}`);
+
         const machine = await Machine.findByPk(id);
+        const machineDetails = await MachineDetail.findAll({ where: { machineId: id } });
 
-        if (!machine) {
-            throw new Error('Máquina não encontrada');
-        }
-
-        // Deletar os logs da máquina
-        await MachineLog.destroy({ where: { machineId: id } });
-
-        const machineDetail = await MachineDetail.findOne({ where: { machineId: id } });
-
-        // Deletar imagens associadas à máquina
-        if (machine.images) {
-            const images = Array.isArray(machine.images) ? machine.images : (typeof machine.images === 'string' ? machine.images.split(',') : []);
-            images.forEach(imagePath => {
-                const filePath = path.join(__dirname, '../public', imagePath);
+        if (machine) {
+            const deleteFile = (filePath) => {
+                console.log(`Tentando remover arquivo: ${filePath}`);
                 if (fs.existsSync(filePath)) {
                     fs.unlinkSync(filePath);
+                    console.log(`Arquivo removido: ${filePath}`);
                 } else {
-                    console.warn(`Imagem não encontrada para remoção: ${filePath}`);
+                    console.warn(`Arquivo não encontrado para remoção: ${filePath}`);
                 }
-            });
+            };
+
+            if (machine.images) {
+                const images = Array.isArray(machine.images) ? machine.images : machine.images.split(',');
+                images.forEach(imagePath => {
+                    const fullPath = imagePath.startsWith('C:') ? imagePath : path.join(__dirname, '../public/uploads', path.basename(imagePath.trim()));
+                    deleteFile(fullPath);
+                });
+            }
+
+            await MachineLog.destroy({ where: { machineId: id } });
+            console.log(`Logs da máquina com ID ${id} removidos.`);
+
+            if (machineDetails.length > 0) {
+                console.log(`Detalhes da máquina encontrados. Processando exclusão de arquivos.`);
+
+                const processedFiles = new Set();
+
+                for (const machineDetail of machineDetails) {
+
+                    if (machineDetail.images) {
+                        const evidences = Array.isArray(machineDetail.images) ? machineDetail.images : machineDetail.images.split(',');
+                        evidences.forEach(evidencePath => {
+                            const fullPath = evidencePath.startsWith('C:') ? evidencePath : path.join(__dirname, '../public/evidence', path.basename(evidencePath.trim()));
+                            deleteFile(fullPath);
+                        });
+                    }
+
+                    if (machineDetail.documents) {
+                        const documents = machineDetail.documents.split(',');
+                        documents.forEach(docPath => {
+                            const fullPath = docPath.startsWith('C:') ? docPath : path.join(__dirname, '../public/documents', path.basename(docPath.trim()));
+                            deleteFile(fullPath);
+                        });
+                    }
+
+                    if (machineDetail.docDevolution) {
+                        const documentsDev = machineDetail.docDevolution.split(',');
+                        documentsDev.forEach(docPath => {
+                            const fullPath = docPath.startsWith('C:') ? docPath : path.join(__dirname, '../public/documents/devolution', path.basename(docPath.trim()));
+
+                            if (!processedFiles.has(fullPath)) {
+                                deleteFile(fullPath);
+                                processedFiles.add(fullPath);
+                            } else {
+                                console.warn(`Arquivo já processado anteriormente: ${fullPath}`);
+                            }
+                        });
+                    }
+
+                    if (machineDetail.docOrder) {
+                        const docOrderPath = machineDetail.docOrder.startsWith('C:') ? machineDetail.docOrder : path.join(__dirname, '../public/documents/orders', path.basename(machineDetail.docOrder.trim()));
+                        deleteFile(docOrderPath);
+                    }
+                }
+
+                await MachineDetail.destroy({ where: { machineId: id } });
+                console.log(`Detalhes da máquina com ID ${id} removidos.`);
+            } else {
+                console.log(`Nenhum detalhe encontrado para a máquina com ID ${id}.`);
+            }
+
+            await Machine.destroy({ where: { id } });
+            console.log('Máquina removida com sucesso.');
+        } else {
+            console.warn(`Máquina com ID ${id} não encontrada.`);
         }
-
-        // Deletar documentos associados a MachineDetail
-        if (machineDetail) {
-            if (machineDetail.documents) {
-                const documents = typeof machineDetail.documents === 'string' ? machineDetail.documents.split(',') : [];
-                documents.forEach(docPath => {
-                    const fullPath = path.join(__dirname, '../public', docPath.trim());
-                    if (fs.existsSync(fullPath)) {
-                        fs.unlinkSync(fullPath);
-                    } else {
-                        console.warn(`Documento não encontrado para remoção: ${fullPath}`);
-                    }
-                });
-            }
-
-            // Deletar documentos de devolução
-            if (machineDetail.docDevolution) {
-                const docDevolutionPaths = typeof machineDetail.docDevolution === 'string' ? machineDetail.docDevolution.split(',') : [];
-                docDevolutionPaths.forEach(docPath => {
-                    const fullPath = path.join(__dirname, '../public', docPath.trim());
-                    if (fs.existsSync(fullPath)) {
-                        fs.unlinkSync(fullPath);
-                    } else {
-                        console.warn(`Documento de devolução não encontrado para remoção: ${fullPath}`);
-                    }
-                });
-            }
-
-            // Deletar evidências
-            if (machineDetail && machineDetail.images) {
-                const evidences = Array.isArray(machineDetail.images) ? machineDetail.images : (typeof machineDetail.images === 'string' ? machineDetail.images.split(',') : []);
-                evidences.forEach(evidencePath => {
-                    const fullPath = path.join(__dirname, '../public/evidence', path.basename(evidencePath.trim()));
-                    if (fs.existsSync(fullPath)) {
-                        fs.unlinkSync(fullPath);
-                    } else {
-                        console.warn(`Evidência não encontrada para remoção: ${fullPath}`);
-                    }
-                });
-            }
-
-            // Deletar documentos de ordens de serviço
-            if (machineDetail.docOrder) {
-                const ordemDeServicoPaths = typeof machineDetail.docOrder === 'string' ? machineDetail.docOrder.split(',') : [];
-                ordemDeServicoPaths.forEach(docPath => {
-                    const fullPath = path.join(__dirname, '../public/documents/orders', path.basename(docPath.trim()));
-                    if (fs.existsSync(fullPath)) {
-                        fs.unlinkSync(fullPath);
-                    } else {
-                        console.warn(`Documento de ordem de serviço não encontrado para remoção: ${fullPath}`);
-                    }
-                });
-            }
-
-            // Deletar o registro de detalhes da máquina
-            await MachineDetail.destroy({ where: { machineId: id } });
-        }
-
-        // Deletar a máquina
-        await Machine.destroy({ where: { id } });
-
-        console.log(`Máquina e todos os arquivos associados foram deletados com sucesso.`);
     } catch (err) {
         console.error('Erro ao deletar a máquina:', err);
         throw err;

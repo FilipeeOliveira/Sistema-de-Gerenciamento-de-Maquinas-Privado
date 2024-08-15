@@ -24,7 +24,7 @@ const storage = multer.diskStorage({
             targetDir = devolutionDir;
         } else if (file.fieldname === 'document' && req.url.includes('orders')) {
             targetDir = ordersDir;
-        } else if (file.fieldname === 'images') { // Adiciona esta condição para imagens
+        } else if (file.fieldname === 'images') {
             targetDir = uploadDir;
         } else {
             targetDir = documentsDir;
@@ -267,22 +267,23 @@ router.post('/export-devolution', upload.single('document'), async (req, res) =>
             return res.status(400).json({ message: 'ID da máquina é necessário.' });
         }
 
+        console.log('Caminho do documento de devolução:', document);
+
         const machineDetail = await MachineDetail.findOne({ where: { machineId: id } });
         if (!machineDetail) {
             return res.status(404).json({ message: 'Detalhes da máquina não encontrados.' });
         }
 
-        console.log('Caminho do documento de devolução:', document);
-
         const updatedMachineDetail = await machineController.updateDevolutionDocument(id, document);
+
+        console.log('Detalhes da máquina atualizados:', updatedMachineDetail);
+
         res.status(200).json({ message: 'Documento de devolução exportado com sucesso.', updatedMachineDetail });
     } catch (error) {
         console.error('Erro ao exportar documento de devolução:', error);
         res.status(500).json({ message: 'Erro ao exportar documento de devolução.', error: error.message });
     }
 });
-
-
 
 // Rota para renderizar a página de logs
 router.get('/logs/:id', async (req, res) => {

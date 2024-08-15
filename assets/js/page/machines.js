@@ -248,7 +248,6 @@ $(document).ready(function () {
 $(document).ready(function () {
   console.log("Documento pronto.");
 
-  // Mostrar o modal de detalhes adicionais quando o status é "Em Manutenção"
   $('.status-badge').click(function () {
     const status = $(this).text().trim();
     console.log("Status clicado:", status);
@@ -304,23 +303,23 @@ $(document).ready(function () {
 });
 
 
-  
-  function calculateTotalValue() {
-    let total = 0;
 
-    $('#partsList .row').each(function () {
-      const quantity = parseFloat($(this).find('input[name="quantity[]"]').val()) || 0;
-      const value = parseFloat($(this).find('input[name="value[]"]').val()) || 0;
+function calculateTotalValue() {
+  let total = 0;
 
-      total += quantity * value;
-    });
+  $('#partsList .row').each(function () {
+    const quantity = parseFloat($(this).find('input[name="quantity[]"]').val()) || 0;
+    const value = parseFloat($(this).find('input[name="value[]"]').val()) || 0;
 
-    $('#totalValue').val(total.toFixed(2));
-  }
+    total += quantity * value;
+  });
 
-  $(document).on('click', '.add-part', function () {
-    const partRow =
-      `<div class="row mb-2">
+  $('#totalValue').val(total.toFixed(2));
+}
+
+$(document).on('click', '.add-part', function () {
+  const partRow =
+    `<div class="row mb-2">
         <div class="col-md-5">
           <input type="text" class="form-control" name="parts[]" placeholder="Peça" required>
         </div>
@@ -334,19 +333,19 @@ $(document).ready(function () {
           <button type="button" class="btn btn-danger btn-sm remove-part"><i class="fas fa-minus"></i></button>
         </div>
       </div>`;
-    $('#partsList').append(partRow);
-  });
+  $('#partsList').append(partRow);
+});
 
-  $(document).on('click', '.remove-part', function () {
-    $(this).closest('.row').remove();
-    calculateTotalValue();
-  });
+$(document).on('click', '.remove-part', function () {
+  $(this).closest('.row').remove();
+  calculateTotalValue();
+});
 
-  $(document).on('input', 'input[name="value[]"], input[name="quantity[]"]', calculateTotalValue);
+$(document).on('input', 'input[name="value[]"], input[name="quantity[]"]', calculateTotalValue);
 
-  $(document).ready(function () {
-    calculateTotalValue();
-  });
+$(document).ready(function () {
+  calculateTotalValue();
+});
 
 
 
