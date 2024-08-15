@@ -10,22 +10,26 @@
   <div class="section-body">
     <div class="card">
       <div class="card-header">
-        <h4>Histórico de Status - Máquina ${machineId}</h4>
-        <form id="dateFilterForm" class="form-inline" method="get" action="/machines/logs/${machineId}">
-          <div class="form-group">
-            <label for="startDate">De:</label>
-            <input type="date" id="startDate" name="startDate" class="form-control mx-sm-2" required>
-          </div>
-          <div class="form-group">
-            <label for="endDate">Até:</label>
-            <input type="date" id="endDate" name="endDate" class="form-control mx-sm-2" required>
-          </div>
-          <button type="submit" class="btn btn-primary">Filtrar</button>
-        </form>
-        <a style="margin-left: 10px;" href="/table/${machineId}">
-          <button class="btn btn-primary">Tabela de Documentos</button>
-        </a>
+        <h4>Histórico - Máquina ${machineId}</h4>
+        <div class="header-flex">
+          <form id="dateFilterForm" class="form-flex" method="get" action="/machines/logs/${machineId}">
+            <div class="form-group date-group">
+              <label for="startDate" class="label-inline">De:</label>
+              <input type="date" id="startDate" name="startDate" class="form-control input-inline" required>
+            </div>
+            <div class="form-group date-group">
+              <label for="endDate" class="label-inline">Até:</label>
+              <input type="date" id="endDate" name="endDate" class="form-control input-inline" required>
+            </div>
+            <button type="submit" class="btn btn-primary btn-filter">Filtrar</button>
+          </form>
+          <a href="/table/${machineId}" class="btn-doc-link">
+            <button class="btn btn-primary">Documentos</button>
+          </a>
+        </div>
       </div>
+      
+      
 
       <div class="card-body">
         <div class="table-responsive">

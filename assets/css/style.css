@@ -4286,3 +4286,119 @@ body:not(.sidebar-mini) .sidebar-style-2 .sidebar-menu li.active ul.dropdown-men
   width: 100%;
   max-width: 500px; /* Ajuste conforme necessário */
 }
+
+
+/* Flex container para o cabeçalho */
+.header-flex {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+/* Flex container para o formulário */
+.form-flex {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+/* Grupo de data */
+.date-group {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px; /* Margem inferior para espaçamento em telas menores */
+}
+
+/* Estilo inline para rótulos */
+.label-inline {
+  margin-right: 5px;
+  margin-bottom: 0;
+  margin-top: 10px;
+}
+
+/* Estilo inline para inputs */
+.input-inline {
+  margin-right: 10px;
+  margin-top: 10px;
+}
+
+/* Botão de filtro */
+.btn-filter {
+  margin-top: 10px; /* Margem superior para telas menores */
+}
+
+/* Link do botão de documentos */
+.btn-doc-link {
+  margin-top: 10px;
+  margin-left: 0;
+}
+
+/* Ajustes de layout para telas menores */
+@media (max-width: 467px) {
+  .form-flex {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .btn-filter {
+    margin-top: 10px;
+    align-self: flex-start;
+  }
+  .btn-doc-link {
+    margin-top: 20px;
+  }
+}
+@media (min-width: 404px) and (max-width: 480px){
+  .btn-filter {
+    margin-inline-end: 280px;
+    
+  }
+  .btn-doc-link {
+    margin-top: 20px;
+  }
+  
+}
+
+@media (min-width: 549px) and (max-width: 654px){
+  .btn-filter {
+    margin-inline-end: 50px;
+     }
+}
+
+
+@media (min-width: 655px) and (max-width: 767px){
+  .btn-doc-link {
+    margin-left: 1px;
+    margin-bottom: 10px;
+  }
+}
+
+@media (min-width: 844px) and (max-width: 918px){
+  .btn-doc-link {
+    margin-bottom: 10px;
+    margin-left: 10px;
+  }
+}
+
+@media (min-width: 919px) and (max-width: 1024px){
+
+  .btn-doc-link {
+    margin-bottom: 10px;
+    margin-left: 10px;
+  }
+}
+
+@media (min-width: 1094px) and (max-width: 1168px){
+  .btn-doc-link {
+    margin-bottom: 10px;
+    margin-left: 2px;
+  }
+}
+
+
+@media (min-width: 1169px){
+  .btn-doc-link {
+    margin-bottom: 10px;
+    margin-left: 10px;
+  }
+}
