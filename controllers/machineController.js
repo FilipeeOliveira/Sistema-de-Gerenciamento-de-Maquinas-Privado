@@ -87,10 +87,12 @@ exports.deleteMachine = async (id) => {
             throw new Error('Máquina não encontrada');
         }
 
+        // Deletar os logs da máquina
         await MachineLog.destroy({ where: { machineId: id } });
 
         const machineDetail = await MachineDetail.findOne({ where: { machineId: id } });
 
+        // Deletar imagens associadas à máquina
         if (machine.images) {
             const images = Array.isArray(machine.images) ? machine.images : (typeof machine.images === 'string' ? machine.images.split(',') : []);
             images.forEach(imagePath => {
@@ -103,6 +105,7 @@ exports.deleteMachine = async (id) => {
             });
         }
 
+        // Deletar documentos associados a MachineDetail
         if (machineDetail) {
             if (machineDetail.documents) {
                 const documents = typeof machineDetail.documents === 'string' ? machineDetail.documents.split(',') : [];
@@ -116,6 +119,7 @@ exports.deleteMachine = async (id) => {
                 });
             }
 
+            // Deletar documentos de devolução
             if (machineDetail.docDevolution) {
                 const docDevolutionPaths = typeof machineDetail.docDevolution === 'string' ? machineDetail.docDevolution.split(',') : [];
                 docDevolutionPaths.forEach(docPath => {
@@ -128,6 +132,7 @@ exports.deleteMachine = async (id) => {
                 });
             }
 
+            // Deletar evidências
             if (machineDetail && machineDetail.images) {
                 const evidences = Array.isArray(machineDetail.images) ? machineDetail.images : (typeof machineDetail.images === 'string' ? machineDetail.images.split(',') : []);
                 evidences.forEach(evidencePath => {
@@ -140,16 +145,31 @@ exports.deleteMachine = async (id) => {
                 });
             }
 
+            // Deletar documentos de ordens de serviço
+            if (machineDetail.docOrder) {
+                const ordemDeServicoPaths = typeof machineDetail.docOrder === 'string' ? machineDetail.docOrder.split(',') : [];
+                ordemDeServicoPaths.forEach(docPath => {
+                    const fullPath = path.join(__dirname, '../public/documents/orders', path.basename(docPath.trim()));
+                    if (fs.existsSync(fullPath)) {
+                        fs.unlinkSync(fullPath);
+                    } else {
+                        console.warn(`Documento de ordem de serviço não encontrado para remoção: ${fullPath}`);
+                    }
+                });
+            }
+
+            // Deletar o registro de detalhes da máquina
             await MachineDetail.destroy({ where: { machineId: id } });
         }
 
+        // Deletar a máquina
         await Machine.destroy({ where: { id } });
+
+        console.log(`Máquina e todos os arquivos associados foram deletados com sucesso.`);
     } catch (err) {
         console.error('Erro ao deletar a máquina:', err);
         throw err;
     }
-
-
 };
 
 exports.getMachineById = async (id) => {
