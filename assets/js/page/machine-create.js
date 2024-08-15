@@ -19,7 +19,7 @@ let filesToUpload = [];
 
 inputFileElement.addEventListener('change', function (event) {
   filesToUpload = Array.from(event.target.files);
-  previewContainer.innerHTML = ''; 
+  previewContainer.innerHTML = '';
 
   filesToUpload.forEach((file, index) => {
     if (file.type.startsWith('image/')) {
@@ -35,8 +35,8 @@ inputFileElement.addEventListener('change', function (event) {
         const removeBtn = document.createElement('button');
         removeBtn.textContent = 'Remover';
         removeBtn.className = 'btn btn-sm btn-danger mt-2';
-        removeBtn.onclick = function() {
-          colDiv.remove(); 
+        removeBtn.onclick = function () {
+          colDiv.remove();
           filesToUpload.splice(index, 1); // Remove o arquivo da lista
           inputFileElement.files = createFileList(filesToUpload); // Atualiza os arquivos no input
         };
@@ -90,7 +90,6 @@ document.getElementById('machineForm').addEventListener('submit', function (even
   })
     .then(response => {
       if (response.ok) {
-        alert('Dados enviados com sucesso!');
         // Limpa os campos do formulário após o envio bem-sucedido
         this.reset(); // Resetará os campos do formulário
 

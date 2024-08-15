@@ -7,9 +7,9 @@ const path = require('path');
 const session = require('express-session');
 const SequelizeStore = require('connect-session-sequelize')(session.Store);
 const authRoutes = require('./routes/auth');
-const fs = require('fs');
-const PizZip = require('pizzip');
-const Docxtemplater = require('docxtemplater');
+// const fs = require('fs');
+// const PizZip = require('pizzip');
+// const Docxtemplater = require('docxtemplater');
 
 const app = express();
 
@@ -27,13 +27,13 @@ app.use('/uploads', express.static(path.join(__dirname, 'public/uploads')));
 app.set('view engine', 'ejs');
 
 app.use(session({
-    secret: 'seu_segredo_super_secreto',
+    secret: ':33ob/%~56BR',
     store: new SequelizeStore({
         db: sequelize,
     }),
     resave: false,
     saveUninitialized: false,
-    cookie: { secure: false, maxAge: 1000 * 60 * 60 } // 1 hora
+    cookie: { secure: false, maxAge: 1000 * 60 * 60 * 2 }
 }));
 
 // Middleware para disponibilizar o usuário para todos os templates
@@ -42,16 +42,26 @@ app.use((req, res, next) => {
     next();
 });
 
+function ensureAuthenticated(req, res, next) {
+    if (req.session.user) {
+        return next();
+    }
+    res.redirect('/');
+}
+
 // Rotas
+app.use('/', authRoutes);
+app.use('/auth-register', require('./routes/auth-register'));
+app.use('/auth-forgot-password', require('./routes/auth-forgot-password'));
+
+app.use(ensureAuthenticated);
+
 app.use('/dashboard', require('./routes/dashboard'));
-app.use('/', require('./routes/auth'));
 app.use('/profile', require('./routes/profile'));
 app.use('/machine', require('./routes/machine-create'));
 app.use('/machines', require('./routes/machines'));
-app.use('/auth-register', require('./routes/auth-register'));
 app.use('/table', require('./routes/documentsTable'));
-app.use('/auth-forgot-password', require('./routes/auth-forgot-password'));
-app.use('/auth-reset-password', require('./routes/auth-reset-password'));
+
 
 sequelize.sync()
     .then(() => {

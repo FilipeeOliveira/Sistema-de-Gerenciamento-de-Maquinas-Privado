@@ -32,10 +32,10 @@
           <table class="table table-striped">
             <thead>
               <tr>
-                <th>Data da Alteração</th>
-                <th>Hora da Alteração</th>
-                <th>Status Anterior</th>
-                <th>Novo Status</th>
+                <th class="border-5 border-bottom text-center">Data da Alteração</th>
+                <th class="border-5 border-bottom text-center">Hora da Alteração</th>
+                <th class="border-5 border-bottom text-center">Status Anterior</th>
+                <th class="border-5 border-bottom text-center">Novo Status</th>
               </tr>
             </thead>
             <tbody>
@@ -43,10 +43,10 @@
               const date = new Date(log.changeDate);
               return `
               <tr>
-                <td>${date.toLocaleDateString()}</td>
-                <td>${date.toLocaleTimeString()}</td>
-                <td>${log.previousStatus}</td>
-                <td>${log.newStatus}</td>
+                <td class="border-5 border-bottom text-center">${date.toLocaleDateString()}</td>
+                <td class="border-5 border-bottom text-center">${date.toLocaleTimeString()}</td>
+                <td class="border-5 border-bottom text-center">${log.previousStatus}</td>
+                <td class="border-5 border-bottom text-center">${log.newStatus}</td>
               </tr>
               `;
               }).join('')}

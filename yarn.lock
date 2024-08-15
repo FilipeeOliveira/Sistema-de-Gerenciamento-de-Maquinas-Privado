@@ -662,6 +662,13 @@ binary-extensions@^2.0.0:
   resolved "https://registry.npmjs.org/binary-extensions/-/binary-extensions-2.3.0.tgz"
   integrity sha512-Ceh+7ox5qe7LJuLHoY0feh3pHuUDHAcRUeyL2VYghZwfpkNIy/+8Ocg0a3UuSoYzavmylwuLWQOf3hl0jjMMIw==
 
+bindings@^1.5.0:
+  version "1.5.0"
+  resolved "https://registry.npmjs.org/bindings/-/bindings-1.5.0.tgz"
+  integrity sha512-p2q/t/mhvuOj/UeLlV6566GD/guowlr0hHxClI0W9m7MWYkL1F0hLo+0Aexs9HSPCtR1SXQ0TD3MMKrXZajbiQ==
+  dependencies:
+    file-uri-to-path "1.0.0"
+
 bl@^1.0.0:
   version "1.2.3"
   resolved "https://registry.npmjs.org/bl/-/bl-1.2.3.tgz"
@@ -2637,6 +2644,11 @@ file-upload-with-preview@^6.0.2:
   resolved "https://registry.npmjs.org/file-upload-with-preview/-/file-upload-with-preview-6.0.2.tgz"
   integrity sha512-MZL+ou4QRZJtcQ0Nuv9YIUQE4XoLENPsoWGiQmgY+oEMzMmp2cLOFCbSfFvUZOd9Mf7D1boTEcJaONoiKKo/bg==
 
+file-uri-to-path@1.0.0:
+  version "1.0.0"
+  resolved "https://registry.npmjs.org/file-uri-to-path/-/file-uri-to-path-1.0.0.tgz"
+  integrity sha512-0Zt+s3L7Vf1biwWZ29aARiVYLx7iMGnEUl9x33fbB/j3jR81u/O2LbqK+Bm1CDSNDKVtJ/YjwY7TUd5SkeLQLw==
+
 filelist@^1.0.4:
   version "1.0.4"
   resolved "https://registry.npmjs.org/filelist/-/filelist-1.0.4.tgz"
@@ -2921,6 +2933,19 @@ fs.realpath@^1.0.0:
   resolved "https://registry.npmjs.org/fs.realpath/-/fs.realpath-1.0.0.tgz"
   integrity sha512-OO0pH2lK6a0hZnAdau5ItzHPI6pUlvI7jMVnxUQRtw4owF2wk8lOSabtGDCTP4Ggrg2MbGnWO9X8K1t4+fGMDw==
 
+fsevents@^1.2.7:
+  version "1.2.13"
+  resolved "https://registry.npmjs.org/fsevents/-/fsevents-1.2.13.tgz"
+  integrity sha512-oWb1Z6mkHIskLzEJ/XWX0srkpkTQ7vaopMQkyaEIoq0fmtFVxOthb8cCxeT+p3ynTdkk/RZwbgG4brR5BeWECw==
+  dependencies:
+    bindings "^1.5.0"
+    nan "^2.12.1"
+
+fsevents@~2.3.2:
+  version "2.3.3"
+  resolved "https://registry.npmjs.org/fsevents/-/fsevents-2.3.3.tgz"
+  integrity sha512-5xoDfX+fL7faATnagmWPpbFtwh/R77WmMMqqHGS65C3vvB0YHrgF+B1YmZ3441tMj5n63k0212XNoJwzlhffQw==
+
 fullcalendar@^3.10.0:
   version "3.10.5"
   resolved "https://registry.npmjs.org/fullcalendar/-/fullcalendar-3.10.5.tgz"
@@ -2952,6 +2977,65 @@ generate-function@^2.3.1:
   integrity sha512-eeB5GfMNeevm/GRYq20ShmsaGcmI81kIX2K9XQx5miC8KdHaC6Jm0qQ8ZNeGOi7wYB8OsdxKs+Y2oVuTFuVwKQ==
   dependencies:
     is-property "^1.0.2"
+
+"geral@file:":
+  version "2.2.0"
+  resolved "file:"
+  dependencies:
+    "@aacassandra/jquery_upload_preview" "^0.0.1"
+    "@fortawesome/fontawesome-free" "^5.15.4"
+    bcrypt "^5.1.1"
+    body-parser "^1.20.2"
+    bootstrap "^4.3.1"
+    bootstrap-colorpicker "^3.0.3"
+    bootstrap-daterangepicker "^3.0.3"
+    bootstrap-social "^5.1.1"
+    bootstrap-tagsinput "^0.7.1"
+    bootstrap-timepicker "^0.5.2"
+    chart.js "^2.7.3"
+    chocolat "^0.4.21"
+    cleave.js "^1.4.7"
+    codemirror "^5.43.0"
+    connect-session-sequelize "^7.1.7"
+    datatables "^1.10.18"
+    datatables.net-responsive-bs4 "^2.2.3"
+    datatables.net-select-bs4 "^1.2.7"
+    docxtemplater "^3.49.1"
+    dropzone "^5.5.1"
+    ejs "^3.1.10"
+    express "^4.19.2"
+    express-session "^1.18.0"
+    file-upload-with-preview "^6.0.2"
+    flag-icon-css "^3.2.1"
+    fullcalendar "^3.10.0"
+    geral "file:"
+    gmaps "^0.4.24"
+    ionicons201 "1.0.0"
+    izitoast "^1.4.0"
+    jquery "^3.3.1"
+    jquery-sparkline "^2.4.0"
+    jquery-ui-dist "^1.12.1"
+    jquery.nicescroll "^3.7.6"
+    jqvmap "^1.5.1"
+    moment "^2.30.1"
+    morgan "^1.10.0"
+    multer "^1.4.5-lts.1"
+    mysql2 "^3.10.1"
+    nicescroll "^3.7.4"
+    owl.carousel "^2.3.4"
+    perfect-scrollbar "^1.4.0"
+    pizzip "^3.1.7"
+    popper.js "^1.16.1"
+    prismjs "^1.15.0"
+    select2 "^4.0.6-rc.1"
+    selectric "^1.13.0"
+    sequelize "^6.37.3"
+    simpleweather "^3.1.0"
+    sticky-kit "^1.1.3"
+    summernote "^0.8.20"
+    sweetalert "^2.1.2"
+    tooltip.js "^1.3.1"
+    weathericons "^2.1.0"
 
 get-caller-file@^1.0.1:
   version "1.0.3"
@@ -5080,6 +5164,11 @@ named-placeholders@^1.1.3:
   integrity sha512-eLoBxg6wE/rZkJPhU/xRX1WTpkFEwDJEN96oxFrTsqBdbT5ec295Q+CoHrL9IT0DipqKhmGcaZmwOt8OON5x1w==
   dependencies:
     lru-cache "^7.14.1"
+
+nan@^2.12.1:
+  version "2.20.0"
+  resolved "https://registry.npmjs.org/nan/-/nan-2.20.0.tgz"
+  integrity sha512-bk3gXBZDGILuuo/6sKtr0DQmSThYHLtNCdSdXk9YkxD/jK6X2vmCyyXBBxyqZ4XcnzTyYEAThfX3DCEnLf6igw==
 
 nanoid@^3.3.7:
   version "3.3.7"
