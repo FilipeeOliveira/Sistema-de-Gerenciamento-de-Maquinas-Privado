@@ -10,7 +10,7 @@
   <div class="section-body">
     <div class="card">
       <div class="card-header">
-        <h4>Histórico - Máquina ${machineId}</h4>
+        <h4>Máquina ${machineId}</h4>
         <div class="header-flex">
           <form id="dateFilterForm" class="form-flex" method="get" action="/machines/logs/${machineId}">
             <div class="form-group date-group">
@@ -22,14 +22,11 @@
               <input type="date" id="endDate" name="endDate" class="form-control input-inline" required>
             </div>
             <button type="submit" class="btn btn-primary btn-filter">Filtrar</button>
+            <a href="/table/${machineId}" class="btn btn-primary btn-doc-link ">Documentos</a>
           </form>
-          <a href="/table/${machineId}" class="btn-doc-link">
-            <button class="btn btn-primary">Documentos</button>
           </a>
         </div>
       </div>
-      
-      
 
       <div class="card-body">
         <div class="table-responsive">
