@@ -191,20 +191,20 @@
             </div>
             <div class="form-group">
               <label class="fileModal" for="editImages">Escolher Imagem </label>
-              <input type="file" class="form-control-file" id="editImages" name="images" multiple>
+              <input type="file" class="d-none form-control-file" id="editImages" name="images" multiple>
             </div>
             <div id="editImagePreview" class="row md-3">
             </div>
             <div class="form-group">
-                <label for="editStatus">Status</label>
-                <select class="form-control" id="editStatus" name="status" required>
-                  <option value="Em Manutenção">Em Manutenção</option>
-                  <option value="Em Uso">Em Uso</option>
-                  <option value="Em chamado">Em chamado</option>
-                  <option value="Em estoque">Em estoque</option>
-                  <option value="Em espera">Em espera</option>
-                </select>
-              </div>
+              <label for="editStatus">Status</label>
+              <select class="form-control" id="editStatus" name="status" required>
+                <option value="Em Manutenção">Em Manutenção</option>
+                <option value="Em Uso">Em Uso</option>
+                <option value="Em chamado">Em chamado</option>''
+                <option value="Em estoque">Em estoque</option>
+                <option value="Em espera">Em espera</option>
+              </select>
+            </div>
             <button type="submit" class="btn btn-primary">Salvar Alterações</button>
           </form>
         </div>
@@ -254,7 +254,7 @@
     </div>
   </div>
 
-  <!-- Modal para Exporta Documento de Devolução -->
+  <!-- Modal para Improtar Documento de Devolução -->
   <div class="modal fade" id="exportDevolutionModal" tabindex="-1" aria-labelledby="exportDevolutionModalLabel"
     aria-hidden="true">
     <div class="modal-dialog">
@@ -269,8 +269,8 @@
           <form id="exportDevolutionForm" enctype="multipart/form-data">
             <input type="hidden" id="devolutionMachineId" name="id">
             <div class="form-group">
-              <label for="devolutionDocument">Documento de Devolução</label>
-              <input type="file" class="form-control-file" id="devolutionDocument" name="document" required>
+              <label class="fileModal" for="devolutionDocument">Documento de Devolução Assinado</label>
+              <input type="file" class="d-none form-control-file" id="devolutionDocument" name="document" required>
             </div>
             <button type="submit" class="btn btn-primary">Salvar</button>
           </form>
@@ -323,12 +323,12 @@
               <input type="text" class="form-control" id="totalValue" readonly>
             </div>
             <div class="form-group">
-              <label for="additionalImages">Imagens</label>
-              <input type="file" class="form-control-file" id="additionalImages" name="evidence" multiple>
+              <label class="fileModal" for="additionalImages">Inserir Imagens</label>
+              <input type="file" class="d-none form-control-file" id="additionalImages" name="evidence" multiple>
             </div>
             <div class="form-group">
-              <label for="additionalDocument">Documento</label>
-              <input type="file" class="form-control-file" id="additionalDocument" name="document" required>
+              <label class="fileModal" for="additionalDocument">Documento de Retirada Assinado</label>
+              <input type="file" class="d-none form-control-file" id="additionalDocument" name="document" required>
             </div>
             <button type="submit" class="btn btn-primary">Salvar</button>
           </form>
