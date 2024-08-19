@@ -23,28 +23,29 @@
               </li>
               <li class="nav-item">
                 <a class="nav-link ${filterStatus === 'Em chamado' ? 'active' : ''}"
-                  href="/machines/views?status=Em chamado">Em chamado <span
+                  href="/machines/views?status=Em chamado">Chamado <span
                     class="badge badge-warning">${counts.pendingCount}</span></a>
               </li>
               <li class="nav-item">
                 <a class="nav-link ${filterStatus === 'Em Manutenção' ? 'active' : ''}"
-                  href="/machines/views?status=Em manutenção">Em
-                  Manutenção <span class="badge badge-danger">${counts.maintenanceCount}</span></a>
+                  href="/machines/views?status=Em manutenção">Manutenção <span
+                    class="badge badge-danger">${counts.maintenanceCount}</span></a>
               </li>
 
               <li class="nav-item">
                 <a class="nav-link ${filterStatus === 'Em estoque' ? 'active' : ''}"
-                  href="/machines/views?status=Em estoque">Em estoque <span
+                  href="/machines/views?status=Em estoque">Estoque <span
                     class="badge badge-brown">${counts.inStockCount}</span></a>
               </li>
               <li class="nav-item">
                 <a class="nav-link ${filterStatus === 'Em espera' ? 'active' : ''}"
-                  href="/machines/views?status=Em espera">Em espera <span
+                  href="/machines/views?status=Em espera">Espera <span
                     class="badge badge-primary">${counts.onHoldCount}</span></a>
               </li>
               <li class="nav-item">
-                <a class="nav-link ${filterStatus === 'Em Uso' ? 'active' : ''}" href="/machines/views?status=Em Uso">Em
-                  Uso <span class="badge badge-success">${counts.inUseCount}</span></a>
+                <a class="nav-link ${filterStatus === 'Em Uso' ? 'active' : ''}"
+                  href="/machines/views?status=Em Uso">Uso <span
+                    class="badge badge-success">${counts.inUseCount}</span></a>
               </li>
             </ul>
           </div>
@@ -186,10 +187,10 @@
             <div class="form-group">
               <label for="editDescription">Descrição</label>
               <textarea class="form-control" id="editDescription" name="description" rows="3"
-              style="height: 100px;"></textarea>
+                style="height: 100px;"></textarea>
             </div>
             <div class="form-group">
-              <label for="editImages">Imagens</label>
+              <label class="fileModal" for="editImages">Escolher Imagem </label>
               <input type="file" class="form-control-file" id="editImages" name="images" multiple>
             </div>
             <div id="editImagePreview" class="row md-3">

@@ -4436,6 +4436,19 @@ body:not(.sidebar-mini) .sidebar-style-2 .sidebar-menu li.active ul.dropdown-men
   }
 }
 
+.fileModal {
+  background-color: #4b8ef1;
+  border-radius: 0.5em;
+  color: white !important;
+  cursor: pointer;
+  font-family: arial;
+  padding: 0.5em 1em;
+}
+
+#editImages {
+  display: none;
+}
+
 @media (min-width: 481px) and (max-width: 549px) {
   .btn-filter {
     margin-inline-end: 0;
