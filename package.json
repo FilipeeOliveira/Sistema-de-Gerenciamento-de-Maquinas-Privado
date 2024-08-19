@@ -37,6 +37,7 @@
     "file-upload-with-preview": "^6.0.2",
     "flag-icon-css": "^3.2.1",
     "fullcalendar": "^3.10.0",
+    "geral": "file:",
     "gmaps": "^0.4.24",
     "ionicons201": "1.0.0",
     "izitoast": "^1.4.0",
