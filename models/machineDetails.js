@@ -2,6 +2,11 @@ const { DataTypes } = require('sequelize');
 const sequelize = require('../config/database');
 
 const MachineDetail = sequelize.define('MachineDetail', {
+    id: {
+        type: DataTypes.INTEGER,
+        autoIncrement: true,
+        primaryKey: true,
+    },
     description: {
         type: DataTypes.TEXT,
         allowNull: false,
@@ -37,7 +42,8 @@ const MachineDetail = sequelize.define('MachineDetail', {
         primaryKey: true,
     }
 }, {
-    tableName: 'MachineDetails'
+    tableName: 'MachineDetails',
+    timestamps: true
 });
 
 module.exports = MachineDetail;

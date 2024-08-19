@@ -103,13 +103,6 @@
                 <tbody>
                   ${machines.map(machine => `
                   <tr id="machine-row-${machine.id}">
-                    <!-- <td>
-                      <div class="custom-checkbox custom-control">
-                        <input type="checkbox" data-checkboxes="mygroup" class="custom-control-input"
-                          id="checkbox-${machine.id}" />
-                        <label for="checkbox-${machine.id}" class="custom-control-label">&nbsp;</label>
-                      </div>
-                    </td> -->
                     <td title="${machine.name}">${machine.name}
                       <div class="table-links">
                         <a href="#" title="Editar" data-toggle="modal" data-target="#editMachineModal"
@@ -259,7 +252,7 @@
     </div>
   </div>
 
-  <!-- Modal para Importar Documento de Devolução -->
+  <!-- Modal para Exporta Documento de Devolução -->
   <div class="modal fade" id="exportDevolutionModal" tabindex="-1" aria-labelledby="exportDevolutionModalLabel"
     aria-hidden="true">
     <div class="modal-dialog">

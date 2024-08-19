@@ -267,14 +267,8 @@ router.post('/export-devolution', upload.single('document'), async (req, res) =>
             return res.status(400).json({ message: 'ID da máquina é necessário.' });
         }
 
-        console.log('Caminho do documento de devolução:', document);
-
-        const machineDetail = await MachineDetail.findOne({ where: { machineId: id } });
-        if (!machineDetail) {
-            return res.status(404).json({ message: 'Detalhes da máquina não encontrados.' });
-        }
-
-        const updatedMachineDetail = await machineController.updateDevolutionDocument(id, document);
+        // Passar apenas o caminho do documento para a função de atualização
+        const updatedMachineDetail = await machineController.updateDevolutionDocument(document);
 
         console.log('Detalhes da máquina atualizados:', updatedMachineDetail);
 
@@ -284,6 +278,7 @@ router.post('/export-devolution', upload.single('document'), async (req, res) =>
         res.status(500).json({ message: 'Erro ao exportar documento de devolução.', error: error.message });
     }
 });
+
 
 // Rota para renderizar a página de logs
 router.get('/logs/:id', async (req, res) => {
