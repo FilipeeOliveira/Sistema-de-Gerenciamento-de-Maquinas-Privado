@@ -183,25 +183,25 @@
             <input type="hidden" id="machineStatus" value="Em Uso">
 
             <div class="form-group">
-              <label for="editStatus">Status</label>
-              <select class="form-control" id="editStatus" name="status" required>
-                <option value="Em Manutenção">Em Manutenção</option>
-                <option value="Em Uso">Em Uso</option>
-                <option value="Em chamado">Em chamado</option>
-                <option value="Em estoque">Em estoque</option>
-                <option value="Em espera">Em espera</option>
-              </select>
-            </div>
-            <div class="form-group">
               <label for="editDescription">Descrição</label>
               <textarea class="form-control" id="editDescription" name="description" rows="3"
-                style="height: 100px;"></textarea>
+              style="height: 100px;"></textarea>
             </div>
             <div class="form-group">
               <label for="editImages">Imagens</label>
               <input type="file" class="form-control-file" id="editImages" name="images" multiple>
             </div>
             <div id="editImagePreview" class="row md-3">
+              <div class="form-group">
+                <label for="editStatus">Status</label>
+                <select class="form-control" id="editStatus" name="status" required>
+                  <option value="Em Manutenção">Em Manutenção</option>
+                  <option value="Em Uso">Em Uso</option>
+                  <option value="Em chamado">Em chamado</option>
+                  <option value="Em estoque">Em estoque</option>
+                  <option value="Em espera">Em espera</option>
+                </select>
+              </div>
             </div>
             <button type="submit" class="btn btn-primary">Salvar Alterações</button>
           </form>
