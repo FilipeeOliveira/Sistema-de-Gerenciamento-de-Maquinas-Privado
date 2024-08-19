@@ -186,7 +186,7 @@
             </div>
             <div class="form-group">
               <label class="fileModal" for="editImages">Escolher Imagem</label>
-              <input type="file" class="form-control-file" id="editImages" name="images" multiple>
+              <input type="file" class="d-none form-control-file" id="editImages" name="images" multiple>
             </div>
             <div id="editImagePreview" class="row md-3"></div>
             <div class="form-group">
@@ -248,88 +248,90 @@
     </div>
   </div>
 
-  <!-- Modal para Exporta Documento de Devolução -->
-  <div class="modal fade" id="exportDevolutionModal" tabindex="-1" aria-labelledby="exportDevolutionModalLabel"
-    aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exportDevolutionModalLabel">Importar Documento de Devolução</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          <form id="exportDevolutionForm" enctype="multipart/form-data">
-            <input type="hidden" id="devolutionMachineId" name="id">
-            <div class="form-group">
-              <label for="devolutionDocument">Documento de Devolução</label>
-              <input type="file" class="form-control-file" id="devolutionDocument" name="document" required>
-            </div>
-            <button type="submit" class="btn btn-primary">Salvar</button>
-          </form>
-        </div>
+<!-- Modal para Importar Documento de Devolução -->
+<div class="modal fade" id="exportDevolutionModal" tabindex="-1" aria-labelledby="exportDevolutionModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exportDevolutionModalLabel">Importar Documento de Devolução</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form id="exportDevolutionForm" enctype="multipart/form-data">
+          <input type="hidden" id="devolutionMachineId" name="id">
+          <div class="form-group">
+            <label class="fileModal" for="devolutionDocument">Documento de Devolução Assinado</label>
+            <input type="file" class="d-none form-control-file" id="devolutionDocument" name="document" required>
+            <div id="devolutionDocumentPreview" class="mt-3"></div>
+          </div>
+          <button type="submit" class="btn btn-primary">Salvar</button>
+        </form>
       </div>
     </div>
   </div>
+</div>
 
 
 
-  <!-- Modal Das Peças -->
-  <div class="modal fade" id="additionalDetailsModal" tabindex="-1" aria-labelledby="additionalDetailsModalLabel"
-    aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="additionalDetailsModalLabel">Detalhes Adicionais</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          <form id="additionalDetailsForm" enctype="multipart/form-data">
-            <input type="hidden" id="machineId" name="id">
-            <div class="form-group">
-              <label for="additionalDescription">Descrição</label>
-              <textarea class="form-control" id="additionalDescription" name="description" rows="3" required></textarea>
-            </div>
-            <div class="form-group">
-              <label for="partsList">Peças</label>
-              <div id="partsList">
-                <div class="row mb-2">
-                  <div class="col-md-5">
-                    <input type="text" class="form-control" name="parts[]" placeholder="Peça" required>
-                  </div>
-                  <div class="col-md-3">
-                    <input type="number" class="form-control" name="quantity[]" placeholder="Quantidade" required>
-                  </div>
-                  <div class="col-md-3">
-                    <input type="number" class="form-control" name="value[]" placeholder="Valor" required>
-                  </div>
-                  <div class="col-md-1">
-                    <button type="button" class="btn btn-success btn-sm add-part"><i class="fas fa-plus"></i></button>
-                  </div>
+<!-- Modal Das Peças -->
+<div class="modal fade" id="additionalDetailsModal" tabindex="-1" aria-labelledby="additionalDetailsModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="additionalDetailsModalLabel">Detalhes Adicionais</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form id="additionalDetailsForm" enctype="multipart/form-data">
+          <input type="hidden" id="machineId" name="id">
+          <div class="form-group">
+            <label for="additionalDescription">Descrição</label>
+            <textarea class="form-control" id="additionalDescription" name="description" rows="3" required></textarea>
+          </div>
+          <div class="form-group">
+            <label for="partsList">Peças</label>
+            <div id="partsList">
+              <div class="row mb-2">
+                <div class="col-md-5">
+                  <input type="text" class="form-control" name="parts[]" placeholder="Peça" required>
+                </div>
+                <div class="col-md-3">
+                  <input type="number" class="form-control" name="quantity[]" placeholder="Quantidade" required>
+                </div>
+                <div class="col-md-3">
+                  <input type="number" class="form-control" name="value[]" placeholder="Valor" required>
+                </div>
+                <div class="col-md-1">
+                  <button type="button" class="btn btn-success btn-sm add-part"><i class="fas fa-plus"></i></button>
                 </div>
               </div>
             </div>
-            <div class="form-group">
-              <label>Valor Total das Peças</label>
-              <input type="text" class="form-control" id="totalValue" readonly>
-            </div>
-            <div class="form-group">
-              <label for="additionalImages">Imagens</label>
-              <input type="file" class="form-control-file" id="additionalImages" name="evidence" multiple>
-            </div>
-            <div class="form-group">
-              <label for="additionalDocument">Documento</label>
-              <input type="file" class="form-control-file" id="additionalDocument" name="document" required>
-            </div>
-            <button type="submit" class="btn btn-primary">Salvar</button>
-          </form>
-        </div>
+          </div>
+          <div class="form-group">
+            <label>Valor Total das Peças</label>
+            <input type="text" class="form-control" id="totalValue" readonly>
+          </div>
+          <div class="form-group">
+            <label class="fileModal" for="additionalImages">Inserir Imagens</label>
+            <input type="file" class="d-none form-control-file" id="additionalImages" name="evidence" multiple>
+            <div id="additionalImagePreview" class="row md-3"></div>
+          </div>
+          <div class="form-group">
+            <label class="fileModal" for="additionalDocument">Documento de Retirada Assinado</label>
+            <input type="file" class="d-none form-control-file" id="additionalDocument" name="document" required>
+            <div id="additionalDocumentPreview" class="mt-3"></div>
+          </div>
+          <button type="submit" class="btn btn-primary">Salvar</button>
+        </form>
       </div>
     </div>
   </div>
+</div>
+
   `;
   %>
 

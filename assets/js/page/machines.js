@@ -231,6 +231,18 @@ $(document).ready(function () {
     }
   });
 
+  // Pré-visualização do documento de devolução
+  $('#devolutionDocument').on('change', function () {
+    const file = this.files[0];
+    const previewContainer = $('#devolutionDocumentPreview');
+    previewContainer.empty();
+
+    if (file) {
+      const fileName = $('<p>').text(`Documento: ${file.name}`);
+      previewContainer.append(fileName);
+    }
+  });
+
   // Evento para quando o modal de exportação de documento for fechado
   $('#exportDevolutionModal').on('hidden.bs.modal', function () {
     // Verificar se o documento foi exportado
@@ -286,10 +298,11 @@ $(document).ready(function () {
   });
 });
 
-//MODAL DE PEÇAS "EM MANUTENCAO"
+
 $(document).ready(function () {
   console.log("Documento pronto.");
 
+  // Abre o modal com o status 'Em Manutenção'
   $('.status-badge').click(function () {
     const status = $(this).text().trim();
     console.log("Status clicado:", status);
@@ -301,6 +314,48 @@ $(document).ready(function () {
       $('#machineId').val(machineId);
 
       $('#additionalDetailsModal').modal('show');
+    }
+  });
+
+  // Pré-visualização de imagens adicionais
+  $('#additionalImages').on('change', function () {
+    const files = Array.from(this.files);
+    const previewContainer = $('#additionalImagePreview');
+    previewContainer.empty();
+
+    files.forEach((file, index) => {
+      if (file.type.startsWith('image/')) {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+          const colDiv = $('<div>').addClass('col-4 col-md-3 mb-3');
+          const img = $('<img>').attr('src', e.target.result).addClass('img-thumbnail');
+          const removeBtn = $('<button>').text('Remover').addClass('btn btn-sm btn-danger mt-2').click(function () {
+            colDiv.remove();
+            // Remove o arquivo da lista
+            const dt = new DataTransfer();
+            Array.from($('#additionalImages')[0].files).forEach((file, fileIndex) => {
+              if (fileIndex !== index) dt.items.add(file);
+            });
+            $('#additionalImages')[0].files = dt.files;
+          });
+
+          colDiv.append(img).append(removeBtn);
+          previewContainer.append(colDiv);
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+  });
+
+  // Pré-visualização do documento adicional
+  $('#additionalDocument').on('change', function () {
+    const file = this.files[0];
+    const previewContainer = $('#additionalDocumentPreview');
+    previewContainer.empty();
+
+    if (file) {
+      const fileName = $('<p>').text(`Documento: ${file.name}`);
+      previewContainer.append(fileName);
     }
   });
 
@@ -343,6 +398,7 @@ $(document).ready(function () {
     });
   });
 });
+
 
 
 
@@ -419,3 +475,8 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   });
 });
+
+
+
+
+

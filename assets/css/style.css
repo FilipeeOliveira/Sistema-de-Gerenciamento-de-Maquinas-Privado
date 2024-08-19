@@ -4445,10 +4445,6 @@ body:not(.sidebar-mini) .sidebar-style-2 .sidebar-menu li.active ul.dropdown-men
   padding: 0.5em 1em;
 }
 
-#editImages {
-  display: none;
-}
-
 @media (min-width: 481px) and (max-width: 549px) {
   .btn-filter {
     margin-inline-end: 0;
