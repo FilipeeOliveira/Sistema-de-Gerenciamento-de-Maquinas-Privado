@@ -29,6 +29,7 @@ $("[data-checkboxes]").each(function () {
 });
 
 let imagesToRemove = [];
+let editFilesToUpload = [];
 
 function editMachine(id, name, tags, client, status, description, images) {
   document.getElementById('editMachineId').value = id;
@@ -41,7 +42,7 @@ function editMachine(id, name, tags, client, status, description, images) {
   const imagePreviewContainer = document.getElementById('editImagePreview');
   imagePreviewContainer.innerHTML = '';
 
-  let imagesToRemove = [];
+  imagesToRemove = [];
 
   if (images) {
     images.split(',').forEach(imagePath => {
@@ -68,23 +69,64 @@ function editMachine(id, name, tags, client, status, description, images) {
     });
   }
 
-  document.getElementById('editMachineForm').onsubmit = async function (e) {
-    e.preventDefault();
-    const formData = new FormData();
-    formData.append('name', document.getElementById('editName').value);
-    formData.append('tags', document.getElementById('editTags').value);
-    formData.append('client', document.getElementById('editClient').value);
-    formData.append('status', document.getElementById('editStatus').value);
-    formData.append('description', document.getElementById('editDescription').value);
+  // Função de pré-visualização e remoção de novas imagens
+const editInputFileElement = document.getElementById('editImages');
+const editPreviewContainer = document.getElementById('editImagePreview');
+editInputFileElement.addEventListener('change', function (event) {
+  editFilesToUpload = Array.from(event.target.files);
+  editFilesToUpload.forEach((file, index) => {
+    if (file.type.startsWith('image/')) {
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        const colDiv = document.createElement('div');
+        colDiv.className = 'col-4 col-md-3 mb-3';
+        const img = document.createElement('img');
+        img.src = e.target.result;
+        img.className = "img-thumbnail";
 
-    formData.append('imagesToRemove', JSON.stringify(imagesToRemove));
+        const removeBtn = document.createElement('button');
+        removeBtn.textContent = 'Remover';
+        removeBtn.className = 'btn btn-sm btn-danger mt-2';
+        removeBtn.onclick = function () {
+          colDiv.remove();
+          editFilesToUpload.splice(index, 1); 
+          editInputFileElement.files = createFileList(editFilesToUpload); 
+        };
 
-    const imagesInput = document.getElementById('editImages');
-    if (imagesInput) {
-      for (let i = 0; i < imagesInput.files.length; i++) {
-        formData.append('images', imagesInput.files[i]);
+        colDiv.appendChild(img);
+        colDiv.appendChild(removeBtn);
+        editPreviewContainer.appendChild(colDiv);
       }
+      reader.readAsDataURL(file);
     }
+  });
+});
+
+
+function createFileList(files) {
+  const dataTransfer = new DataTransfer();
+  files.forEach(file => dataTransfer.items.add(file));
+  return dataTransfer.files;
+}
+
+
+document.getElementById('editMachineForm').onsubmit = async function (e) {
+  e.preventDefault();
+  const formData = new FormData();
+  formData.append('name', document.getElementById('editName').value);
+  formData.append('tags', document.getElementById('editTags').value);
+  formData.append('client', document.getElementById('editClient').value);
+  formData.append('status', document.getElementById('editStatus').value);
+  formData.append('description', document.getElementById('editDescription').value);
+
+  formData.append('imagesToRemove', JSON.stringify(imagesToRemove));
+
+  const imagesInput = document.getElementById('editImages');
+  if (imagesInput) {
+    for (let i = 0; i < imagesInput.files.length; i++) {
+      formData.append('images', imagesInput.files[i]);
+    }
+  }
 
     console.log('Dados do FormData:', Array.from(formData.entries()));
 
