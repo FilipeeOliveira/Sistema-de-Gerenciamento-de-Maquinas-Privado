@@ -321,26 +321,31 @@ $(document).ready(function () {
   $('#additionalImages').on('change', function () {
     const files = Array.from(this.files);
     const previewContainer = $('#additionalImagePreview');
-    previewContainer.empty();
-
+    const currentFiles = Array.from($('#additionalImagePreview img').map(function() {
+      return $(this).attr('src');
+    }));
+    
     files.forEach((file, index) => {
       if (file.type.startsWith('image/')) {
         const reader = new FileReader();
         reader.onload = function (e) {
-          const colDiv = $('<div>').addClass('col-4 col-md-3 mb-3');
-          const img = $('<img>').attr('src', e.target.result).addClass('img-thumbnail');
-          const removeBtn = $('<button>').text('Remover').addClass('btn btn-sm btn-danger mt-2').click(function () {
-            colDiv.remove();
-            // Remove o arquivo da lista
-            const dt = new DataTransfer();
-            Array.from($('#additionalImages')[0].files).forEach((file, fileIndex) => {
-              if (fileIndex !== index) dt.items.add(file);
+          // Adiciona apenas se não estiver já no preview
+          if (!currentFiles.includes(e.target.result)) {
+            const colDiv = $('<div>').addClass('col-4 col-md-3 mb-3');
+            const img = $('<img>').attr('src', e.target.result).addClass('img-thumbnail');
+            const removeBtn = $('<button>').text('Remover').addClass('btn btn-sm btn-danger mt-2').click(function () {
+              colDiv.remove();
+              // Remove o arquivo da lista
+              const dt = new DataTransfer();
+              Array.from($('#additionalImages')[0].files).forEach((file, fileIndex) => {
+                if (fileIndex !== index) dt.items.add(file);
+              });
+              $('#additionalImages')[0].files = dt.files;
             });
-            $('#additionalImages')[0].files = dt.files;
-          });
 
-          colDiv.append(img).append(removeBtn);
-          previewContainer.append(colDiv);
+            colDiv.append(img).append(removeBtn);
+            previewContainer.append(colDiv);
+          }
         };
         reader.readAsDataURL(file);
       }
@@ -389,6 +394,14 @@ $(document).ready(function () {
       processData: false,
       success: function (response) {
         console.log('Detalhes adicionais atualizados com sucesso.', response);
+        
+        // Limpa os campos do formulário
+        $('#additionalDetailsForm')[0].reset();
+        
+        // Limpa as pré-visualizações de imagens e documentos
+        $('#additionalImagePreview').empty();
+        $('#additionalDocumentPreview').empty();
+
         $('#additionalDetailsModal').modal('hide');
       },
       error: function (xhr, status, error) {
@@ -397,9 +410,17 @@ $(document).ready(function () {
       }
     });
   });
+
+  // Evento de fechamento do modal
+  $('#additionalDetailsModal').on('hidden.bs.modal', function () {
+    // Limpa os campos do formulário
+    $('#additionalDetailsForm')[0].reset();
+    
+    // Limpa as pré-visualizações de imagens e documentos
+    $('#additionalImagePreview').empty();
+    $('#additionalDocumentPreview').empty();
+  });
 });
-
-
 
 
 function calculateTotalValue() {
