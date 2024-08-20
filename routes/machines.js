@@ -316,5 +316,42 @@ router.get('/logs/:id', async (req, res) => {
     }
 });
 
+// Rota para renderizar a tabela de documentos com filtragem
+router.get('/documents/:id', async (req, res) => {
+    try {
+        const machineId = req.params.id;
+        const { startDate, endDate } = req.query;
+
+        const whereClause = { machineId };
+
+        if (startDate && endDate) {
+            whereClause.createdAt = {
+                [Op.between]: [
+                    new Date(`${startDate}T00:00:00`),
+                    new Date(`${endDate}T23:59:59`)
+                ]
+            };
+        }
+
+        const documents = await MachineDetail.findAll({
+            where: whereClause,
+            order: [['createdAt', 'DESC']]
+        });
+
+        res.render('pages/tableDocuments', {
+            machineId,
+            documents,
+            title: 'Tabela de Documentos',
+            site_name: 'Geral - Conservação e Limpeza',
+            year: new Date().getFullYear(),
+            version: '1.0'
+        });
+    } catch (err) {
+        console.error('Erro ao buscar documentos:', err);
+        res.status(500).send('Erro ao buscar documentos');
+    }
+});
+
+
 module.exports = router;
 
