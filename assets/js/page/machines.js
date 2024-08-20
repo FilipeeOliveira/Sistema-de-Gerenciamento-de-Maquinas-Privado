@@ -245,6 +245,9 @@ $(document).ready(function () {
 
   // Evento para quando o modal de exportação de documento for fechado
   $('#exportDevolutionModal').on('hidden.bs.modal', function () {
+    $('#devolutionDocument').val('');
+    $('#devolutionDocumentPreview').empty();
+
     // Verificar se o documento foi exportado
     if (!$('#devolutionDocument').val()) {
       console.log('Documento não exportado. Revertendo para o status anterior:', previousStatus);
@@ -297,6 +300,7 @@ $(document).ready(function () {
     }
   });
 });
+
 
 
 $(document).ready(function () {
