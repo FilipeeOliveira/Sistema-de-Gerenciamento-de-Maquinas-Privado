@@ -276,7 +276,7 @@ exports.generateOtherDocument = async (machine) => {
         const data = {
             client: machine.client,
             tags: machine.tags,
-            description: machine.description
+            description: machine.name
         };
 
         const templatePath = path.join(__dirname, '../docs/ModeloParaAssinaturaDev.docx');

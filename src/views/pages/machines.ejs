@@ -95,17 +95,17 @@
                         <label for="checkbox-all" class="custom-control-label"></label>
                       </div>
                     </th> -->
-                    <th>Nome</th>
-                    <th>Etiqueta</th>
-                    <th>Cliente</th>
-                    <th>Cadastrado em</th>
-                    <th>Status</th>
+                    <th class="border-5 border-bottom">Nome</th>
+                    <th class="border-5 border-bottom">Etiqueta</th>
+                    <th class="border-5 border-bottom">Cliente</th>
+                    <th class="border-5 border-bottom">Cadastrado em</th>
+                    <th class="border-5 border-bottom">Status</th>
                   </tr>
                 </thead>
                 <tbody>
                   ${machines.map(machine => `
                   <tr id="machine-row-${machine.id}">
-                    <td title="${machine.name}">${machine.name}
+                    <td class="border-5 border-bottom" title="${machine.name}">${machine.name}
                       <div class="table-links">
                         <a href="#" title="Editar" data-toggle="modal" data-target="#editMachineModal"
                           onclick="editMachine('${machine.id}', '${machine.name}', '${machine.tags}', '${machine.client}', '${machine.status}', '${machine.description}', '${machine.images}')">
@@ -119,16 +119,16 @@
                         </a>
                       </div>
                     </td>
-                    <td>${machine.tags}</td>
-                    <td>
+                    <td class="border-5 border-bottom">${machine.tags}</td>
+                    <td class="border-5 border-bottom">
                       <a href="#">
                         <img alt="image" src="../../assets/img/avatar/avatar-5.png" class="rounded-circle" width="35"
                           data-toggle="title" title="" />
                         <div class="d-inline-block ml-1">${machine.client}</div>
                       </a>
                     </td>
-                    <td>${new Date(machine.createdAt).toLocaleDateString()}</td>
-                    <td>
+                    <td class="border-5 border-bottom">${new Date(machine.createdAt).toLocaleDateString()}</td>
+                    <td class="border-5 border-bottom">
                       <div class="badge status-badge" data-machine-id="${machine.id}">${machine.status}</div>
                     </td>
                   </tr>
