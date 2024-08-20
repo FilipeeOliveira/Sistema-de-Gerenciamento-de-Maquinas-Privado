@@ -267,8 +267,7 @@ router.post('/export-devolution', upload.single('document'), async (req, res) =>
             return res.status(400).json({ message: 'ID da máquina é necessário.' });
         }
 
-        // Passar apenas o caminho do documento para a função de atualização
-        const updatedMachineDetail = await machineController.updateDevolutionDocument(document);
+        const updatedMachineDetail = await machineController.updateDevolutionDocument(id, document);
 
         console.log('Detalhes da máquina atualizados:', updatedMachineDetail);
 
@@ -278,6 +277,8 @@ router.post('/export-devolution', upload.single('document'), async (req, res) =>
         res.status(500).json({ message: 'Erro ao exportar documento de devolução.', error: error.message });
     }
 });
+
+
 
 
 // Rota para renderizar a página de logs

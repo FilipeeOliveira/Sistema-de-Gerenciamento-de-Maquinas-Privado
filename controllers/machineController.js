@@ -395,17 +395,19 @@ exports.updateAdditionalDetails = async (id, description, parts, quantity, value
     }
 };
 
-exports.updateDevolutionDocument = async (document) => {
+exports.updateDevolutionDocument = async (machineId, document) => {
     try {
-        // Encontrar o último registro na tabela MachineDetails
         const machineDetail = await MachineDetail.findOne({
+            where: {
+                machineId: machineId,
+                docDevolution: null
+            },
             order: [['id', 'DESC']]
         });
 
         if (!machineDetail) {
-            throw new Error('Nenhum detalhe de máquina encontrado.');
+            throw new Error(`Nenhum detalhe de máquina encontrado para o ID da máquina: ${machineId} sem documento de devolução.`);
         }
-
 
         if (typeof document !== 'string' || document.trim() === '') {
             throw new Error('Caminho do documento de devolução inválido.');
@@ -420,7 +422,9 @@ exports.updateDevolutionDocument = async (document) => {
         throw error;
     }
 };
-;
+
+
+
 
 
 exports.getMachineLogsPage = async (req, res) => {

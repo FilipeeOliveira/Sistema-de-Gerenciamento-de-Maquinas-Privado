@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   console.log('Formulário encontrado.');
 
-  dateFilterForm.addEventListener('submit', function(event) {
+  dateFilterForm.addEventListener('submit', function (event) {
     const startDateInput = document.getElementById('startDate')?.value;
     const endDateInput = document.getElementById('endDate')?.value;
 
@@ -23,7 +23,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Verifica se as datas são válidas
     const startDate = new Date(startDateInput);
     const endDate = new Date(endDateInput);
-    
+
     if (isNaN(startDate.getTime()) || isNaN(endDate.getTime())) {
       console.error('Datas fornecidas são inválidas.');
       event.preventDefault();
