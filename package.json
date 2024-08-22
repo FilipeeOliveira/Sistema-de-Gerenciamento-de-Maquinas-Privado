@@ -4,7 +4,7 @@
   "description": "Geral - Free Bootstrap Admin Template",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon app.js",
+    "start": "node app.js",
     "criar-usuarios": "node scripts/criarUsuario.js"
   },
   "license": "MIT",
