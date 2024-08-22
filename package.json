@@ -24,6 +24,7 @@
     "cleave.js": "^1.4.7",
     "codemirror": "^5.43.0",
     "connect-session-sequelize": "^7.1.7",
+    "cors": "^2.8.5",
     "datatables": "^1.10.18",
     "datatables.net-responsive-bs4": "^2.2.3",
     "datatables.net-select-bs4": "^1.2.7",
