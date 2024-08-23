@@ -14,7 +14,7 @@ const db = {};
 
 const User = require('./User');
 
-const MachineDetail = require('./MachineDetail');
+const MachineDetail = require('./machineDetails');
 
 MachineDetail.sync({ alter: true })
   .then(() => console.log('Tabela sincronizada com sucesso.'))
