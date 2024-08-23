@@ -39,28 +39,37 @@
                         <tbody>
                             ${documents.length > 0 ? documents.map(document => `
                             <tr>
-                                <td class="border-5 border-bottom text-center">${new Date(document.createdAt).toLocaleDateString()}</td>
+                                <td class="border-5 border-bottom text-center">${new
+                                    Date(document.createdAt).toLocaleDateString()}</td>
                                 <td class="border-5 border-bottom text-center">
-                                    ${document.documents ? `<a href="/machines/documents/${document.documents}" download>Download</a>` : 'Nenhum documento'}
+                                    ${document.documents ? `<a href="/machines/documents/${document.documents}"
+                                        download>Download</a>` : 'Nenhum documento'}
                                 </td>
                                 <td class="border-5 border-bottom text-center text-truncate" style="max-width: 150px;">
-                                    ${document.docOrder ? `<a href="/${document.docOrder}" download>Download</a>` : 'Nenhum documento disponível'}
+                                    ${document.docOrder ? `<a href="/${document.docOrder}" download>Download</a>` :
+                                    'Nenhum documento disponível'}
                                 </td>
                                 <td class="border-5 border-bottom text-center" style="max-width: 200px;">
-                                    ${document.images && document.images.length > 0 ? `<a href="javascript:void(0);" class="view-image" data-images="${document.images.join(',')}">Ver Imagem</a>` : 'Nenhuma imagem'}
+                                    ${document.images && document.images.length > 0 ? `<a href="javascript:void(0);"
+                                        class="view-image" data-images="${document.images.join(',')}">Ver Imagem</a>` :
+                                    'Nenhuma imagem'}
                                 </td>
                                 <td class="border-5 border-bottom text-center">
-                                    ${document.docDevolution ? `<a href="${document.docDevolution}" download>Download</a>` : 'Nenhum documento de devolução'}
+                                    ${document.docDevolution ? `<a href="${document.docDevolution}"
+                                        download>Download</a>` : 'Nenhum documento de devolução'}
                                 </td>
                             </tr>
-                            `).join('') : `<tr><td colspan="5" class="border-5 border-bottom text-center">Nenhum documento encontrado</td></tr>`}
+                            `).join('') : `<tr>
+                                <td colspan="5" class="border-5 border-bottom text-center">Nenhum documento encontrado
+                                </td>
+                            </tr>`}
                         </tbody>
                     </table>
                 </div>
             </div>
         </div>
     </div>
-</section>
+    </section>
 
 
     <!-- Modal para Exibição de Imagens -->
@@ -107,7 +116,6 @@
 
     const additionalScripts = `
     <script src="../../../node_modules/selectric/public/jquery.selectric.min.js"></script>
-    <script src="../../../assets/js/page/tableDocuments.js"></script>
     <script src="../../../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="../../../assets/js/page/tableDocuments.js"></script>
 
