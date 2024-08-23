@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const MachineLog = require('../models/logMachine');
+const LogMachine = require('../models/logMachine');
 const { Op } = require('sequelize');
 
 router.get('/logs/:id', async (req, res) => {
@@ -19,7 +19,7 @@ router.get('/logs/:id', async (req, res) => {
             };
         }
 
-        const logs = await MachineLog.findAll({
+        const logs = await LogMachine.findAll({
             where: whereClause,
             order: [['changeDate', 'DESC']]
         });
@@ -37,3 +37,5 @@ router.get('/logs/:id', async (req, res) => {
         res.status(500).send('Erro ao buscar logs de máquinas');
     }
 });
+
+module.exports = router;
