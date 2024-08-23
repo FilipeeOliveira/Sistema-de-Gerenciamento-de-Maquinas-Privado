@@ -7,9 +7,7 @@ const path = require('path');
 const session = require('express-session');
 const SequelizeStore = require('connect-session-sequelize')(session.Store);
 const authRoutes = require('./routes/auth');
-// const fs = require('fs');
-// const PizZip = require('pizzip');
-// const Docxtemplater = require('docxtemplater');
+
 
 const app = express();
 
