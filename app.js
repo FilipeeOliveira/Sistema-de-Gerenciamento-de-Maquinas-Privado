@@ -8,7 +8,6 @@ const session = require('express-session');
 const SequelizeStore = require('connect-session-sequelize')(session.Store);
 const authRoutes = require('./routes/auth');
 
-
 const app = express();
 
 // Middleware
@@ -20,9 +19,12 @@ app.use('/evidence', express.static(path.join(__dirname, 'public/evidence')));
 app.use('/machines/documents', express.static(path.join(__dirname, 'public/documents')));
 app.use('/documents', express.static(path.join(__dirname, 'public/documents')));
 app.use('/node_modules', express.static(path.join(__dirname, 'node_modules')));
-app.set('views', path.join(__dirname, 'src/views'));
 app.use('/uploads', express.static(path.join(__dirname, 'public/uploads')));
+app.set('views', path.join(__dirname, 'src/views'));
 app.set('view engine', 'ejs');
+
+// CORS 
+app.use(cors());
 
 app.use(session({
     secret: ':33ob/%~56BR',
@@ -59,7 +61,7 @@ app.use('/profile', require('./routes/profile'));
 app.use('/machine', require('./routes/machine-create'));
 app.use('/machines', require('./routes/machines'));
 app.use('/table', require('./routes/documentsTable'));
-
+app.use('/mechanism', require('./routes/machineLog'));
 
 sequelize.sync()
     .then(() => {
@@ -69,6 +71,7 @@ sequelize.sync()
         console.error('Erro ao sincronizar com o banco de dados:', error);
     });
 
-app.listen(3000, () => {
-    console.log('Servidor está rodando na porta 3000');
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+    console.log(`Servidor está rodando na porta ${PORT}`);
 });

@@ -5,7 +5,7 @@ const path = require('path');
 const PizZip = require('pizzip');
 const Docxtemplater = require('docxtemplater');
 const { Op } = require('sequelize');
-const MachineLog = require('../models/MachineLog');
+const LogMachine = require('../models/logMachine');
 
 exports.getDocumentsByMachineId = async (machineId) => {
     try {
@@ -109,7 +109,7 @@ exports.deleteMachine = async (id) => {
                 });
             }
 
-            await MachineLog.destroy({ where: { machineId: id } });
+            await LogMachine.destroy({ where: { machineId: id } });
             console.log(`Logs da máquina com ID ${id} removidos.`);
 
             if (machineDetails.length > 0) {
@@ -197,7 +197,7 @@ exports.updateMachine = async (id, updatedData, files, imagesToRemove) => {
         const newStatus = updatedData.status;
 
         if (previousStatus !== newStatus) {
-            await MachineLog.create({
+            await LogMachine.create({
                 machineId: id,
                 previousStatus: previousStatus,
                 newStatus: newStatus,
@@ -427,37 +427,37 @@ exports.updateDevolutionDocument = async (machineId, document) => {
 
 
 
-exports.getMachineLogsPage = async (req, res) => {
-    try {
-        const machineId = req.params.id;
-        const { startDate, endDate } = req.query;
+// exports.getMachineLogsPage = async (req, res) => {
+//     try {
+//         const machineId = req.params.id;
+//         const { startDate, endDate } = req.query;
 
-        const whereClause = { machineId };
+//         const whereClause = { machineId };
 
-        if (startDate && endDate) {
-            whereClause.changeDate = {
-                [Op.between]: [new Date(startDate), new Date(new Date(endDate).setHours(23, 59, 59, 999))]
-            };
-        }
+//         if (startDate && endDate) {
+//             whereClause.changeDate = {
+//                 [Op.between]: [new Date(startDate), new Date(new Date(endDate).setHours(23, 59, 59, 999))]
+//             };
+//         }
 
-        const logs = await MachineLog.findAll({
-            where: whereClause,
-            order: [['changeDate', 'DESC']]
-        });
+//         const logs = await LogMachine.findAll({
+//             where: whereClause,
+//             order: [['changeDate', 'DESC']]
+//         });
 
-        res.render('pages/machinesLog', {
-            machineId,
-            logs,
-            title: 'Logs de Máquinas',
-            site_name: 'Geral - Conservação e Limpeza',
-            year: new Date().getFullYear(),
-            version: '1.0'
-        });
-    } catch (err) {
-        console.error('Erro ao obter logs da máquina:', err);
-        res.status(500).send('Erro ao obter logs da máquina');
-    }
-};
+//         res.render('pages/machinesLog', {
+//             machineId,
+//             logs,
+//             title: 'Logs de Máquinas',
+//             site_name: 'Geral - Conservação e Limpeza',
+//             year: new Date().getFullYear(),
+//             version: '1.0'
+//         });
+//     } catch (err) {
+//         console.error('Erro ao obter logs da máquina:', err);
+//         res.status(500).send('Erro ao obter logs da máquina');
+//     }
+// };
 
 //filtro para renderizar a tabela de documentos com filtragem
 /* exports.getMachineDocuments = async (req, res) => {
