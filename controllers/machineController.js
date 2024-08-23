@@ -5,7 +5,7 @@ const path = require('path');
 const PizZip = require('pizzip');
 const Docxtemplater = require('docxtemplater');
 const { Op } = require('sequelize');
-const MachineLog = require('../models/logMachine');
+const LogMachine = require('../models/logMachine');
 
 exports.getDocumentsByMachineId = async (machineId) => {
     try {
@@ -109,7 +109,7 @@ exports.deleteMachine = async (id) => {
                 });
             }
 
-            await MachineLog.destroy({ where: { machineId: id } });
+            await LogMachine.destroy({ where: { machineId: id } });
             console.log(`Logs da máquina com ID ${id} removidos.`);
 
             if (machineDetails.length > 0) {
@@ -197,7 +197,7 @@ exports.updateMachine = async (id, updatedData, files, imagesToRemove) => {
         const newStatus = updatedData.status;
 
         if (previousStatus !== newStatus) {
-            await MachineLog.create({
+            await LogMachine.create({
                 machineId: id,
                 previousStatus: previousStatus,
                 newStatus: newStatus,
@@ -440,7 +440,7 @@ exports.getMachineLogsPage = async (req, res) => {
             };
         }
 
-        const logs = await MachineLog.findAll({
+        const logs = await LogMachine.findAll({
             where: whereClause,
             order: [['changeDate', 'DESC']]
         });

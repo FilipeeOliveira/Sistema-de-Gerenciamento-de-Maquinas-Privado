@@ -1,6 +1,6 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../config/database');
-const MachineLog = require('./logMachine.js');
+const LogMachine = require('./logMachine.js');
 
 const Machine = sequelize.define('Machine', {
     name: {
@@ -54,12 +54,12 @@ const Machine = sequelize.define('Machine', {
     timestamps: true
 });
 
-Machine.hasMany(MachineLog, {
+Machine.hasMany(LogMachine, {
     foreignKey: 'machineId',
     onDelete: 'CASCADE',
 });
 
-MachineLog.belongsTo(Machine, {
+LogMachine.belongsTo(Machine, {
     foreignKey: 'machineId',
     onDelete: 'CASCADE',
 });
