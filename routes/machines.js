@@ -1,11 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const machineController = require('../controllers/machineController');
-const Machine = require('../models/machine');
 const multer = require('multer');
-const fs = require('fs');
 const path = require('path');
-const MachineLog = require('../models/MachineLog');
 const { Op } = require('sequelize');
 const MachineDetail = require('../models/machineDetails');
 
