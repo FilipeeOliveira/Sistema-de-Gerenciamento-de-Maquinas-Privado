@@ -61,7 +61,7 @@ app.use('/profile', require('./routes/profile'));
 app.use('/machine', require('./routes/machine-create'));
 app.use('/machines', require('./routes/machines'));
 app.use('/table', require('./routes/documentsTable'));
-app.use('/table', require('./routes/machineLog'));
+app.use('/mechanism', require('./routes/machineLog'));
 
 sequelize.sync()
     .then(() => {
