@@ -1,6 +1,6 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../config/database');
-const MachineLog = require('./MachineLog.js');
+const MachineLog = require('./MachineLog');
 
 const Machine = sequelize.define('Machine', {
     name: {
