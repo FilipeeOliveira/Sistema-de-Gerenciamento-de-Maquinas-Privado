@@ -5,7 +5,7 @@ const path = require('path');
 const PizZip = require('pizzip');
 const Docxtemplater = require('docxtemplater');
 const { Op } = require('sequelize');
-const MachineLog = require('../models/MachineLog');
+const MachineLog = require('../models/logMachine');
 
 exports.getDocumentsByMachineId = async (machineId) => {
     try {

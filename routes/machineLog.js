@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const MachineLog = require('../models/MachineLog');
+const MachineLog = require('../models/logMachine');
 const { Op } = require('sequelize');
 
 router.get('/logs/:id', async (req, res) => {
