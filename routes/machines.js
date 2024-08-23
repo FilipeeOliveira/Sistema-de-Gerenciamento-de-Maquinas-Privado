@@ -275,11 +275,6 @@ router.post('/export-devolution', upload.single('document'), async (req, res) =>
     }
 });
 
-
-
-
-
-
 // Rota para renderizar a tabela de documentos com filtragem
 router.get('/documents/:id', async (req, res) => {
     try {
