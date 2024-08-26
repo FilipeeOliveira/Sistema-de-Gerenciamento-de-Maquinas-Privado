@@ -276,6 +276,35 @@
     </div>
   </div>
 
+<!-- Modal para Importar Documento de Manutenção -->
+<div class="modal fade" id="maintenanceDocumentModal" tabindex="-1" aria-labelledby="maintenanceDocumentModalLabel"
+    aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="maintenanceDocumentModalLabel">Importar Documento de Manutenção</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form id="maintenanceDocumentForm" enctype="multipart/form-data">
+          <input type="hidden" id="maintenanceMachineId" name="id">
+          <div class="form-group">
+            <label class="fileModal" for="maintenanceDocument">Documento de Manutenção</label>
+            <input type="file" class="d-none form-control-file" id="maintenanceDocument" name="document" required>
+            <div id="maintenanceDocumentPreview" class="mt-3"></div>
+          </div>
+          <button type="submit" class="btn btn-primary">Salvar</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
 
 
   <!-- Modal Das Peças -->

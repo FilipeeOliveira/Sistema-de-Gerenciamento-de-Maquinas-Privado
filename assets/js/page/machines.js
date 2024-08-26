@@ -211,10 +211,11 @@ document.getElementById('editMachineForm').onsubmit = async function (e) {
   }
 }
 
+//Modal em uso
 $(document).ready(function () {
   console.log("Documento pronto.");
 
-  let previousStatus = $('#editStatus').val(); // Salva o status anterior
+  let previousStatus = $('#editStatus').val(); 
 
   // Evento de mudança no status do modal de edição
   $('#editStatus').change(function () {
@@ -276,7 +277,7 @@ $(document).ready(function () {
         // Atualizar o status anterior para "Em Uso"
         previousStatus = 'Em Uso';
 
-        // Prosseguir com a submissão do formulário de edição
+        
         $('#editMachineForm').submit();
       },
       error: function (xhr, status, error) {
@@ -286,7 +287,7 @@ $(document).ready(function () {
     });
   });
 
-  // Salvar o status anterior sempre que o modal de edição for aberto
+  
   $('#editMachineModal').on('show.bs.modal', function () {
     previousStatus = $('#editStatus').val();
   });
