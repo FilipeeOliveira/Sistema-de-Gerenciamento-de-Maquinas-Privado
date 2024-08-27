@@ -252,6 +252,34 @@ router.post('/update-details', upload.fields([
     }
 });
 
+router.post('/upload-maintenance-document', upload.single('document'), async (req, res) => {
+    console.log('Arquivo recebido:', req.file);
+
+    try {
+        const { id } = req.body;
+        const file = req.file;
+
+        // Verifica se o arquivo foi recebido corretamente
+        if (!file) {
+            return res.status(400).json({ message: 'Nenhum documento foi enviado' });
+        }
+
+        const documentPath = `/documents/${file.filename}`;
+        console.log('Caminho do documento:', documentPath);
+
+        // Use a função do controller para salvar o documento de manutenção
+        const newMachineDetail = await machineController.uploadMaintenanceDocument(id, documentPath);
+
+        res.status(200).json({
+            message: 'Documento de manutenção enviado com sucesso.',
+            machineDetail: newMachineDetail
+        });
+    } catch (error) {
+        console.error('Erro ao enviar documento de manutenção:', error);
+        res.status(500).json({ message: 'Erro ao enviar documento de manutenção.', error: error.message });
+    }
+});
+
 router.post('/export-devolution', upload.single('document'), async (req, res) => {
     console.log('Arquivo de devolução recebido:', req.file);
     console.log('ID da máquina recebido:', req.body.id);

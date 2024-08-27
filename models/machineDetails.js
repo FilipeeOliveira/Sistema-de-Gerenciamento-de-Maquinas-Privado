@@ -9,11 +9,11 @@ const MachineDetail = sequelize.define('MachineDetail', {
     },
     description: {
         type: DataTypes.TEXT,
-        allowNull: false,
+        allowNull: true,
     },
     parts: {
         type: DataTypes.JSON,
-        allowNull: false,
+        allowNull: true,
     },
     images: {
         type: DataTypes.JSON,

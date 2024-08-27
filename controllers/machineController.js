@@ -395,6 +395,45 @@ exports.updateAdditionalDetails = async (id, description, parts, quantity, value
     }
 };
 
+exports.uploadMaintenanceDocument = async (id, document) => {
+    try {
+        if (!id) {
+            throw new Error('ID da máquina não fornecido.');
+        }
+
+        const machineExists = await Machine.findByPk(id);
+        if (!machineExists) {
+            throw new Error('Máquina não encontrada.');
+        }
+
+        const adjustedDocument = document.startsWith('/documents/')
+            ? document
+            : `/documents/${path.basename(document)}`;
+
+        console.log('Caminho ajustado do documento de manutenção:', adjustedDocument);
+
+        const documentPath = path.join(__dirname, '../public', adjustedDocument);
+        if (!fs.existsSync(documentPath)) {
+            throw new Error('Documento não encontrado no servidor.');
+        }
+
+        const newMachineDetail = await MachineDetail.create({
+            machineId: id,
+            docDevolution: adjustedDocument,
+            description: null,
+            parts: null,
+            images: null,
+            totalValue: 0,
+            docOrder: null,
+        });
+
+        return newMachineDetail;
+    } catch (error) {
+        console.error('Erro ao enviar o documento de manutenção:', error);
+        throw error;
+    }
+};
+
 exports.updateDevolutionDocument = async (machineId, document) => {
     try {
         const machineDetail = await MachineDetail.findOne({

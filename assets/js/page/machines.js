@@ -472,6 +472,75 @@ $(document).ready(function () {
 });
 
 
+$(document).ready(function () {
+  console.log("Documento pronto.");
+
+  // Manipulação do status para exibir o modal
+  $('#editStatus').change(function () {
+    const selectedStatus = $(this).val();
+    console.log("Status selecionado:", selectedStatus);
+
+    if (selectedStatus === 'Em Manutenção') {
+      const machineId = $('#editMachineId').val();
+      console.log("ID da máquina:", machineId);
+      
+      $('#maintenanceMachineId').val(machineId);
+      $('#maintenanceDocumentModal').modal('show');
+    }
+  });
+
+  // Visualização do documento selecionado
+  $('#maintenanceDocument').on('change', function () {
+    const file = this.files[0];
+    const previewContainer = $('#maintenanceDocumentPreview');
+    previewContainer.empty();
+
+    if (file) {
+      const fileName = $('<p>').text(`Documento: ${file.name}`);
+      previewContainer.append(fileName);
+    }
+  });
+
+  // Limpeza do modal ao fechar
+  $('#maintenanceDocumentModal').on('hidden.bs.modal', function () {
+    $('#maintenanceDocument').val('');
+    $('#maintenanceDocumentPreview').empty();
+  });
+
+  // Envio do formulário via AJAX
+  $('#maintenanceDocumentForm').on('submit', function(e) {
+    e.preventDefault();
+    
+    const formData = new FormData(this);
+    console.log('Dados do formulário de documento de manutenção:');
+    for (let [key, value] of formData.entries()) {
+      if (value instanceof File) {
+        console.log(`${key}: ${value.name}`);
+      } else {
+        console.log(`${key}: ${value}`);
+      }
+    }
+
+    $.ajax({
+        url: '/machines/upload-maintenance-document',
+        type: 'POST',
+        data: formData,
+        processData: false,
+        contentType: false,
+        success: function(response) {
+            console.log('Resposta do servidor:', response.message);
+            alert(response.message);
+            $('#maintenanceDocumentModal').modal('hide');
+        },
+        error: function(err) {
+            console.error('Erro ao enviar o documento:', err);
+            alert('Erro ao enviar o documento.');
+        }
+    });
+  });
+
+});
+
 
 document.addEventListener('DOMContentLoaded', function () {
   const badges = document.querySelectorAll('.status-badge');
