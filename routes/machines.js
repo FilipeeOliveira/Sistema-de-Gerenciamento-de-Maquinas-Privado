@@ -212,6 +212,7 @@ router.get('/generateDocument/:id', async (req, res) => {
     }
 });
 
+//rota do modal de peças
 router.post('/update-details', upload.fields([
     { name: 'evidence', maxCount: 10 },
     { name: 'document', maxCount: 1 }
@@ -252,6 +253,7 @@ router.post('/update-details', upload.fields([
     }
 });
 
+//rota de modal de documento de manutecao
 router.post('/upload-maintenance-document', upload.single('document'), async (req, res) => {
     console.log('Arquivo recebido:', req.file);
 

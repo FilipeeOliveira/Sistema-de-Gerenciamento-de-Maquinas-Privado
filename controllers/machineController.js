@@ -347,6 +347,7 @@ exports.generateOrderDocument = async (id, description, parts, quantity, value, 
     }
 };
 
+//controller do modal de peças
 exports.updateAdditionalDetails = async (id, description, parts, quantity, value, images, document, totalValue, docOrder) => {
     try {
         if (!Array.isArray(parts) || !Array.isArray(quantity) || !Array.isArray(value)) {
@@ -374,27 +375,41 @@ exports.updateAdditionalDetails = async (id, description, parts, quantity, value
         console.log('Caminho ajustado do documento:', adjustedDocument);
         console.log('Caminho do documento de ordem de serviço:', docOrder);
 
-        const [machineDetail, created] = await MachineDetail.upsert({
-            description,
-            parts: parts.map((part, index) => ({
-                name: part,
-                quantity: quantity[index],
-                value: value[index]
-            })),
-            images: adjustedImages,
-            documents: adjustedDocument,
-            totalValue: parseFloat(totalValue) || 0,
-            machineId: id,
-            docOrder
+        // Buscar o registro mais recente para o machineId
+        const existingDetail = await MachineDetail.findOne({
+            where: { machineId: id },
+            order: [['createdAt', 'DESC']] // Buscar pela linha mais recente
         });
 
-        return machineDetail;
+        if (!existingDetail) {
+            throw new Error('Nenhum registro de manutenção encontrado para essa máquina.');
+        }
+
+        // Atualizar o registro mais recente com os novos detalhes
+        existingDetail.description = description;
+        existingDetail.parts = parts.map((part, index) => ({
+            name: part,
+            quantity: quantity[index],
+            value: value[index]
+        }));
+        existingDetail.images = adjustedImages;
+        if (adjustedDocument) {
+            existingDetail.documents = adjustedDocument;
+        }
+        existingDetail.totalValue = parseFloat(totalValue) || 0;
+        existingDetail.docOrder = docOrder;
+
+        await existingDetail.save();  // Salvar as alterações
+
+        return existingDetail;
     } catch (error) {
         console.error('Erro ao salvar os detalhes adicionais:', error);
         throw error;
     }
 };
 
+
+// controller do modal de documento de manutecao
 exports.uploadMaintenanceDocument = async (id, document) => {
     try {
         if (!id) {
@@ -417,14 +432,9 @@ exports.uploadMaintenanceDocument = async (id, document) => {
             throw new Error('Documento não encontrado no servidor.');
         }
 
-        const newMachineDetail = await MachineDetail.create({
+        const newMachineDetail = await MachineDetail.upsert({
             machineId: id,
-            docDevolution: adjustedDocument,
-            description: null,
-            parts: null,
-            images: null,
-            totalValue: 0,
-            docOrder: null,
+            documents: adjustedDocument,
         });
 
         return newMachineDetail;

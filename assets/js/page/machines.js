@@ -471,75 +471,99 @@ $(document).ready(function () {
   calculateTotalValue();
 });
 
-
+//modal de documento manutencao
 $(document).ready(function () {
   console.log("Documento pronto.");
 
-  // Manipulação do status para exibir o modal
-  $('#editStatus').change(function () {
-    const selectedStatus = $(this).val();
-    console.log("Status selecionado:", selectedStatus);
+  let previousStatus = $('#editStatus').val(); 
 
-    if (selectedStatus === 'Em Manutenção') {
-      const machineId = $('#editMachineId').val();
-      console.log("ID da máquina:", machineId);
-      
-      $('#maintenanceMachineId').val(machineId);
-      $('#maintenanceDocumentModal').modal('show');
-    }
+  $('#editStatus').change(function () {
+      const selectedStatus = $(this).val();
+      console.log("Status selecionado:", selectedStatus);
+
+      if (selectedStatus === 'Em Manutenção') {
+          const machineId = $('#editMachineId').val();
+          console.log("ID da máquina:", machineId);
+          
+          $('#maintenanceMachineId').val(machineId);
+          $('#maintenanceDocumentModal').modal('show');
+      }
   });
 
   // Visualização do documento selecionado
   $('#maintenanceDocument').on('change', function () {
-    const file = this.files[0];
-    const previewContainer = $('#maintenanceDocumentPreview');
-    previewContainer.empty();
+      const file = this.files[0];
+      const previewContainer = $('#maintenanceDocumentPreview');
+      previewContainer.empty();
 
-    if (file) {
-      const fileName = $('<p>').text(`Documento: ${file.name}`);
-      previewContainer.append(fileName);
-    }
+      if (file) {
+          const fileName = $('<p>').text(`Documento: ${file.name}`);
+          previewContainer.append(fileName);
+      }
   });
 
-  // Limpeza do modal ao fechar
+  // Evento para quando o modal de manutenção for fechado
   $('#maintenanceDocumentModal').on('hidden.bs.modal', function () {
-    $('#maintenanceDocument').val('');
-    $('#maintenanceDocumentPreview').empty();
+      $('#maintenanceDocument').val('');  // Limpa o campo do documento
+      $('#maintenanceDocumentPreview').empty();  // Limpa a pré-visualização
+
+      // Verificar se o documento foi exportado
+      if (!$('#maintenanceDocument').val()) {
+          console.log('Documento de manutenção não exportado. Revertendo para o status anterior:', previousStatus);
+          $('#editStatus').val(previousStatus); // Reverter para o status anterior
+      }
   });
 
   // Envio do formulário via AJAX
   $('#maintenanceDocumentForm').on('submit', function(e) {
-    e.preventDefault();
-    
-    const formData = new FormData(this);
-    console.log('Dados do formulário de documento de manutenção:');
-    for (let [key, value] of formData.entries()) {
-      if (value instanceof File) {
-        console.log(`${key}: ${value.name}`);
-      } else {
-        console.log(`${key}: ${value}`);
+      e.preventDefault();
+      
+      const formData = new FormData(this);
+      console.log('Dados do formulário de documento de manutenção:');
+      for (let [key, value] of formData.entries()) {
+          if (value instanceof File) {
+              console.log(`${key}: ${value.name}`);
+          } else {
+              console.log(`${key}: ${value}`);
+          }
       }
-    }
 
-    $.ajax({
-        url: '/machines/upload-maintenance-document',
-        type: 'POST',
-        data: formData,
-        processData: false,
-        contentType: false,
-        success: function(response) {
-            console.log('Resposta do servidor:', response.message);
-            alert(response.message);
-            $('#maintenanceDocumentModal').modal('hide');
-        },
-        error: function(err) {
-            console.error('Erro ao enviar o documento:', err);
-            alert('Erro ao enviar o documento.');
-        }
-    });
+      $.ajax({
+          url: '/machines/upload-maintenance-document',
+          type: 'POST',
+          data: formData,
+          processData: false,
+          contentType: false,
+          success: function(response) {
+              console.log('Resposta do servidor:', response.message);
+              $('#maintenanceDocumentModal').modal('hide');
+
+              // Atualizar o status anterior para "Em Manutenção"
+              previousStatus = 'Em Manutenção';
+          },
+          error: function(err) {
+              console.error('Erro ao enviar o documento:', err);
+              alert('Erro ao enviar o documento.');
+          }
+      });
   });
 
+  // Captura o status atual ao abrir o modal de edição da máquina
+  $('#editMachineModal').on('show.bs.modal', function () {
+      previousStatus = $('#editStatus').val();
+  });
+
+  // Verifica o envio do formulário principal
+  $('#editMachineForm').submit(function (e) {
+      const selectedStatus = $('#editStatus').val();
+      if (selectedStatus === 'Em Manutenção' && !$('#maintenanceDocument').val()) {
+          e.preventDefault();
+          console.log('A exportação do documento de manutenção é necessária antes de salvar as alterações.');
+          $('#editStatus').val(previousStatus);
+      }
+  });
 });
+
 
 
 document.addEventListener('DOMContentLoaded', function () {
