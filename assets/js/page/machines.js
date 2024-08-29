@@ -120,23 +120,29 @@ function editMachine(id, name, tags, client, status, description, images) {
   // Seletor do modal
   const modalElement = document.getElementById('editMachineModal');
   
-  // Adiciona um evento para limpar o campo de arquivos e a pré-visualização ao fechar o modal
-  $('#editMachineModal').on('hidden.bs.modal', function () {
-    // Limpa os arquivos selecionados
-    editFilesToUpload = [];
-    editInputFileElement.value = ''; // Limpa o campo de input file
-  
-    // Limpa a pré-visualização de imagens
-    editPreviewContainer.innerHTML = '';
-  });
-  
-  // Limpa também quando o "Esc" for pressionado (caso não seja automático no seu modal)
-  modalElement.addEventListener('keydown', function (event) {
-    if (event.key === 'Escape') {
-      // Simula o fechamento do modal para garantir que as imagens sejam descartadas
-      $('#editMachineModal').modal('hide');
-    }
-  });
+// Evento para quando o modal é fechado
+$('#editMachineModal').on('hidden.bs.modal', function () {
+  // Limpa os arquivos selecionados
+  editFilesToUpload = [];
+  editInputFileElement.value = ''; // Limpa o campo de input file
+
+  // Limpa a pré-visualização de imagens
+  editPreviewContainer.innerHTML = '';
+
+  // Recarrega a página ao fechar o modal
+  location.reload();
+});
+
+// Limpa também quando o "Esc" for pressionado (caso não seja automático no seu modal)
+modalElement.addEventListener('keydown', function (event) {
+  if (event.key === 'Escape') {
+    // Fecha o modal
+    $('#editMachineModal').modal('hide');
+    
+    // Recarrega a página após fechar o modal
+    location.reload();
+  }
+});
   
 
 
