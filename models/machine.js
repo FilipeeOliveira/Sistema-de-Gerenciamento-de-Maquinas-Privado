@@ -14,17 +14,6 @@ const Machine = sequelize.define('Machine', {
     images: {
         type: DataTypes.JSON,
         allowNull: true,
-        /* get() {
-            const rawValue = this.getDataValue('images');
-            return rawValue ? rawValue.split(',') : [];
-        },
-        set(value) {
-            if (Array.isArray(value)) {
-                this.setDataValue('images', value.join(','));
-            } else {
-                this.setDataValue('images', value);
-            }
-        }, */
     },
     tags: {
         type: DataTypes.STRING,
