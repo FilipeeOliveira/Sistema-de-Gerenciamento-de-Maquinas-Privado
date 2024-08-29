@@ -1,6 +1,6 @@
 "use strict";
 
-$("[data-checkboxes]").each(function () {
+/* $("[data-checkboxes]").each(function () {
   var me = $(this),
     group = me.data('checkboxes'),
     role = me.data('checkbox-role');
@@ -27,6 +27,8 @@ $("[data-checkboxes]").each(function () {
     }
   });
 });
+ */
+
 
 let imagesToRemove = [];
 let editFilesToUpload = [];
