@@ -107,17 +107,37 @@ function editMachine(id, name, tags, client, status, description, images) {
         editFilesToUpload.push(file);
       }
     });
-      
+    
     editInputFileElement.files = createFileList(editFilesToUpload); 
   });
-
-  
   
   function createFileList(files) {
     const dataTransfer = new DataTransfer();
     files.forEach(file => dataTransfer.items.add(file));
     return dataTransfer.files;
   }
+  
+  // Seletor do modal
+  const modalElement = document.getElementById('editMachineModal');
+  
+  // Adiciona um evento para limpar o campo de arquivos e a pré-visualização ao fechar o modal
+  $('#editMachineModal').on('hidden.bs.modal', function () {
+    // Limpa os arquivos selecionados
+    editFilesToUpload = [];
+    editInputFileElement.value = ''; // Limpa o campo de input file
+  
+    // Limpa a pré-visualização de imagens
+    editPreviewContainer.innerHTML = '';
+  });
+  
+  // Limpa também quando o "Esc" for pressionado (caso não seja automático no seu modal)
+  modalElement.addEventListener('keydown', function (event) {
+    if (event.key === 'Escape') {
+      // Simula o fechamento do modal para garantir que as imagens sejam descartadas
+      $('#editMachineModal').modal('hide');
+    }
+  });
+  
 
 
 document.getElementById('editMachineForm').onsubmit = async function (e) {
