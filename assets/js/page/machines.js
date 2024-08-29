@@ -307,6 +307,8 @@ $(document).ready(function () {
 $(document).ready(function () {
   console.log("Documento pronto.");
 
+  let filesToUpload = [];
+
   // Abre o modal com o status 'Em Manutenção'
   $('.status-badge').click(function () {
     const status = $(this).text().trim();
@@ -324,38 +326,42 @@ $(document).ready(function () {
 
   // Pré-visualização de imagens adicionais
   $('#additionalImages').on('change', function () {
-    const files = Array.from(this.files);
+    const newFiles = Array.from(this.files);
     const previewContainer = $('#additionalImagePreview');
-    const currentFiles = Array.from($('#additionalImagePreview img').map(function() {
-      return $(this).attr('src');
-    }));
-    
-    files.forEach((file, index) => {
+    const existingFiles = filesToUpload || []; // Se já existem arquivos, use-os
+
+    filesToUpload = existingFiles.concat(newFiles); // Adiciona os novos arquivos ao array existente
+
+    previewContainer.empty(); // Limpa a pré-visualização
+
+    filesToUpload.forEach((file, index) => {
       if (file.type.startsWith('image/')) {
         const reader = new FileReader();
         reader.onload = function (e) {
-          // Adiciona apenas se não estiver já no preview
-          if (!currentFiles.includes(e.target.result)) {
-            const colDiv = $('<div>').addClass('col-4 col-md-3 mb-3');
-            const img = $('<img>').attr('src', e.target.result).addClass('img-thumbnail');
-            const removeBtn = $('<button>').text('Remover').addClass('btn btn-sm btn-danger mt-2').click(function () {
-              colDiv.remove();
-              // Remove o arquivo da lista
-              const dt = new DataTransfer();
-              Array.from($('#additionalImages')[0].files).forEach((file, fileIndex) => {
-                if (fileIndex !== index) dt.items.add(file);
-              });
-              $('#additionalImages')[0].files = dt.files;
-            });
+          const colDiv = $('<div>').addClass('col-4 col-md-3 mb-3');
+          const img = $('<img>').attr('src', e.target.result).addClass('img-thumbnail');
+          const removeBtn = $('<button>').text('Remover').addClass('btn btn-sm btn-danger mt-2').click(function () {
+            colDiv.remove();
+            filesToUpload.splice(index, 1); // Remove o arquivo da lista
+            updateInputFiles(); // Atualiza o input com os arquivos restantes
+          });
 
-            colDiv.append(img).append(removeBtn);
-            previewContainer.append(colDiv);
-          }
+          colDiv.append(img).append(removeBtn);
+          previewContainer.append(colDiv);
         };
         reader.readAsDataURL(file);
       }
     });
+
+    updateInputFiles(); // Atualiza o input com todos os arquivos
   });
+
+  // Função para atualizar o input de arquivos com a lista atualizada
+  function updateInputFiles() {
+    const dataTransfer = new DataTransfer();
+    filesToUpload.forEach(file => dataTransfer.items.add(file));
+    $('#additionalImages')[0].files = dataTransfer.files;
+  }
 
   // Pré-visualização do documento adicional
   $('#additionalDocument').on('change', function () {
@@ -424,6 +430,9 @@ $(document).ready(function () {
     // Limpa as pré-visualizações de imagens e documentos
     $('#additionalImagePreview').empty();
     $('#additionalDocumentPreview').empty();
+
+    // Reseta a lista de arquivos selecionados
+    filesToUpload = [];
   });
 });
 

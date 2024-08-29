@@ -18,8 +18,10 @@ const inputFileElement = document.getElementById('image-upload');
 let filesToUpload = [];
 
 inputFileElement.addEventListener('change', function (event) {
-  filesToUpload = Array.from(event.target.files);
-  previewContainer.innerHTML = '';
+  const newFiles = Array.from(event.target.files);
+  filesToUpload = filesToUpload.concat(newFiles); // Adiciona as novas imagens às existentes
+
+  previewContainer.innerHTML = ''; // Limpa a pré-visualização atual
 
   filesToUpload.forEach((file, index) => {
     if (file.type.startsWith('image/')) {
@@ -48,6 +50,9 @@ inputFileElement.addEventListener('change', function (event) {
       reader.readAsDataURL(file);
     }
   });
+
+  // Atualiza os arquivos no input para refletir a lista atualizada
+  inputFileElement.files = createFileList(filesToUpload);
 });
 
 // Função para criar um objeto FileList
@@ -55,6 +60,14 @@ function createFileList(files) {
   const dataTransfer = new DataTransfer();
   files.forEach(file => dataTransfer.items.add(file));
   return dataTransfer.files;
+}
+
+
+// Função para limpar o campo de input e o array de arquivos após o envio
+function clearUploadFields() {
+  filesToUpload = [];
+  inputFileElement.value = ''; // Limpa o campo de input
+  previewContainer.innerHTML = ''; // Limpa as pré-visualizações
 }
 
 // Função de validação de formulário
@@ -97,7 +110,7 @@ document.getElementById('machineForm').addEventListener('submit', function (even
         $('.summernote-simple').summernote('reset');
 
         // Limpa a pré-visualização das imagens
-        previewContainer.innerHTML = '';
+        clearUploadFields(); // Chama a função para limpar os campos de upload de imagem
 
         // Resetar o campo de etiqueta
         $('.inputtags').tagsinput('removeAll');

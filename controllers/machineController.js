@@ -186,6 +186,7 @@ exports.getMachineById = async (id) => {
     }
 };
 
+//editar
 exports.updateMachine = async (id, updatedData, files, imagesToRemove) => {
     try {
         const machine = await Machine.findByPk(id);

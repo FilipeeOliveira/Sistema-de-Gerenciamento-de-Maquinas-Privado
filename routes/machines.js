@@ -97,6 +97,7 @@ router.get('/:id', async (req, res) => {
     }
 });
 
+//editar
 router.put('/update/:id', upload.array('images', 10), async (req, res) => {
     const id = req.params.id;
     const { name, client, tags, status, description, imagesToRemove } = req.body;

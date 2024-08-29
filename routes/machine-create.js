@@ -25,7 +25,17 @@ const storage = multer.diskStorage({
 });
 
 
-const upload = multer({ storage });
+const upload = multer({
+    storage,
+    fileFilter: (req, file, cb) => {
+        const allowedTypes = ['image/jpeg', 'image/png', 'application/pdf'];
+        if (allowedTypes.includes(file.mimetype)) {
+            cb(null, true);
+        } else {
+            cb(new Error('Tipo de arquivo não permitido'), false);
+        }
+    }
+});
 
 // Middleware para parsear application/json e application/x-www-form-urlencoded
 router.use(express.json());
@@ -49,6 +59,9 @@ router.post('/create', upload.array('images', 10), async (req, res) => {
     console.log('Dados recebidos:', { name, client, images, tags, status, description });
 
     try {
+        // Log das imagens que estão prestes a ser enviadas ao banco de dados
+        console.log('Imagens que serão salvas no banco de dados:', images);
+
         const machine = await Machine.create({
             name,
             client,

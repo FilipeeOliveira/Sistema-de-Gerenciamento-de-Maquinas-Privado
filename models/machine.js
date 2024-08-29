@@ -12,9 +12,9 @@ const Machine = sequelize.define('Machine', {
         allowNull: true,
     },
     images: {
-        type: DataTypes.STRING,
+        type: DataTypes.JSON,
         allowNull: true,
-        get() {
+        /* get() {
             const rawValue = this.getDataValue('images');
             return rawValue ? rawValue.split(',') : [];
         },
@@ -24,7 +24,7 @@ const Machine = sequelize.define('Machine', {
             } else {
                 this.setDataValue('images', value);
             }
-        },
+        }, */
     },
     tags: {
         type: DataTypes.STRING,
