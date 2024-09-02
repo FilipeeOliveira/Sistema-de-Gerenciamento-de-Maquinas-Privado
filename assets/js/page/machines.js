@@ -117,33 +117,26 @@ function editMachine(id, name, tags, client, status, description, images) {
     return dataTransfer.files;
   }
   
-  // Seletor do modal
-  const modalElement = document.getElementById('editMachineModal');
   
-// Evento para quando o modal é fechado
-$('#editMachineModal').on('hidden.bs.modal', function () {
-  // Limpa os arquivos selecionados
-  editFilesToUpload = [];
-  editInputFileElement.value = ''; // Limpa o campo de input file
-
-  // Limpa a pré-visualização de imagens
-  editPreviewContainer.innerHTML = '';
-
-  // Recarrega a página ao fechar o modal
-  location.reload();
-});
-
-// Limpa também quando o "Esc" for pressionado (caso não seja automático no seu modal)
-modalElement.addEventListener('keydown', function (event) {
-  if (event.key === 'Escape') {
-    // Fecha o modal
-    $('#editMachineModal').modal('hide');
-    
-    // Recarrega a página após fechar o modal
-    location.reload();
-  }
-});
+  $('#editMachineModal').on('hidden.bs.modal', function () {
+    // Limpa os arquivos selecionados
+    editFilesToUpload = [];
+    editInputFileElement.value = ''; 
   
+    editPreviewContainer.innerHTML = '';
+  
+    // Verifica o status da máquina
+    const status = document.getElementById('editStatus').value; 
+  
+    if (status === 'Em chamado' || status === 'Em espera') {
+      
+      showModalConfirmation(machineId, status);
+    } else {
+ 
+      location.reload();
+    }
+  });
+
 
 
 document.getElementById('editMachineForm').onsubmit = async function (e) {
@@ -516,12 +509,13 @@ $(document).ready(function () {
   calculateTotalValue();
 });
 
-//modal de documento manutencao
+// Modal de documento de manutenção
 $(document).ready(function () {
   console.log("Documento pronto.");
 
   let previousStatus = $('#editStatus').val(); 
 
+  // Evento de mudança no status do modal de edição
   $('#editStatus').change(function () {
       const selectedStatus = $(this).val();
       console.log("Status selecionado:", selectedStatus);
@@ -581,10 +575,15 @@ $(document).ready(function () {
           contentType: false,
           success: function(response) {
               console.log('Resposta do servidor:', response.message);
+
+              // Fechar o modal de manutenção
               $('#maintenanceDocumentModal').modal('hide');
 
               // Atualizar o status anterior para "Em Manutenção"
               previousStatus = 'Em Manutenção';
+
+              // Agora que o documento foi enviado com sucesso, submete o formulário principal
+              $('#editMachineForm').submit();  // Submete o formulário de edição após sucesso no upload
           },
           error: function(err) {
               console.error('Erro ao enviar o documento:', err);
@@ -602,9 +601,9 @@ $(document).ready(function () {
   $('#editMachineForm').submit(function (e) {
       const selectedStatus = $('#editStatus').val();
       if (selectedStatus === 'Em Manutenção' && !$('#maintenanceDocument').val()) {
-          e.preventDefault();
+          e.preventDefault();  // Evita o envio do formulário principal até que o documento seja enviado
           console.log('A exportação do documento de manutenção é necessária antes de salvar as alterações.');
-          $('#editStatus').val(previousStatus);
+          $('#editStatus').val(previousStatus);  // Reverte para o status anterior
       }
   });
 });
