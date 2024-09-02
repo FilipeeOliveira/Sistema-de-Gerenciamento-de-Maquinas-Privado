@@ -1,0 +1,480 @@
+[33mcommit 853245c7af58bdabc67b351862f7c962d8ed4850[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mdeveloper[m[33m)[m
+Author: FilipeeOliveira <filipe.jx.10@gmail.com>
+Date:   Mon Sep 2 09:33:18 2024 -0400
+
+    ajuste de atualizacao automatica do status em manutencao apos envio do documento e correcao do reaload no modal de editar
+
+[33mcommit 2f687a4ea96a322eaa0f82c96a6042b1169f1dfe[m
+Author: FilipeeOliveira <filipe.jx.10@gmail.com>
+Date:   Thu Aug 29 16:40:05 2024 -0400
+
+    bug de imagem no editar
+
+[33mcommit 755fe7721efea7aa575b280cbf4c3e130436d598[m
+Author: FilipeeOliveira <filipe.jx.10@gmail.com>
+Date:   Thu Aug 29 15:18:46 2024 -0400
+
+    progresso na imagem do editar, porem ainda bugado quando damos esc ou fechamos/2
+
+[33mcommit 94cab93af52a02622f1e649fb5abc6525913e16b[m
+Author: FilipeeOliveira <filipe.jx.10@gmail.com>
+Date:   Thu Aug 29 15:02:45 2024 -0400
+
+    progresso na imagem do editar, porem ainda bugado quando damos esc ou fechamos
+
+[33mcommit 67ebfea7ef40d85f52dc41384d43a1885ce0080b[m
+Author: FilipeeOliveira <filipe.jx.10@gmail.com>
+Date:   Thu Aug 29 11:42:21 2024 -0400
+
+    progresso na imagem do editar, porem ainda bugado quando damos esc ou fechamos
+
+[33mcommit abd780c649c420d9fda76d6e41c28e86a152b879[m
+Author: FilipeeOliveira <filipe.jx.10@gmail.com>
+Date:   Thu Aug 29 10:51:23 2024 -0400
+
+    .
+
+[33mcommit f02239b288ad82eec94d054d1d15c1eba0cc31e9[m
+Author: FilipeeOliveira <filipe.jx.10@gmail.com>
+Date:   Thu Aug 29 10:41:20 2024 -0400
+
+    .
+
+[33mcommit eb7b1592305c5b6cf32a927d18f6ddc89e1d2808[m[33m ([m[1;31morigin/developer[m[33m, [m[1;32mmain[m[33m)[m
+Author: FilipeeOliveira <filipe.jx.10@gmail.com>
+Date:   Wed Aug 28 11:31:07 2024 -0400
+
+    modal para documento de manutencao concluindo
+
+[33mcommit 38fdf3d93590ad2e35c89935edadbc8a71e501db[m
+Author: FilipeeOliveira <filipe.jx.10@gmail.com>
+Date:   Wed Aug 28 11:23:42 2024 -0400
+
+    modal para documento de manutencao concluindo, porem faltando o codido modal em uso
+
+[33mcommit 6db94eace045c2e29afd0a2dab5aa84b8ba9da4a[m
+Author: FilipeeOliveira <filipe.jx.10@gmail.com>
+Date:   Tue Aug 27 11:08:35 2024 -0400
+
+    progresso de manutencao, agora consigo encontrar a rota, porem ainda preciso resovler o banco de dados
+
+[33mcommit 10ef5cbdd7309ec015e7ffa4be66553a9d922088[m
+Author: FilipeeOliveira <filipe.jx.10@gmail.com>
+Date:   Mon Aug 26 08:31:44 2024 -0400
+
+    teste
+
+[33mcommit f6a43da62f349d3b41c4171bbf9e408ceba91f01[m
+Author: FilipeeOliveira <filipe.jx.10@gmail.com>
+Date:   Mon Aug 26 08:29:39 2024 -0400
+
+    teste
+
+[33mcommit 86c569a0721a998ec28f63b4b36047efdfebebbb[m[33m ([m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m
+Merge: 4fa8dbf 65147f1
+Author: FilipeeOliveira <filipe.jx.10@gmail.com>
+Date:   Fri Aug 23 00:15:01 2024 -0400
+
+    ajustes
+
+[33mcommit 4fa8dbf04cf51639f830dd53a64fc64ab9e1264e[m
+Author: FilipeeOliveira <filipe.jx.10@gmail.com>
+Date:   Fri Aug 23 00:14:00 2024 -0400
+
+    ajuste simples de modal
+
+[33mcommit cd8dd4604b6412ff2dbf52a47a257d22395e170f[m
+Merge: b13f7fc 05d9474
+Author: FilipeeOliveira <filipe.jx.10@gmail.com>
+Date:   Fri Aug 23 00:13:27 2024 -0400
+
+    ajuste simples de modal
+
+[33mcommit 65147f1c67514d58eb208bfdab704e8ea5194999[m
+Author: SamyrUSalem <samyruchoasalem@hotmail.com>
+Date:   Fri Aug 23 00:13:01 2024 -0400
+
+    Conforme o ultimo commit
+
+[33mcommit b13f7fc9fac89ebf7417ca9b034eb7706f186ae9[m
+Author: FilipeeOliveira <filipe.jx.10@gmail.com>
+Date:   Fri Aug 23 00:12:06 2024 -0400
+
+    ajuste simples de modal
+
+[33mcommit d0d7ffb09b617f01676ad103039dcf781f06fcae[m
+Author: FilipeeOliveira <filipe.jx.10@gmail.com>
+Date:   Fri Aug 23 00:10:56 2024 -0400
+
+    ajuste simples de modal
+
+[33mcommit 32b67a2a6a61591fa1c3748c6affcddae36229a9[m
+Author: SamyrUSalem <samyruchoasalem@hotmail.com>
+Date:   Thu Aug 22 23:54:30 2024 -0400
+
+    Erros resolvidos, sistema esta no ar! Falta apenas configurar a parte do backend
+
+[33mcommit 5e2562f197b6a308378b3472c2b27deeb7583c5c[m
+Author: SamyrUSalem <samyruchoasalem@hotmail.com>
+Date:   Thu Aug 22 23:32:43 2024 -0400
+
+    Teste Do MachineLog
+
+[33mcommit c1ef6e4a69710ff150cd966552d6dc014d8e5440[m
+Author: SamyrUSalem <samyruchoasalem@hotmail.com>
+Date:   Thu Aug 22 22:49:46 2024 -0400
+
+    Tentando resolver o problema do MachineLog again
+
+[33mcommit 190311d55986258f53cc2fd99f2f38b65f28cfee[m
+Author: SamyrUSalem <samyruchoasalem@hotmail.com>
+Date:   Thu Aug 22 22:44:45 2024 -0400
+
+    Tentando resolver o problema do MachineLog outr avez
+
+[33mcommit 68ae6b62a1114a97b9d64fdbf8e23de6bdd2eeb0[m
+Author: SamyrUSalem <samyruchoasalem@hotmail.com>
+Date:   Thu Aug 22 22:41:40 2024 -0400
+
+    Tentando resolver o problema do MachineLog
+
+[33mcommit b8523537806e6491c85bb86b6753d3776b576bb4[m
+Author: SamyrUSalem <samyruchoasalem@hotmail.com>
+Date:   Thu Aug 22 22:39:18 2024 -0400
+
+    Tentando resolver o problema do MachineLog n ser encontrado
+
+[33mcommit 6cc1527922b87164151c3b7e5df78fc4b70c15a4[m
+Author: SamyrUSalem <samyruchoasalem@hotmail.com>
+Date:   Thu Aug 22 20:30:04 2024 -0400
+
+    Tentando resolver o problema do MachineLog n ser encontrado
+
+[33mcommit 952cafe7490ce382e414de82090262c31c1bc376[m
+Author: SamyrUSalem <samyruchoasalem@hotmail.com>
+Date:   Thu Aug 22 20:28:59 2024 -0400
+
+    Tentando resolver o problema do MachineLog n ser encontrado
+
+[33mcommit f3b215ca1aecbf082140cbdf47c249e54b41dd15[m
+Author: SamyrUSalem <samyruchoasalem@hotmail.com>
+Date:   Thu Aug 22 20:25:31 2024 -0400
+
+    Tentando resolver o problema do MachineLog n ser encontrado
+
+[33mcommit 9f882198cb4a0947d996272e951a208a3ac75a0a[m
+Author: SamyrUSalem <samyruchoasalem@hotmail.com>
+Date:   Thu Aug 22 20:21:59 2024 -0400
+
+    Tentando resolver o problema do MachineLog n ser encontrado
+
+[33mcommit 584555b6c73d00461176151cb65535578a7604bf[m
+Author: SamyrUSalem <samyruchoasalem@hotmail.com>
+Date:   Thu Aug 22 20:10:35 2024 -0400
+
+    Criado uma rota para o machineLogs e configuração do cors
+
+[33mcommit a3fcf02188312274523444abc9fe16d773c95d72[m
+Author: SamyrUSalem <samyruchoasalem@hotmail.com>
+Date:   Thu Aug 22 19:55:45 2024 -0400
+
+    Adiciona cors ao package.json
+
+[33mcommit aed6901f458c2eaa0ec14cd601d3a17c94db1aff[m
+Author: SamyrUSalem <samyruchoasalem@hotmail.com>
+Date:   Thu Aug 22 19:47:31 2024 -0400
+
+    Deploy Heroku
+
+[33mcommit 05d9474fb408464ecdcc35fc551de8c1b8c88a58[m
+Author: SamyrUSalem <samyruchoasalem@hotmail.com>
+Date:   Thu Aug 22 19:30:01 2024 -0400
+
+    teste adicionado vercel.json
+
+[33mcommit 1110e171a92f17b32d157f2936268b9ccca87be3[m
+Author: SamyrUSalem <samyruchoasalem@hotmail.com>
+Date:   Thu Aug 22 19:27:41 2024 -0400
+
+    Teste trocando o nodemon por node
+
+[33mcommit 018cef952b27dcd9917f1ddfcc37b653f8c9e11a[m
+Author: SamyrUSalem <samyruchoasalem@hotmail.com>
+Date:   Thu Aug 22 19:04:38 2024 -0400
+
+    Gulp removido
+
+[33mcommit 3d5ebfc8e2f9a65c3e6f5b14713aed15918b3288[m
+Author: Samyr <samyruchoasalem@hotmail.com>
+Date:   Thu Aug 22 16:06:20 2024 -0400
+
+    Teste again
+
+[33mcommit 5eb10e2ddef07ec04a2b50abd1764ff5f03f7fa8[m
+Author: Samyr <samyruchoasalem@hotmail.com>
+Date:   Tue Aug 20 12:55:42 2024 -0400
+
+    outro teste
+
+[33mcommit 988e3c82f6c8ccd255abfec33e8e278405b93a11[m
+Author: Samyr <samyruchoasalem@hotmail.com>
+Date:   Tue Aug 20 12:46:35 2024 -0400
+
+    teste
+
+[33mcommit 5bc47cf74bc60dd7c05cc89ac387d60a9e3ddea1[m
+Author: Samyr <samyruchoasalem@hotmail.com>
+Date:   Tue Aug 20 12:38:35 2024 -0400
+
+    Exclusão do gulp
+
+[33mcommit 58e0600528588b0a1a9a860c88c0e3a142e0dd96[m
+Merge: 8e3c9c0 c8c21f2
+Author: Samyr <samyruchoasalem@hotmail.com>
+Date:   Tue Aug 20 11:14:24 2024 -0400
+
+    Merge branch 'main' of https://github.com/SamyrUSalem/SistemaControleDeMaquinas
+
+[33mcommit 8e3c9c0ea3716f528d892eef9508ffbcff8dd97a[m
+Author: Samyr <samyruchoasalem@hotmail.com>
+Date:   Tue Aug 20 11:14:05 2024 -0400
+
+    Ajuestes realizados
+
+[33mcommit c8c21f28fc6b64a367f5f4bb8d32daba3c562232[m
+Author: FilipeeOliveira <filipe.jx.10@gmail.com>
+Date:   Tue Aug 20 11:11:59 2024 -0400
+
+    modal de manutencao - imagens sendo adicionadas sem serem substituidas, campo sendo resetado / filtro - filtro de documentos no log / contorno azul no filtro da lista de maquinas corrigido
+
+[33mcommit 181a329c6729a0bf79562915c192d4f84823aed6[m
+Author: FilipeeOliveira <filipe.jx.10@gmail.com>
+Date:   Tue Aug 20 10:40:44 2024 -0400
+
+    modal de manutencao - imagens sendo adicionadas sem serem substituidas, campo sendo resetado / filtro - filtro de documentos no log / contorno azul no filtro da lista de maquinas corrigido
+
+[33mcommit f93945b3436344674a9f7967fa26521ceadb743c[m
+Author: FilipeeOliveira <filipe.jx.10@gmail.com>
+Date:   Tue Aug 20 10:26:23 2024 -0400
+
+    modal de manutencao - imagens sendo adicionadas sem serem substituidas, campo sendo resetado / filtro - filtro de documentos no log / contorno azul no filtro da lista de maquinas corrigido
+
+[33mcommit 3b0f8da08a3a248c856b4381c552f6061ab61b57[m
+Merge: e437b8a edf9919
+Author: FilipeeOliveira <filipe.jx.10@gmail.com>
+Date:   Tue Aug 20 10:01:35 2024 -0400
+
+    filtro da tabela documents dentro de log
+
+[33mcommit e437b8ae945b9ce22b33108af2e0ba14fef2f383[m
+Author: FilipeeOliveira <filipe.jx.10@gmail.com>
+Date:   Tue Aug 20 09:57:05 2024 -0400
+
+    filtro da tabela documents dentro de log
+
+[33mcommit edf991956c1564a622e8539646b8896d590f1ba6[m
+Author: Samyr <samyruchoasalem@hotmail.com>
+Date:   Tue Aug 20 09:46:42 2024 -0400
+
+    Devolution corrigido, agora ele não envia para o ultimo id enviado, ele verfica a maquina e envia o arquivo de acordo com a maquina, evitando inserir o dado na maquina errada
+
+[33mcommit a1cf2ffde1207c9d5f33507eb0d08f841643b1c7[m
+Author: Samyr <samyruchoasalem@hotmail.com>
+Date:   Mon Aug 19 17:56:18 2024 -0400
+
+    teste
+
+[33mcommit 60c115e58e26c664931808b484a5a2bbcff4b4f5[m
+Merge: 9576957 f810a76
+Author: FilipeeOliveira <filipe.jx.10@gmail.com>
+Date:   Mon Aug 19 12:01:30 2024 -0400
+
+    botoes padronizados para envios nos modais
+
+[33mcommit f810a76f08320e25c502ecd92296315997fa9340[m
+Author: Samyr <samyruchoasalem@hotmail.com>
+Date:   Mon Aug 19 11:46:45 2024 -0400
+
+    Estilização dos input
+
+[33mcommit 95769571c56a1ca814de9abd6e44b84e6ec06fe2[m
+Author: FilipeeOliveira <filipe.jx.10@gmail.com>
+Date:   Mon Aug 19 11:45:56 2024 -0400
+
+    ajuste do modal editar, campo imagem / aparecendo imagem
+
+[33mcommit 6873baa318b31655dbc0dd790c74641af084f4fe[m
+Merge: be5a4d6 cb26877
+Author: Samyr <samyruchoasalem@hotmail.com>
+Date:   Mon Aug 19 11:19:59 2024 -0400
+
+    Merge branch 'main' of https://github.com/SamyrUSalem/SistemaControleDeMaquinas
+
+[33mcommit be5a4d6721302bee545c91918cb209c7b278c621[m
+Author: Samyr <samyruchoasalem@hotmail.com>
+Date:   Mon Aug 19 11:19:50 2024 -0400
+
+    Input file (imagens) foi estilizado
+
+[33mcommit cb26877fc6fd69a4a68605d031b72885eabbe800[m
+Author: FilipeeOliveira <filipe.jx.10@gmail.com>
+Date:   Mon Aug 19 11:13:50 2024 -0400
+
+    ajuste do modal de editar, status para baixo de descricao
+
+[33mcommit 6080215f2c8540a3c6ce04c105eb1946e4e7e70d[m
+Author: FilipeeOliveira <filipe.jx.10@gmail.com>
+Date:   Mon Aug 19 10:47:46 2024 -0400
+
+    ajuste do modal de editar, status para baixo de descricao
+
+[33mcommit 170f7f39a3cbc45ab41dbfe586c076596fd05832[m
+Merge: 34494b2 4f05cee
+Author: FilipeeOliveira <filipe.jx.10@gmail.com>
+Date:   Mon Aug 19 10:37:28 2024 -0400
+
+    ajuste de docDevolution para funcionamento unico de cada linha da tabela
+
+[33mcommit 34494b2b2bc762491f552da2b9003ec8dd4b2b0f[m
+Author: FilipeeOliveira <filipe.jx.10@gmail.com>
+Date:   Mon Aug 19 10:36:56 2024 -0400
+
+    ajuste de docDevolution para funcionamento unico de cada linha da tabela
+
+[33mcommit c0329ac12ec05b0dbc3cc800d3e6bfd714cffc8b[m
+Author: FilipeeOliveira <filipe.jx.10@gmail.com>
+Date:   Mon Aug 19 10:32:17 2024 -0400
+
+    ajuste de docDevolution para funcionamento unico de cada linha da tabela
+
+[33mcommit 4f05cee685ac4181a11f33f18beb8af193c5bb48[m
+Author: Samyr <samyruchoasalem@hotmail.com>
+Date:   Fri Aug 16 09:42:25 2024 -0400
+
+    Responsividade da tela machineLogs.ejs foi ajustada
+
+[33mcommit d1716868d969b5673102c6243036135e891e033a[m
+Merge: 8bc8dd7 8290b16
+Author: Samyr <samyruchoasalem@hotmail.com>
+Date:   Thu Aug 15 11:03:39 2024 -0400
+
+    Merge branch 'main' of https://github.com/SamyrUSalem/SistemaControleDeMaquinas
+
+[33mcommit 8bc8dd7180927c3c529a25998a30f459f505a1aa[m
+Author: Samyr <samyruchoasalem@hotmail.com>
+Date:   Thu Aug 15 11:03:22 2024 -0400
+
+    Foi consertado, agora esta obrigatorio o login se não autenticar, não conseguira entrar no sistema,e  foi alterado outros detalhes
+
+[33mcommit 8290b16957bb04a75564e5571ac66c068164fff6[m
+Author: FilipeeOliveira <filipe.jx.10@gmail.com>
+Date:   Thu Aug 15 11:00:47 2024 -0400
+
+    ajuste de responsividade
+
+[33mcommit 29066cc33ea2438ef90fc06e3070fbc4fe086d1b[m
+Merge: 364d918 cb54773
+Author: FilipeeOliveira <filipe.jx.10@gmail.com>
+Date:   Thu Aug 15 09:00:20 2024 -0400
+
+    colocar delete no order
+
+[33mcommit 364d9185dc27d07113dc3374368d8a81ae955965[m
+Author: FilipeeOliveira <filipe.jx.10@gmail.com>
+Date:   Thu Aug 15 08:58:27 2024 -0400
+
+    colocar delete no order
+
+[33mcommit cb547737cbd04e62eb7756584061f6f3ea0af6e1[m
+Author: Samyr <samyruchoasalem@hotmail.com>
+Date:   Wed Aug 14 16:17:40 2024 -0400
+
+    Deletar funcional, todos os dados novos e antigos estão sendo apagados, mas é necessário rever o envio do doc devolution no banco de dados
+
+[33mcommit afd3a2f0671c3f96377374dc49706b18b11ed446[m
+Author: Samyr <samyruchoasalem@hotmail.com>
+Date:   Wed Aug 14 12:36:29 2024 -0400
+
+    tete
+
+[33mcommit f36ed608ecd9f2c13a1a3b6d5aa2e3ec6d4f407a[m
+Merge: 1ae8031 f1e9702
+Author: Samyr <samyruchoasalem@hotmail.com>
+Date:   Wed Aug 14 11:10:16 2024 -0400
+
+    teste
+
+[33mcommit 1ae8031892d7e06c84574d1f87346329dd211036[m
+Author: Samyr <samyruchoasalem@hotmail.com>
+Date:   Wed Aug 14 11:06:11 2024 -0400
+
+    Tabela de Documentos o campo doc devolução esta funcional, os documentos mais recentes estão vindo primeiro, foi feito uma estilização, adaptado o documento de ordem de serviço, entre outras coisas...
+
+[33mcommit f1e970280ef1d72f6d65b7e0dd7d23634b5df709[m
+Author: FilipeeOliveira <filipe.jx.10@gmail.com>
+Date:   Wed Aug 14 11:04:56 2024 -0400
+
+    ajuste de duplicacao de devolutin
+
+[33mcommit dff733804277a01aa09a6288694a2c88d62a3ab4[m
+Merge: adf1458 968c227
+Author: Samyr <samyruchoasalem@hotmail.com>
+Date:   Tue Aug 13 11:40:37 2024 -0400
+
+    Merge branch 'main' of https://github.com/SamyrUSalem/SistemaControleDeMaquinas
+
+[33mcommit adf1458e0b241bc238b33ddae49df8bc7ed0a870[m
+Author: Samyr <samyruchoasalem@hotmail.com>
+Date:   Tue Aug 13 11:40:06 2024 -0400
+
+    Ordem de Serviço esta sendo gerada dinamicamente e o loop das peças foi completamente implementado
+
+[33mcommit 968c227cb104b7c69d46661113a64197a445cc61[m
+Merge: d91cd50 98d57ad
+Author: FilipeeOliveira <filipe.jx.10@gmail.com>
+Date:   Tue Aug 13 11:32:08 2024 -0400
+
+    ajustes de responsividade
+
+[33mcommit d91cd505c388a3c66feebd1ce4c709922a2c2d97[m
+Author: FilipeeOliveira <filipe.jx.10@gmail.com>
+Date:   Tue Aug 13 11:30:33 2024 -0400
+
+    ajustes de responsividade
+
+[33mcommit 98d57ad172e51524295cb47e613332dd93fe7461[m
+Author: Samyr <samyruchoasalem@hotmail.com>
+Date:   Tue Aug 13 09:49:09 2024 -0400
+
+    Correções
+
+[33mcommit 437ed1d783767c8ed3cb281ccecc08766a34941e[m
+Author: Samyr <samyruchoasalem@hotmail.com>
+Date:   Tue Aug 13 09:46:47 2024 -0400
+
+    test
+
+[33mcommit 67bd05f0e3f67914f495a3922b05e2d60ed265b2[m
+Merge: e344d68 50b8a06
+Author: Samyr <samyruchoasalem@hotmail.com>
+Date:   Tue Aug 13 09:44:06 2024 -0400
+
+    Merge branch 'main' of https://github.com/SamyrUSalem/SistemaControleDeMaquinas
+
+[33mcommit e344d6821b25378bc76a7ed9e48c3d6bf18f8fda[m
+Author: Samyr <samyruchoasalem@hotmail.com>
+Date:   Tue Aug 13 09:41:29 2024 -0400
+
+    Ordem de serviço esta sendo gerada corretamente, e esta sendo enviada para a tableDocuments.ejs disponivel para download
+
+[33mcommit 708f957446d63928b0752e66ba6bd40282275fb8[m
+Author: FilipeeOliveira <filipe.jx.10@gmail.com>
+Date:   Tue Aug 13 09:36:07 2024 -0400
+
+    ajuste de destino de imagens ao edit
+
+[33mcommit 962167f761156bbd108f65010cd0d3e063e9882f[m
+Author: FilipeeOliveira <filipe.jx.10@gmail.com>
+Date:   Tue Aug 13 09:22:26 2024 -0400
+
+    ajuste de destino de imagens ao edit
