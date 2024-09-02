@@ -17,10 +17,20 @@ const previewContainer = document.getElementById('preview');
 const inputFileElement = document.getElementById('image-upload');
 let filesToUpload = [];
 
-inputFileElement.addEventListener('change', function (event) {
+inputFileElement.addEventListener('change', handleFileInputChange);
+
+function handleFileInputChange(event) {
   const newFiles = Array.from(event.target.files);
   filesToUpload = filesToUpload.concat(newFiles); // Adiciona as novas imagens às existentes
 
+  renderPreview(); // Renderiza a pré-visualização das imagens
+
+  // Atualiza os arquivos no input para refletir a lista atualizada
+  inputFileElement.files = createFileList(filesToUpload);
+}
+
+// Função para renderizar a pré-visualização das imagens
+function renderPreview() {
   previewContainer.innerHTML = ''; // Limpa a pré-visualização atual
 
   filesToUpload.forEach((file, index) => {
@@ -39,8 +49,7 @@ inputFileElement.addEventListener('change', function (event) {
         removeBtn.className = 'btn btn-sm btn-danger mt-2';
         removeBtn.onclick = function () {
           colDiv.remove();
-          filesToUpload.splice(index, 1); // Remove o arquivo da lista
-          inputFileElement.files = createFileList(filesToUpload); // Atualiza os arquivos no input
+          removeImage(index); // Remove a imagem do array e atualiza o input
         };
 
         colDiv.appendChild(img);
@@ -50,25 +59,37 @@ inputFileElement.addEventListener('change', function (event) {
       reader.readAsDataURL(file);
     }
   });
+}
 
-  // Atualiza os arquivos no input para refletir a lista atualizada
-  inputFileElement.files = createFileList(filesToUpload);
-});
+// Função para remover a imagem do array e atualizar o FileList
+function removeImage(index) {
+  filesToUpload.splice(index, 1); 
+  inputFileElement.files = createFileList(filesToUpload); 
+  renderPreview(); 
+}
 
-// Função para criar um objeto FileList
+
 function createFileList(files) {
   const dataTransfer = new DataTransfer();
   files.forEach(file => dataTransfer.items.add(file));
   return dataTransfer.files;
 }
 
-
 // Função para limpar o campo de input e o array de arquivos após o envio
 function clearUploadFields() {
   filesToUpload = [];
-  inputFileElement.value = ''; // Limpa o campo de input
-  previewContainer.innerHTML = ''; // Limpa as pré-visualizações
+  inputFileElement.value = ''; 
+  previewContainer.innerHTML = ''; 
 }
+
+
+$('#machineModal').on('hidden.bs.modal', function () {
+  inputFileElement.removeEventListener('change', handleFileInputChange);
+
+
+  clearUploadFields(); 
+  inputFileElement.addEventListener('change', handleFileInputChange); 
+});
 
 // Função de validação de formulário
 function validateForm(form) {

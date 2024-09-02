@@ -43,40 +43,43 @@ function editMachine(id, name, tags, client, status, description, images) {
 
   const imagePreviewContainer = document.getElementById('editImagePreview');
   imagePreviewContainer.innerHTML = '';
-  
+
   imagesToRemove = [];
-  
+  editFilesToUpload = [];
+
   if (images) {
     images.split(',').forEach(imagePath => {
       const colDiv = document.createElement('div');
       colDiv.className = 'col-4 col-md-3 mb-3';
-  
+
       const img = document.createElement('img');
       img.src = imagePath;
       img.className = "img-thumbnail";
-  
+
       const removeBtn = document.createElement('button');
       removeBtn.textContent = 'Remover';
       removeBtn.className = 'btn btn-sm btn-danger mt-2';
-  
+
       removeBtn.onclick = function () {
         colDiv.remove();
         imagesToRemove.push(imagePath);
         console.log('Imagens a serem removidas:', imagesToRemove);
       };
-  
+
       colDiv.appendChild(img);
       colDiv.appendChild(removeBtn);
       imagePreviewContainer.appendChild(colDiv);
     });
   }
-  
-  // Função de pré-visualização e remoção de novas imagens
+
+  // Limpar o input de arquivos
   const editInputFileElement = document.getElementById('editImages');
+  editInputFileElement.value = ''; // Limpar valor para evitar arquivos duplicados
   const editPreviewContainer = document.getElementById('editImagePreview');
-  let editFilesToUpload = [];
+
+  editInputFileElement.addEventListener('change', handleFileInputChange); // Adicionar event listener de mudança de arquivos
   
-  editInputFileElement.addEventListener('change', function (event) {
+  function handleFileInputChange(event) {
     const files = Array.from(event.target.files);
     files.forEach((file) => {
       if (file.type.startsWith('image/')) {
@@ -84,21 +87,21 @@ function editMachine(id, name, tags, client, status, description, images) {
         reader.onload = function (e) {
           const colDiv = document.createElement('div');
           colDiv.className = 'col-4 col-md-3 mb-3';
-  
+
           const img = document.createElement('img');
           img.src = e.target.result;
           img.className = "img-thumbnail";
-  
+
           const removeBtn = document.createElement('button');
           removeBtn.textContent = 'Remover';
           removeBtn.className = 'btn btn-sm btn-danger mt-2';
-  
+
           removeBtn.onclick = function () {
             colDiv.remove();
             editFilesToUpload = editFilesToUpload.filter(f => f.name !== file.name);
             editInputFileElement.files = createFileList(editFilesToUpload);
           };
-  
+
           colDiv.appendChild(img);
           colDiv.appendChild(removeBtn);
           editPreviewContainer.appendChild(colDiv);
@@ -108,34 +111,24 @@ function editMachine(id, name, tags, client, status, description, images) {
       }
     });
     
-    editInputFileElement.files = createFileList(editFilesToUpload); 
-  });
-  
+    editInputFileElement.files = createFileList(editFilesToUpload);
+  }
+
   function createFileList(files) {
     const dataTransfer = new DataTransfer();
     files.forEach(file => dataTransfer.items.add(file));
     return dataTransfer.files;
   }
-  
-  //reload, por enquanto enquanto nao resolvemos o diacho do bug
+
   $('#editMachineModal').on('hidden.bs.modal', function () {
-    // Limpa os arquivos selecionados
+    // Remover o event listener ao fechar o modal
+    editInputFileElement.removeEventListener('change', handleFileInputChange);
+
+    // Limpar arrays e resetar o input
     editFilesToUpload = [];
-    editInputFileElement.value = ''; 
-  
-    editPreviewContainer.innerHTML = '';
-  
-    // Verifica o status da máquina
-    const status = document.getElementById('editStatus').value; 
-  
-    if (status === 'Em chamado' || status === 'Em espera') {
-      
-      showModalConfirmation(machineId, status);
-    } else {
- 
-      location.reload();
-    }
-  }); 
+    imagesToRemove = [];
+    editInputFileElement.value = '';
+  });
 
 
 document.getElementById('editMachineForm').onsubmit = async function (e) {
@@ -156,35 +149,36 @@ document.getElementById('editMachineForm').onsubmit = async function (e) {
     }
   }
 
-    console.log('Dados do FormData:', Array.from(formData.entries()));
+  console.log('Dados do FormData:', Array.from(formData.entries()));
 
-    try {
-      const response = await fetch(`/machines/update/${id}`, {
-        method: 'PUT',
-        body: formData
-      });
+  try {
+    const response = await fetch(`/machines/update/${id}`, {
+      method: 'PUT',
+      body: formData
+    });
 
-      if (response.ok) {
-        const result = await response.json();
-        console.log(result.message);
+    if (response.ok) {
+      const result = await response.json();
+      console.log(result.message);
 
-        const status = document.getElementById('editStatus').value;
-        if (status === 'Em chamado' || status === 'Em espera') {
-          showModalConfirmation(id, status);
-        } else {
-          location.reload();
-        }
+      const status = document.getElementById('editStatus').value;
+      if (status === 'Em chamado' || status === 'Em espera') {
+        showModalConfirmation(id, status);
       } else {
-        console.error('Erro ao atualizar a máquina');
-        alert('Erro ao atualizar a máquina');
+        location.reload();
       }
-    } catch (error) {
-      console.error('Erro ao atualizar a máquina', error);
+    } else {
+      console.error('Erro ao atualizar a máquina');
       alert('Erro ao atualizar a máquina');
     }
+  } catch (error) {
+    console.error('Erro ao atualizar a máquina', error);
+    alert('Erro ao atualizar a máquina');
+  }
 
-    $('#editMachineModal').modal('hide');
-  };
+  $('#editMachineModal').modal('hide');
+};
+
 
   function showModalConfirmation(machineId, status) {
     const confirmationModal = new bootstrap.Modal(document.getElementById('confirmationModal'));
