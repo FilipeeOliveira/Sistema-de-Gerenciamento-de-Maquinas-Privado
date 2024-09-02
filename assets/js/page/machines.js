@@ -48,62 +48,57 @@ function editMachine(id, name, tags, client, status, description, images) {
   
   if (images) {
     images.split(',').forEach(imagePath => {
-      if (imagePath.trim()) {  // Verifica se o caminho da imagem não está vazio
-        const colDiv = document.createElement('div');
-        colDiv.className = 'col-4 col-md-3 mb-3';
-    
-        const img = document.createElement('img');
-        img.src = imagePath;
-        img.className = "img-thumbnail";
-    
-        const removeBtn = document.createElement('button');
-        removeBtn.textContent = 'Remover';
-        removeBtn.className = 'btn btn-sm btn-danger mt-2';
-    
-        removeBtn.onclick = function () {
-          colDiv.remove();
-          imagesToRemove.push(imagePath);
-          console.log('Imagens a serem removidas:', imagesToRemove);
-        };
-    
-        colDiv.appendChild(img);
-        colDiv.appendChild(removeBtn);
-        imagePreviewContainer.appendChild(colDiv);
-      }
+      const colDiv = document.createElement('div');
+      colDiv.className = 'col-4 col-md-3 mb-3';
+  
+      const img = document.createElement('img');
+      img.src = imagePath;
+      img.className = "img-thumbnail";
+  
+      const removeBtn = document.createElement('button');
+      removeBtn.textContent = 'Remover';
+      removeBtn.className = 'btn btn-sm btn-danger mt-2';
+  
+      removeBtn.onclick = function () {
+        colDiv.remove();
+        imagesToRemove.push(imagePath);
+        console.log('Imagens a serem removidas:', imagesToRemove);
+      };
+  
+      colDiv.appendChild(img);
+      colDiv.appendChild(removeBtn);
+      imagePreviewContainer.appendChild(colDiv);
     });
   }
-
+  
+  // Função de pré-visualização e remoção de novas imagens
   const editInputFileElement = document.getElementById('editImages');
   const editPreviewContainer = document.getElementById('editImagePreview');
   let editFilesToUpload = [];
-
-  // Limpa event listeners antigos para evitar múltiplas execuções
-  editInputFileElement.removeEventListener('change', handleFileChange);
   
-  // Função de pré-visualização e remoção de novas imagens
-  function handleFileChange(event) {
+  editInputFileElement.addEventListener('change', function (event) {
     const files = Array.from(event.target.files);
     files.forEach((file) => {
-      if (file && file.type.startsWith('image/')) {
+      if (file.type.startsWith('image/')) {
         const reader = new FileReader();
         reader.onload = function (e) {
           const colDiv = document.createElement('div');
           colDiv.className = 'col-4 col-md-3 mb-3';
-      
+  
           const img = document.createElement('img');
           img.src = e.target.result;
           img.className = "img-thumbnail";
-      
+  
           const removeBtn = document.createElement('button');
           removeBtn.textContent = 'Remover';
           removeBtn.className = 'btn btn-sm btn-danger mt-2';
-      
+  
           removeBtn.onclick = function () {
             colDiv.remove();
             editFilesToUpload = editFilesToUpload.filter(f => f.name !== file.name);
             editInputFileElement.files = createFileList(editFilesToUpload);
           };
-      
+  
           colDiv.appendChild(img);
           colDiv.appendChild(removeBtn);
           editPreviewContainer.appendChild(colDiv);
@@ -113,33 +108,34 @@ function editMachine(id, name, tags, client, status, description, images) {
       }
     });
     
-    editInputFileElement.files = createFileList(editFilesToUpload);
-  }
-  
-  editInputFileElement.addEventListener('change', handleFileChange);
+    editInputFileElement.files = createFileList(editFilesToUpload); 
+  });
   
   function createFileList(files) {
     const dataTransfer = new DataTransfer();
     files.forEach(file => dataTransfer.items.add(file));
     return dataTransfer.files;
   }
-
-  // Evento ao fechar o modal de edição
+  
+  
   $('#editMachineModal').on('hidden.bs.modal', function () {
+    // Limpa os arquivos selecionados
     editFilesToUpload = [];
-    editInputFileElement.value = '';
+    editInputFileElement.value = ''; 
+  
     editPreviewContainer.innerHTML = '';
-
-    const status = document.getElementById('editStatus').value;
-
+  
+    // Verifica o status da máquina
+    const status = document.getElementById('editStatus').value; 
+  
     if (status === 'Em chamado' || status === 'Em espera') {
-      showModalConfirmation(id, status);
+      
+      showModalConfirmation(machineId, status);
     } else {
+ 
       location.reload();
     }
-  });
-
-
+  }); 
 
 
 document.getElementById('editMachineForm').onsubmit = async function (e) {
