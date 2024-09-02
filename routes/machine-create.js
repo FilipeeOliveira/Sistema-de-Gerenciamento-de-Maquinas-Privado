@@ -54,7 +54,7 @@ router.get('/create', (req, res) => {
 // Rota para lidar com o envio do formulário de criação de máquina
 router.post('/create', upload.array('images', 10), async (req, res) => {
     const { name, client, tags, status, description } = req.body;
-    const images = req.files.map(file => `/uploads/${file.filename}`);
+    const images = req.files ? req.files.map(file => `/uploads/${file.filename}`) : [];
 
     console.log('Dados recebidos:', { name, client, images, tags, status, description });
 
@@ -65,7 +65,7 @@ router.post('/create', upload.array('images', 10), async (req, res) => {
         const machine = await Machine.create({
             name,
             client,
-            images: images,
+            images: images.join(','), // Converte o array para string separada por vírgulas
             tags: tags ? tags.split(',') : [],
             status,
             description,

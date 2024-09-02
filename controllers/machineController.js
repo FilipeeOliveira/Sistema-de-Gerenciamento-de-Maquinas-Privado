@@ -206,15 +206,12 @@ exports.updateMachine = async (id, updatedData, files, imagesToRemove) => {
             });
         }
 
-        let currentImages = [];
-        if (typeof machine.images === 'string') {
-            currentImages = machine.images.split(',');
-        } else if (Array.isArray(machine.images)) {
-            currentImages = machine.images;
-        }
+        // Verifica e limpa o array de imagens atuais, removendo entradas vazias
+        let currentImages = machine.images ? machine.images.split(',').filter(image => image.trim() !== '') : [];
 
         console.log('Imagens atuais:', currentImages);
 
+        // Remover as imagens marcadas para remoção
         if (imagesToRemove && imagesToRemove.length > 0) {
             imagesToRemove.forEach(imagePath => {
                 const fullImagePath = path.join(__dirname, '..', 'public', imagePath);
@@ -229,8 +226,14 @@ exports.updateMachine = async (id, updatedData, files, imagesToRemove) => {
             console.log('Imagens após remoção:', currentImages);
         }
 
+        // Adicionar novas imagens
         const newImages = files ? files.map(file => `/uploads/${file.filename}`) : [];
-        const updatedImages = currentImages.concat(newImages).join(',');
+        console.log('Novas imagens adicionadas:', newImages);
+        
+        // Filtra novamente após a concatenação para evitar strings vazias
+        const updatedImages = [...currentImages, ...newImages].filter(image => image.trim() !== '').join(',');
+
+        console.log('Imagens finais a serem armazenadas:', updatedImages);
 
         await machine.update({
             ...updatedData,

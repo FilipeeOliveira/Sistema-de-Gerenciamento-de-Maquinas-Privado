@@ -117,7 +117,7 @@ function editMachine(id, name, tags, client, status, description, images) {
     return dataTransfer.files;
   }
   
-  
+  //reload, por enquanto enquanto nao resolvemos o diacho do bug
   $('#editMachineModal').on('hidden.bs.modal', function () {
     // Limpa os arquivos selecionados
     editFilesToUpload = [];
