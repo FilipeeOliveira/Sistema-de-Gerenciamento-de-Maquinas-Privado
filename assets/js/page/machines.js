@@ -349,11 +349,15 @@ $(document).ready(function () {
   // Pré-visualização de imagens adicionais
   $('#additionalImages').on('change', function () {
     const newFiles = Array.from(this.files);
+    filesToUpload = filesToUpload.concat(newFiles); // Adiciona os novos arquivos ao array existente
+
+    renderPreview(); // Renderiza a pré-visualização das imagens
+    updateInputFiles(); // Atualiza o input com todos os arquivos
+  });
+
+  // Função para renderizar a pré-visualização das imagens
+  function renderPreview() {
     const previewContainer = $('#additionalImagePreview');
-    const existingFiles = filesToUpload || []; // Se já existem arquivos, use-os
-
-    filesToUpload = existingFiles.concat(newFiles); // Adiciona os novos arquivos ao array existente
-
     previewContainer.empty(); // Limpa a pré-visualização
 
     filesToUpload.forEach((file, index) => {
@@ -364,8 +368,7 @@ $(document).ready(function () {
           const img = $('<img>').attr('src', e.target.result).addClass('img-thumbnail');
           const removeBtn = $('<button>').text('Remover').addClass('btn btn-sm btn-danger mt-2').click(function () {
             colDiv.remove();
-            filesToUpload.splice(index, 1); // Remove o arquivo da lista
-            updateInputFiles(); // Atualiza o input com os arquivos restantes
+            removeImage(index); // Remove a imagem do array e atualiza o input
           });
 
           colDiv.append(img).append(removeBtn);
@@ -374,9 +377,14 @@ $(document).ready(function () {
         reader.readAsDataURL(file);
       }
     });
+  }
 
-    updateInputFiles(); // Atualiza o input com todos os arquivos
-  });
+  // Função para remover a imagem do array e atualizar o FileList
+  function removeImage(index) {
+    filesToUpload.splice(index, 1); // Remove o arquivo da lista
+    updateInputFiles(); // Atualiza o input com os arquivos restantes
+    renderPreview(); // Re-renderiza a pré-visualização para refletir as alterações
+  }
 
   // Função para atualizar o input de arquivos com a lista atualizada
   function updateInputFiles() {
@@ -455,8 +463,10 @@ $(document).ready(function () {
 
     // Reseta a lista de arquivos selecionados
     filesToUpload = [];
+    updateInputFiles(); // Atualiza o input de arquivos para vazio
   });
 });
+
 
 
 function calculateTotalValue() {
